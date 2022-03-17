@@ -1,4 +1,4 @@
-package ticket.model.beans.user;
+package ticket.model.beans.users;
 
 public class User {
 	
@@ -7,8 +7,13 @@ public class User {
 	private String firstname;
 	private String lastname;
 	
-	public User() {}
+	User() {}
 	
+	public User(int id, String fname, String lname) {
+		this.setID_user(id);
+		this.setFirstname(fname);
+		this.setLastname(lname);
+	}
 	
 	public User(String fname, String lname) {
 		this.setFirstname(fname);

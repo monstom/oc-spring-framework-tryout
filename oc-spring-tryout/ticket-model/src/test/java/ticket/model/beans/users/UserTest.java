@@ -1,6 +1,7 @@
-package ticket.model.beans.user;
+package ticket.model.beans.users;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -41,10 +42,12 @@ public class UserTest {
 	}
 	
 	
-	@ParameterizedTest(name = "{0} ou {1} ne doit dépasser 100 caractères !")
+	@ParameterizedTest(name = "{0} ou {1} ne doivent pas dépasser 100 caractères !")
 	@CsvSource({ "Thomas,Boullé", 
 				 "bzeuivbziueviubeziuvbuezbviuebviubeziuvbethetjegvbntrfbnsvdbzfesgtrjkuyljtykrhsffvsdbziubviuezbivbezivbiuezbvui,Boullé",
-				 "Thomas,abfiubavucvvbebvubezbvuezbvezbvezbovibezbvoiebvbeuebrbrebrbrbrebrbrbrbrbrebrebberhrtbeevbevbuezbvuebvubevbe" })
+				 "Thomas,abfiubavucvvbebvubezbvuezbvezbvezbovibezbvoiebvbeuebrbrebrbrbrebrbrbrbrbrebrebberhrtbeevbevbuezbvuebvubevbe",
+				 "bzeuivbziueviubeziuvbuezbviuebviubeziuvbethetjegvbntrfbnsvdbzfesgtrjkuyljtykrhsffvsdbziubviuezbivbezivbiuezbvui, abfiubavucvvbebvubezbvuezbvezbvezbovibezbvoiebvbeuebrbrebrbrbrebrbrbrbrbrebrebberhrtbeevbevbuezbvuebvubevbe"
+			  })
 	public void invalidLengthOfFirstnameOrLastname(String arg1, String arg2) {
 		// Arrange
 		
@@ -52,8 +55,22 @@ public class UserTest {
 		first_user = new User(arg1,arg2);
 		
 		// Assert
-		assertTrue(first_user.getFirstname().length() < this.name_length 
-				&& first_user.getLastname().length() < this.name_length);
+		assertTrue(first_user.getFirstname().length() < this.name_length				
+				&& first_user.getLastname().length() < this.name_length 
+				);
+	}
+	
+	@ParameterizedTest(name = "{0} ou {1} ne doivent pas être nuls !")
+	@CsvSource({ "Thomas,Boullé", "'' , ''", "'', Boullé", "Thomas, ''" })
+	public void emptyFirstnameOrLastname(String arg1, String arg2) {
+		// Arrange
+		
+		// Act
+		first_user = new User(arg1,arg2);
+		
+		// Assert
+		assertFalse(first_user.getFirstname().isEmpty()
+				 || first_user.getLastname().isEmpty() );
 	}
 	
 	@ParameterizedTest(name = "{0} ne doit être négatif ou nul !")
