@@ -10,42 +10,42 @@ public class User {
 	User() {}
 	
 	public User(int id, String fname, String lname) {
-		this.setID_user(id);
-		this.setFirstname(fname);
-		this.setLastname(lname);
+		this(fname,lname);
+		this.setUserID(id);
 	}
 	
 	public User(String fname, String lname) {
-		this.setFirstname(fname);
-		this.setLastname(lname);
+		this.setUserID(0);
+		this.setUser_firstname(fname);
+		this.setUser_lastname(lname);
 	}
 
-	public int getID_user() {
-		return id_user;
+	public int getUserID() {
+		return this.id_user;
 	}
 
-	public void setID_user(int id_user) {
+	public void setUserID(int id_user) {
 		this.id_user = id_user;
 	}
 
-	public String getFirstname() {
-		return firstname;
+	public String getUser_firstname() {
+		return this.firstname;
 	}
 
-	public void setFirstname(String firstname) {
+	public void setUser_firstname(String firstname) {
 		this.firstname = firstname;
 	}
 
-	public String getLastname() {
-		return lastname;
+	public String getUser_lastname() {
+		return this.lastname;
 	}
 
-	public void setLastname(String lastname) {
+	public void setUser_lastname(String lastname) {
 		this.lastname = lastname;
 	}
 	
 	public String toString() {
-		return this.getFirstname() + this.getLastname();
+		return this.getUser_firstname() + this.getUser_lastname();
 	}
 
 }
