@@ -4,7 +4,7 @@
   <parent>
     <artifactId>oc-spring-tryout</artifactId>
     <groupId>com.github.monstom</groupId>
-    <version>1.1.2-DEV</version>
+    <version>1.1.4-DEV</version>
   </parent>
 
   <artifactId>ticket-model</artifactId>
