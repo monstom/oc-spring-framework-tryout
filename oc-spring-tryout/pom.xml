@@ -4,7 +4,7 @@
 
   <groupId>com.github.monstom</groupId>
   <artifactId>oc-spring-tryout</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.1.2-DEV</version>
   <packaging>pom</packaging>
 
   <name>oc-spring-tryout Ticket Webapp</name>
@@ -12,12 +12,57 @@
   <url>http://www.example.com</url>
 
   <properties>
+  	<projectName>Ticket Manager</projectName>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
   </properties>
 
+ 
+  <modules>
+    <module>ticket-technical</module>
+    <module>ticket-webapp</module>
+    <module>ticket-batch</module>
+    <module>ticket-business</module>
+    <module>ticket-consumer</module>
+    <module>ticket-model</module>
+  </modules>
+
+
   <dependencies>
+  	<!-- 
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>ticket-technical</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>ticket-webapp</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>ticket-batch</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>ticket-business</artifactId>
+      <version>${project.version}</version>
+    </dependency> 
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>ticket-consumer</artifactId>
+      <version>${project.version}</version>
+    </dependency> 
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>ticket-model</artifactId>
+      <version>${project.version}</version>
+    </dependency> -->
+    
+    
   	<dependency>
 	  <groupId>org.springframework</groupId>
 	  <artifactId>spring-core</artifactId>
@@ -34,6 +79,18 @@
       <artifactId>assertj-core</artifactId>
       <version>3.22.0</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.28</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.google.protobuf</groupId>
+          <artifactId>protobuf-java</artifactId>
+        </exclusion>
+	  </exclusions>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
 
@@ -73,12 +130,5 @@
       </plugins>
     </pluginManagement>
   </build>
-  <modules>
-    <module>ticket-technical</module>
-    <module>ticket-webapp</module>
-    <module>ticket-business</module>
-    <module>ticket-model</module>
-    <module>ticket-consumer</module>
-    <module>ticket-batch</module>
-  </modules>
+  
 </project>

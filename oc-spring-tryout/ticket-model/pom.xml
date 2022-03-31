@@ -4,22 +4,15 @@
   <parent>
     <artifactId>oc-spring-tryout</artifactId>
     <groupId>com.github.monstom</groupId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.1.2-DEV</version>
   </parent>
 
-  <groupId>com.github.monstom.oc-spring-tryout.model</groupId>
   <artifactId>ticket-model</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
 
-  <name>ticket-model</name>
+  <name>${projectName} - Model Module</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
-  </properties>
 
   <dependencies>
     <dependency>
@@ -35,7 +28,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
+  
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>

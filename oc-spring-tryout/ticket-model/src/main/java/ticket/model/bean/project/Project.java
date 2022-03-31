@@ -1,0 +1,69 @@
+package ticket.model.bean.project;
+
+import java.util.Date;
+
+public class Project {
+	
+	private int id_project;
+	
+	private String title;
+	private Date date_creation;
+	private boolean ongoing; 
+	private int id_manager;
+	
+	protected Project() {}
+	
+	public Project(int id, String pname, Date cdate, boolean done, int managerID) {
+		this.setProjectID(id);
+		this.setProject_title(pname);
+		this.setProject_creationDate(cdate);
+		this.setProject_isClosed(done);
+		this.setProject_managerID(managerID);
+	}
+	
+	public int getProjectID() {
+		return this.id_project;
+	}
+	
+	public void setProjectID(int project_ID) {
+		this.id_project = project_ID;
+	}
+	
+	public String getProject_title() {
+		return this.title;
+	}
+	
+	public void setProject_title(String project_name) {
+		this.title = project_name;
+	}
+	
+	public Date getProject_creationDate() {
+		return this.date_creation;
+	}
+	
+	public void setProject_creationDate(Date creation_time) {
+		this.date_creation = creation_time;
+	}
+	
+	public boolean getProject_isClosed() {
+		return this.ongoing;
+	}
+	
+	public void setProject_isClosed(boolean ongoing) {
+		this.ongoing = ongoing;
+	}
+
+	public int getProject_managerID() {
+		return this.id_manager;
+	}
+
+	public void setProject_managerID(int manager_ID) {
+		this.id_manager = manager_ID;
+	}
+	
+	public String toString() {
+		return this.title + "\n" + this.date_creation.toString() + "\n" + this.ongoing + "\n" + this.id_manager;
+	}
+	
+}
+	
