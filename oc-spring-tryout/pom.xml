@@ -4,7 +4,7 @@
 
   <groupId>com.github.monstom</groupId>
   <artifactId>oc-spring-tryout</artifactId>
-  <version>1.1.7-DEV</version>
+  <version>1.1.8-DEV</version>
   <packaging>pom</packaging>
 
   <name>oc-spring-tryout Ticket Webapp</name>
