@@ -2,6 +2,7 @@ package ticket.model.bean.bug;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -51,8 +52,13 @@ public class BugVersionAssociationTest {
 		// Arrange
 		
 		// Act
-		first_association.setBugVersionAssociation_bugID(arg1);
-		first_association.setBugVersionAssociation_versionID(arg2);
+		try {
+			first_association.setBugVersionAssociation_bugID(arg1);
+			first_association.setBugVersionAssociation_versionID(arg2);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_association.getBugVersionAssociation_bugID() > 0
@@ -68,7 +74,12 @@ public class BugVersionAssociationTest {
 		// Arrange
 		
 		// Act
-		first_association.setBugVersionAssociation_versionLabel(arg1);;
+		try {
+			first_association.setBugVersionAssociation_versionLabel(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue( first_association.getBugVersionAssociation_versionLabel().length() < this.version_label_length );
@@ -82,7 +93,12 @@ public class BugVersionAssociationTest {
 		// Arrange
 		
 		// Act
-		first_association.setBugVersionAssociation_versionLabel(arg1);
+		try {
+			first_association.setBugVersionAssociation_versionLabel(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertFalse( first_association.getBugVersionAssociation_versionLabel().isEmpty() 

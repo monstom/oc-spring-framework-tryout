@@ -1,5 +1,9 @@
 package ticket.model.search.project;
 
+import org.apache.commons.validator.GenericValidator;
+
+import ticket.model.exception.InvalidAttributeNumericValueException;
+
 public class SearchProject {
 	
 	private int searched_projectID;
@@ -8,15 +12,22 @@ public class SearchProject {
 	public SearchProject() {}
 	
 	public SearchProject(int id) {
-		this.setSearchedProjectID(id);
+		try {
+			this.setSearchedProjectID(id);
+		} catch(InvalidAttributeNumericValueException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	public int getSearchedProjectID() {
 		return this.searched_projectID;
 	}
 
-	public SearchProject setSearchedProjectID(int searched_PID) {
-		this.searched_projectID = searched_PID;
+	public SearchProject setSearchedProjectID(int searched_projectID) throws InvalidAttributeNumericValueException {
+		if(GenericValidator.maxValue(searched_projectID,0)) 
+			throw new InvalidAttributeNumericValueException("The researched key identifying a project must not be negative or equal 0 !");
+		else 
+			this.searched_projectID = searched_projectID;
 		return this;
 	}
 
@@ -24,8 +35,11 @@ public class SearchProject {
 		return searched_manager;
 	}
 
-	public SearchProject setSearchedManager(int searched_managerID) {
-		this.searched_manager = searched_managerID;
+	public SearchProject setSearchedManager(int searched_manager) throws InvalidAttributeNumericValueException {
+		if(GenericValidator.maxValue(searched_manager,0)) 
+			throw new InvalidAttributeNumericValueException("The researched key identifying a project's manager must not be negative or equal 0 !");
+		else 
+			this.searched_manager = searched_manager;
 		return this;
 	}
 }

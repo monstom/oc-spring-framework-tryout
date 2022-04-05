@@ -1,6 +1,7 @@
 package ticket.model.bean.evolution;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -43,13 +44,18 @@ public class EvolutionTest extends TicketTest {
 	
 	
 	@ParameterizedTest(name = "La priorité de lévolution ({0}) ne doit pas être négatif ou nul !")
-	@ValueSource(ints = { 10, -6, 0 })
+	@ValueSource(ints = { 5, 11, -6, 0 })
 	@Tag("Evolution-priority_invalidValue")
 	public void invalidValueOf_Priority(int arg1) {
 		// Arrange
 		
 		// Act
-		first_evolution.setEvolution_priority(arg1);
+		try {
+			first_evolution.setEvolution_priority(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_evolution.getEvolution_priority() > 0);

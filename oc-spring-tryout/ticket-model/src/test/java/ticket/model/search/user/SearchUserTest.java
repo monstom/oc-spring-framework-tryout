@@ -2,6 +2,7 @@ package ticket.model.search.user;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -41,22 +42,36 @@ public class SearchUserTest {
 	
 	
 	@ParameterizedTest(name = "Lidentifiant et le couple (nom,prénom) recherchés pour un utilisateur ({0},{1}) doivent permettre l'agrégation des attributs de recherche !")
-	@CsvSource({ "1,ThomasBoullé", "1, ", "-9,Tom", "0,Thomas", "-4,''" })
+	@CsvSource({ "1,Thomas Boullé", "1, ", "-9,Tom", "0,Thomas", "-4,''" })
 	@Tag("SearchUser-Aggregation_valid")
 	public void validAggregationOf_SearchUser(int userID, String fname) {
 		// Arrange
 		
+		// Assert 0 
+		assertTrue(this.first_searchUser.getSearchedUserID() == 0
+				|| this.first_searchUser.getSearchedUserID() == (Integer)null);
+		
 		// Act 1 
-		this.first_searchUser = this.first_searchUser.setSearchedUserID(userID);
+		try {
+			this.first_searchUser = this.first_searchUser.setSearchedUserID(userID);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert 1
 		assertSame(this.first_searchUser.getSearchedUserID(),userID);
 		assertTrue(this.first_searchUser.getSearchedFullname() == null
-				|| this.first_searchUser.getSearchedFullname().isEmpty() 
-				|| this.first_searchUser.getSearchedFullname().isBlank());
+				 || this.first_searchUser.getSearchedFullname().isEmpty() 
+				 || this.first_searchUser.getSearchedFullname().isBlank());
 		
 		// Act 2
-		this.first_searchUser = this.first_searchUser.setSearchedFullname(fname);
+		try {
+			this.first_searchUser = this.first_searchUser.setSearchedFullname(fname);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert 2
 		assertSame(this.first_searchUser.getSearchedUserID(),userID);

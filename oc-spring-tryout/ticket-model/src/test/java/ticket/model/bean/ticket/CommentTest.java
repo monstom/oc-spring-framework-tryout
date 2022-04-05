@@ -2,6 +2,7 @@ package ticket.model.bean.ticket;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -51,7 +52,12 @@ public class CommentTest {
 		// Arrange
 		
 		// Act
-		first_comment.setCommentID(arg1);
+		try {
+			first_comment.setCommentID(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_comment.getCommentID() > 0);
@@ -78,7 +84,12 @@ public class CommentTest {
 		// Arrange
 		
 		// Act
-		first_comment.setComment_description(arg1);
+		try {
+			first_comment.setComment_description(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue( first_comment.getComment_description().length() < this.comment_description_length );
@@ -87,12 +98,17 @@ public class CommentTest {
 	
 	@ParameterizedTest(name = "La description du commentaire ({0}) ne doit pas être vide ou nulle !")
 	@ValueSource(strings = { "Description", "statut non défini pour le ticket actuel", " " })
-	@Tag("Comment-label_isEmpty_ness")
+	@Tag("Comment-label_isEmpty")
 	public void isEmpty_Label(String arg1) {
 		// Arrange
 		
 		// Act
-		first_comment.setComment_description(arg1);
+		try {
+			first_comment.setComment_description(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertFalse( first_comment.getComment_description().isEmpty() 
@@ -107,8 +123,13 @@ public class CommentTest {
 		// Arrange
 		
 		// Act
-		first_comment.setComment_userID(arg1);
-		first_comment.setComment_ticketID(arg2);
+		try {
+			first_comment.setComment_userID(arg1);
+			first_comment.setComment_ticketID(arg2);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_comment.getComment_userID() > 0 

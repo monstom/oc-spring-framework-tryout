@@ -1,5 +1,9 @@
 package ticket.model.search.ticket;
 
+import org.apache.commons.validator.GenericValidator;
+
+import ticket.model.exception.InvalidAttributeNumericValueException;
+
 public class SearchStatutHistory {
 	
 	private int searched_ticket;
@@ -13,8 +17,11 @@ public class SearchStatutHistory {
 		return searched_ticket;
 	}
 
-	public SearchStatutHistory setSearchedTicket(int searched_ticket) {
-		this.searched_ticket = searched_ticket;
+	public SearchStatutHistory setSearchedTicket(int searched_ticket) throws InvalidAttributeNumericValueException {
+		if(GenericValidator.maxValue(searched_ticket,0)) 
+			throw new InvalidAttributeNumericValueException("The researched key identifying a status history must not be negative or equal 0 !");
+		else 
+			this.searched_ticket = searched_ticket;
 		return this;
 	}
 
@@ -22,8 +29,11 @@ public class SearchStatutHistory {
 		return searched_statut;
 	}
 	
-	public SearchStatutHistory setSearchedStatut(int searched_statut) {
-		this.searched_statut = searched_statut;
+	public SearchStatutHistory setSearchedStatut(int searched_statut) throws InvalidAttributeNumericValueException {
+		if(GenericValidator.maxValue(searched_statut,0)) 
+			throw new InvalidAttributeNumericValueException("The researched key identifying a status history's statut must not be negative or equal 0 !");
+		else 
+			this.searched_statut = searched_statut;
 		return this;
 	}
 
@@ -31,8 +41,11 @@ public class SearchStatutHistory {
 		return searched_comment;
 	}
 
-	public SearchStatutHistory setSearchedComment(int searched_comment) {
-		this.searched_comment = searched_comment;
+	public SearchStatutHistory setSearchedComment(int searched_comment) throws InvalidAttributeNumericValueException {
+		if(GenericValidator.maxValue(searched_comment,0)) 
+			throw new InvalidAttributeNumericValueException("The researched key identifying a status history's comment must not be negative or equal 0 !");
+		else 
+			this.searched_comment = searched_comment;
 		return this;
 	}
 
@@ -40,8 +53,11 @@ public class SearchStatutHistory {
 		return searched_author;
 	}
 
-	public SearchStatutHistory setSearchedAuthor(int searched_author) {
-		this.searched_author = searched_author;
+	public SearchStatutHistory setSearchedAuthor(int searched_author) throws InvalidAttributeNumericValueException {
+		if(GenericValidator.maxValue(searched_author,0)) 
+			throw new InvalidAttributeNumericValueException("The researched key identifying a status history's author must not be negative or equal 0 !");
+		else 
+			this.searched_author = searched_author;
 		return this;
 	}
 	

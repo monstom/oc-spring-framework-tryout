@@ -2,6 +2,7 @@ package ticket.model.search.bug;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -47,10 +48,16 @@ public class SearchBugTest extends SearchTicketTest {
 		// Arrange
 		
 		// Assert 0
-		assertTrue(this.first_searchBug.getSearchedSeverity() == 0);
+		assertTrue(this.first_searchBug.getSearchedSeverity() == 0
+				|| this.first_searchBug.getSearchedSeverity() == (Integer)null);
 		
-		// Act 1 
-		this.first_searchBug = this.first_searchBug.setSearchedSeverity(severityID);
+		// Act 1
+		try {
+			this.first_searchBug = this.first_searchBug.setSearchedSeverity(severityID);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert 1
 		assertSame(this.first_searchBug.getSearchedSeverity(),severityID);

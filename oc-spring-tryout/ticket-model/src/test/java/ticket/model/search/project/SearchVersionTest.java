@@ -2,6 +2,7 @@ package ticket.model.search.project;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -42,18 +43,32 @@ private SearchVersion first_searchVersion;
 	@Tag("SearchVersion-Aggregation_valid")
 	public void validAggregationOf_SearchVersion(int projectID, String version_label) {
 		// Arrange
+
+		// Assert 0 
+		assertTrue(this.first_searchVersion.getSearchedVersionID() == 0
+				|| this.first_searchVersion.getSearchedVersionID() == (Integer)null);
 		
 		// Act 1 
-		this.first_searchVersion = this.first_searchVersion.setSearchedVersionID(projectID);
+		try {
+			this.first_searchVersion = this.first_searchVersion.setSearchedVersionID(projectID);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert 1
 		assertSame(this.first_searchVersion.getSearchedVersionID(),projectID);
 		assertTrue(this.first_searchVersion.getSearchedLabel() == null
-				||this.first_searchVersion.getSearchedLabel().isEmpty() 
+				|| this.first_searchVersion.getSearchedLabel().isEmpty() 
 				|| this.first_searchVersion.getSearchedLabel().isBlank());
 		
 		// Act 2
-		this.first_searchVersion = this.first_searchVersion.setSearchedLabel(version_label);
+		try {
+			this.first_searchVersion = this.first_searchVersion.setSearchedLabel(version_label);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertSame(this.first_searchVersion.getSearchedVersionID(),projectID);

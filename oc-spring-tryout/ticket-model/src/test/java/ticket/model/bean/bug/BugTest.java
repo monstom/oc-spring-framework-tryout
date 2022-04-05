@@ -1,6 +1,7 @@
 package ticket.model.bean.bug;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -49,7 +50,12 @@ public class BugTest extends TicketTest {
 		// Arrange
 		
 		// Act
-		first_bug.setBug_severity(arg1);
+		try {
+			first_bug.setBug_severity(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_bug.getBug_severity() > 0);

@@ -2,6 +2,7 @@ package ticket.model.search.bug;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -44,15 +45,31 @@ public class SearchSeverityTest {
 	public void validAggregationOf_SearchSeverity(int severityID, int severity_level) {
 		// Arrange
 		
-		// Act 1 
-		this.first_searchSeverity = this.first_searchSeverity.setSearchedSeverityID(severityID);
+		// Assert 0 
+		assertTrue(this.first_searchSeverity.getSearchedSeverityID() == 0
+				|| this.first_searchSeverity.getSearchedSeverityID() == (Integer)null);
+		assertTrue(this.first_searchSeverity.getSearchedLevel() == 0
+				|| this.first_searchSeverity.getSearchedLevel() == (Integer)null);
+		
+		// Act 1
+		try {
+			this.first_searchSeverity = this.first_searchSeverity.setSearchedSeverityID(severityID);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert 1
 		assertSame(this.first_searchSeverity.getSearchedSeverityID(),severityID);
 		assertTrue(this.first_searchSeverity.getSearchedLevel() == 0);
 		
 		// Act 2
-		this.first_searchSeverity = this.first_searchSeverity.setSearchedLevel(severity_level);
+		try {
+			this.first_searchSeverity = this.first_searchSeverity.setSearchedLevel(severity_level);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert 2
 		assertSame(this.first_searchSeverity.getSearchedSeverityID(),severityID);

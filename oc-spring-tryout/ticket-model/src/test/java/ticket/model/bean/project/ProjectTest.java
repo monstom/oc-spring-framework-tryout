@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.sql.Timestamp;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -53,7 +51,12 @@ public class ProjectTest {
 		// Arrange
 		
 		// Act
-		first_project.setProjectID(arg1);
+		try {
+			first_project.setProjectID(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_project.getProjectID() > 0);
@@ -69,7 +72,12 @@ public class ProjectTest {
 		// Arrange
 		
 		// Act
-		first_project.setProject_title(arg1);;
+		try {
+			first_project.setProject_title(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_project.getProject_title().length() < this.title_length);
@@ -83,7 +91,12 @@ public class ProjectTest {
 		// Arrange
 		
 		// Act
-		first_project.setProject_title(arg1);
+		try {
+			first_project.setProject_title(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertFalse(first_project.getProject_title().isEmpty() 
@@ -92,17 +105,19 @@ public class ProjectTest {
 	
 	
 	@ParameterizedTest(name = "La date de création du projet ({0}) doit être non nulle et correctement définie !")
-	@ValueSource(strings = { "2022-03-17 17:15:23", "2022-03-17", "-8", " " })
+	@ValueSource(strings = { "2022-03-21 18:15:23", "2022-03-17", "-8", " " })
 	@Tag("Project-creationDate_invalidValue")
 	public void isEmpty_CreationDate(String arg1) {
 		// Arrange
 		
 		// Act
 		try { 
-			first_project.setProject_creationDate(Timestamp.valueOf(arg1));
-		} catch(IllegalArgumentException e) {
+			first_project.setProject_creationDate(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
 			fail(e.getMessage());
 		}
+		System.out.println(first_project.getProject_creationDate());
 				
 		// Assert
 		assertTrue(first_project.getProject_creationDate().getTime() > 0);
@@ -116,7 +131,12 @@ public class ProjectTest {
 		// Arrange
 		
 		// Act
-		first_project.setProject_managerID(arg1);
+		try {
+			first_project.setProject_managerID(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}		
 		
 		// Assert
 		assertTrue(first_project.getProject_managerID() > 0);

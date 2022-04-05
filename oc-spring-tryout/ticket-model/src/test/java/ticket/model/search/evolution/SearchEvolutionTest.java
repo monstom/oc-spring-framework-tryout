@@ -2,6 +2,7 @@ package ticket.model.search.evolution;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -46,10 +47,16 @@ public class SearchEvolutionTest extends SearchTicketTest {
 		// Arrange
 		
 		// Assert 0 
-		assertTrue(this.first_searchEvolution.getSearchedPriority() == 0);
+		assertTrue(this.first_searchEvolution.getSearchedPriority() == 0
+				|| this.first_searchEvolution.getSearchedPriority() == (Integer)null);
 		
 		// Act 1 
-		this.first_searchEvolution = this.first_searchEvolution.setSearchedPriority(priority);
+		try {
+			this.first_searchEvolution = this.first_searchEvolution.setSearchedPriority(priority);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert 1
 		assertSame(this.first_searchEvolution.getSearchedPriority(),priority);

@@ -2,6 +2,7 @@ package ticket.model.search.project;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -43,16 +44,31 @@ public class SearchProjectTest {
 	@Tag("SearchProject-Aggregation_valid")
 	public void validAggregationOf_SearchProject(int projectID, int managerID) {
 		// Arrange
+
+		// Assert 0 
+		assertTrue(this.first_searchProject.getSearchedProjectID() == 0
+				|| this.first_searchProject.getSearchedProjectID() == (Integer)null);
 		
 		// Act 1 
-		this.first_searchProject = this.first_searchProject.setSearchedProjectID(projectID);
+		try {
+			this.first_searchProject = this.first_searchProject.setSearchedProjectID(projectID);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert 1
 		assertSame(this.first_searchProject.getSearchedProjectID(),projectID);
-		assertTrue(this.first_searchProject.getSearchedManager() == 0);
+		assertTrue(this.first_searchProject.getSearchedManager() == 0
+				|| this.first_searchProject.getSearchedManager() == (Integer)null);
 		
 		// Act 2
-		this.first_searchProject = this.first_searchProject.setSearchedManager(managerID);
+		try {
+			this.first_searchProject = this.first_searchProject.setSearchedManager(managerID);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert 2
 		assertSame(this.first_searchProject.getSearchedProjectID(),projectID);

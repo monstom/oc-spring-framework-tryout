@@ -3,8 +3,6 @@ package ticket.model.bean.ticket;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.sql.Timestamp;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -51,8 +49,13 @@ public class HistoryStatutTest {
 		// Arrange
 		
 		// Act
-		first_history.setHistory_statutID(arg1);
-		first_history.setHistory_ticketID(arg2);
+		try {
+			first_history.setHistory_statutID(arg1);
+			first_history.setHistory_ticketID(arg2);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_history.getHistory_statutID() > 0
@@ -68,8 +71,9 @@ public class HistoryStatutTest {
 		
 		// Act
 		try { 
-			first_history.setHistory_creationDate(Timestamp.valueOf(arg1));
-		} catch(IllegalArgumentException e) {
+			first_history.setHistory_creationDate(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
 			fail(e.getMessage());
 		}
 				
@@ -85,7 +89,12 @@ public class HistoryStatutTest {
 		// Arrange
 		
 		// Act
-		first_history.setHistory_commentID(arg1);
+		try {
+			first_history.setHistory_commentID(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_history.getHistory_commentID() >= 0);
@@ -99,7 +108,12 @@ public class HistoryStatutTest {
 		// Arrange
 		
 		// Act
-		first_history.setHistory_userID(arg1);
+		try {
+			first_history.setHistory_userID(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_history.getHistory_userID() > 0);

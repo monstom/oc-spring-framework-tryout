@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.sql.Timestamp;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -55,7 +53,12 @@ public class TicketTest {
 		// Arrange
 		
 		// Act
-		first_ticket.setTicketID(arg1);
+		try {
+			first_ticket.setTicketID(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_ticket.getTicketID() > 0);
@@ -74,7 +77,12 @@ public class TicketTest {
 		// Arrange
 		
 		// Act
-		first_ticket.setTicket_title(arg1);
+		try {
+			first_ticket.setTicket_title(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_ticket.getTicket_title().length() < this.ticket_title_length);
@@ -87,7 +95,12 @@ public class TicketTest {
 		// Arrange
 		
 		// Act
-		first_ticket.setTicket_title(arg1);
+		try {
+			first_ticket.setTicket_title(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertFalse( first_ticket.getTicket_title().isEmpty() 
@@ -103,8 +116,9 @@ public class TicketTest {
 		
 		// Act
 		try { 
-			first_ticket.setTicket_creationDate(Timestamp.valueOf(arg1));
-		} catch(IllegalArgumentException e) {
+			first_ticket.setTicket_creationDate(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
 			fail(e.getMessage());
 		}
 				
@@ -134,7 +148,12 @@ public class TicketTest {
 		// Arrange
 		
 		// Act
-		first_ticket.setTicket_description(arg1);
+		try {
+			first_ticket.setTicket_description(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_ticket.getTicket_description().length() < this.ticket_description_length);
@@ -155,9 +174,14 @@ public class TicketTest {
 		// Arrange
 		
 		// Act
-		first_ticket.setTicket_statutID(arg1);
-		first_ticket.setTicket_authorID(arg2);
-		first_ticket.setTicket_projectID(arg3);
+		try {
+			first_ticket.setTicket_statutID(arg1);
+			first_ticket.setTicket_authorID(arg2);
+			first_ticket.setTicket_projectID(arg3);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_ticket.getTicket_statutID() > 0

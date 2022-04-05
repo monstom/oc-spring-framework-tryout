@@ -2,6 +2,7 @@ package ticket.model.search.ticket;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -9,7 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.CsvSource;
 
 
 public class SearchStatutTest {
@@ -38,20 +39,45 @@ public class SearchStatutTest {
 		System.out.println("SearchStatutTest - Fin du test de classe SearchStatut");
 	}
 	
-	@ParameterizedTest(name = "Lidentifiant recherché pour un statut ({0}) doit permettre l'agrégation des attributs de recherche !")
-	@ValueSource(ints = { 1, 0, -9 })
+	@ParameterizedTest(name = "Lidentifiant et le libellé recherchés pour un statut ({0},{1}) doivent permettre l'agrégation des attributs de recherche !")
+	@CsvSource({ "1,'Open'", "0,'Closed'", "-9,'Commited'", "1,''" })
 	@Tag("SearchStatut-Aggregation_valid")
-	public void validAggregationOf_SearchStatut(int statutID) {
+	public void validAggregationOf_SearchStatut(int statutID, String statut_label) {
 		// Arrange
 		
 		// Assert 0
-		assertTrue(this.first_searchStatut.getSearchedStatutID() == 0);
+		assertTrue(this.first_searchStatut.getSearchedStatutID() == 0
+				|| this.first_searchStatut.getSearchedStatutID() == (Integer)null);
+		assertTrue(this.first_searchStatut.getSearchedLabel() == null 
+				|| this.first_searchStatut.getSearchedLabel().isBlank()
+				|| this.first_searchStatut.getSearchedLabel().isEmpty());
+		
 		
 		// Act 1
-		this.first_searchStatut = this.first_searchStatut.setSearchedStatutID(statutID);
+		try {
+			this.first_searchStatut = this.first_searchStatut.setSearchedStatutID(statutID);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert 1
 		assertSame(this.first_searchStatut.getSearchedStatutID(),statutID);
+		assertTrue(this.first_searchStatut.getSearchedLabel() == null 
+				|| this.first_searchStatut.getSearchedLabel().isBlank()
+				|| this.first_searchStatut.getSearchedLabel().isEmpty());
+		
+		// Act 2 
+		try {
+			this.first_searchStatut = this.first_searchStatut.setSearchedLabel(statut_label);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
+		
+		// Assert 2 
+		assertSame(this.first_searchStatut.getSearchedStatutID(),statutID);
+		assertSame(this.first_searchStatut.getSearchedLabel(),statut_label);
 	}
 
 }

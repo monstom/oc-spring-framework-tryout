@@ -1,6 +1,7 @@
 package ticket.model.bean.ticket;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -46,7 +47,12 @@ public class TicketAssociationTest {
 		// Arrange
 		
 		// Act
-		first_ticket_association = new TicketAssociation(arg1,arg2);
+		try {
+			first_ticket_association = new TicketAssociation(arg1,arg2);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_ticket_association.getAssociation_mainTicketID() > 0

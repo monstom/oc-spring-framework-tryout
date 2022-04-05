@@ -2,6 +2,7 @@ package ticket.model.bean.ticket;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -50,7 +51,12 @@ public class StatutTest {
 		// Arrange
 		
 		// Act
-		first_statut.setStatutID(arg1);
+		try {
+			first_statut.setStatutID(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_statut.getStatutID() > 0);
@@ -66,7 +72,12 @@ public class StatutTest {
 		// Arrange
 		
 		// Act
-		first_statut.setStatut_label(arg1);
+		try {
+			first_statut.setStatut_label(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue( first_statut.getStatut_label().length() < this.statut_label_length );
@@ -80,7 +91,12 @@ public class StatutTest {
 		// Arrange
 		
 		// Act
-		first_statut.setStatut_label(arg1);
+		try {
+			first_statut.setStatut_label(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertFalse( first_statut.getStatut_label().isEmpty() 

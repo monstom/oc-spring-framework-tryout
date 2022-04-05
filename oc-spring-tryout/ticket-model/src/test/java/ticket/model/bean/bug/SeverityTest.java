@@ -2,6 +2,7 @@ package ticket.model.bean.bug;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -50,7 +51,12 @@ public class SeverityTest {
 		// Arrange
 		
 		// Act
-		first_severity.setSeverityID(arg1);
+		try {
+			first_severity.setSeverityID(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_severity.getSeverityID() > 0);
@@ -64,7 +70,12 @@ public class SeverityTest {
 		// Arrange
 		
 		// Act
-		first_severity.setSeverity_level(arg1);
+		try {
+			first_severity.setSeverity_level(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_severity.getSeverity_level() > 0
@@ -81,7 +92,12 @@ public class SeverityTest {
 		// Arrange
 		
 		// Act
-		first_severity.setSeverity_label(arg1);
+		try {
+			first_severity.setSeverity_label(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue( first_severity.getSeverity_label().length() < this.severity_label_length );
@@ -95,7 +111,12 @@ public class SeverityTest {
 		// Arrange
 		
 		// Act
-		first_severity.setSeverity_label(arg1);
+		try {
+			first_severity.setSeverity_label(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertFalse( first_severity.getSeverity_label().isEmpty() 

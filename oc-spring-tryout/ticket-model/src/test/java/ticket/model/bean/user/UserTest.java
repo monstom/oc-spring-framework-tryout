@@ -2,6 +2,7 @@ package ticket.model.bean.user;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -51,7 +52,12 @@ public class UserTest {
 		// Arrange
 		
 		// Act
-		first_user.setUserID(arg1);
+		try {
+			first_user.setUserID(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_user.getUserID() > 0);
@@ -68,12 +74,17 @@ public class UserTest {
 		// Arrange
 		
 		// Act
-		first_user = new User(arg1,arg2);
+		try {
+			first_user.setUser_firstname(arg1);
+			first_user.setUser_lastname(arg2);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_user.getUser_firstname().length() < this.name_length				
-				&& first_user.getUser_lastname().length() < this.name_length 
-				);
+				&& first_user.getUser_lastname().length() < this.name_length);
 	}
 	
 	
@@ -84,7 +95,13 @@ public class UserTest {
 		// Arrange
 		
 		// Act
-		first_user = new User(arg1,arg2);
+		try {
+			first_user.setUser_firstname(arg1);
+			first_user.setUser_lastname(arg2);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertFalse(first_user.getUser_firstname().isEmpty()

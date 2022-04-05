@@ -2,6 +2,7 @@ package ticket.model.bean.project;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -50,7 +51,12 @@ public class VersionTest {
 		// Arrange
 		
 		// Act
-		first_version.setVersion_projectID(arg1);
+		try {
+			first_version.setVersion_projectID(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue(first_version.getVersion_projectID() > 0);
@@ -66,7 +72,12 @@ public class VersionTest {
 		// Arrange
 		
 		// Act
-		first_version.setVersion_label(arg1);;
+		try {
+			first_version.setVersion_label(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertTrue( first_version.getVersion_label().length() < this.version_label_length );
@@ -80,7 +91,12 @@ public class VersionTest {
 		// Arrange
 		
 		// Act
-		first_version.setVersion_label(arg1);
+		try {
+			first_version.setVersion_label(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert
 		assertFalse( first_version.getVersion_label().isEmpty() 

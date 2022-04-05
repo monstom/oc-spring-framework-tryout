@@ -2,6 +2,7 @@ package ticket.model.search.ticket;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -39,29 +40,55 @@ public class SearchCommentTest {
 	}
 	
 	@ParameterizedTest(name = "Lidentifiant ainsi que le ticket et lauteur recherchés pour un commentaire ({0},{1},{2}) doivent permettre l'agrégation des attributs de recherche !")
-	@CsvSource({ "1,2,3", "1,0,2", "-9,9,5", "0,-3,-4", "-4,-2,-1", "0,0,0" })
+	@CsvSource({ "1,2,3", "1,0,2", "9,9,-5", "0,-3,-4", "-4,-2,-1", "0,0,0" })
 	@Tag("SearchComment-Aggregation_valid")
 	public void validAggregationOf_SearchComment(int commentID, int ticketID, int authorID) {
-		// Arrange
+		// Arrange		
+
+		// Assert 0 
+		assertTrue(this.first_searchComment.getSearchedCommentID() == 0
+				|| this.first_searchComment.getSearchedCommentID() == (Integer)null);
+		assertTrue(this.first_searchComment.getSearchedTicket() == 0
+				|| this.first_searchComment.getSearchedTicket() == (Integer)null);
+		assertTrue(this.first_searchComment.getSearchedAuthor() == 0
+				|| this.first_searchComment.getSearchedAuthor() == (Integer)null);
 		
 		// Act 1 
-		this.first_searchComment = this.first_searchComment.setSearchedCommentID(commentID);
+		try {
+			this.first_searchComment = this.first_searchComment.setSearchedCommentID(commentID);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert 1
 		assertSame(this.first_searchComment.getSearchedCommentID(),commentID);
-		assertTrue(this.first_searchComment.getSearchedTicket() == 0);
-		assertTrue(this.first_searchComment.getSearchedAuthor() == 0);
+		assertTrue(this.first_searchComment.getSearchedTicket() == 0
+				|| this.first_searchComment.getSearchedTicket() == (Integer)null);
+		assertTrue(this.first_searchComment.getSearchedAuthor() == 0
+				|| this.first_searchComment.getSearchedAuthor() == (Integer)null);
 		
 		// Act 2
-		this.first_searchComment = this.first_searchComment.setSearchedTicket(ticketID);
+		try {
+			this.first_searchComment = this.first_searchComment.setSearchedTicket(ticketID);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert 2 
 		assertSame(this.first_searchComment.getSearchedCommentID(),commentID);
 		assertSame(this.first_searchComment.getSearchedTicket(),ticketID);
-		assertTrue(this.first_searchComment.getSearchedAuthor() == 0);
+		assertTrue(this.first_searchComment.getSearchedAuthor() == 0
+				|| this.first_searchComment.getSearchedAuthor() == (Integer)null);
 		
 		// Act 3
-		this.first_searchComment = this.first_searchComment.setSearchedAuthor(authorID);
+		try {
+			this.first_searchComment = this.first_searchComment.setSearchedAuthor(authorID);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail(e.getMessage());
+		}
 		
 		// Assert 3
 		assertSame(this.first_searchComment.getSearchedCommentID(),commentID);
