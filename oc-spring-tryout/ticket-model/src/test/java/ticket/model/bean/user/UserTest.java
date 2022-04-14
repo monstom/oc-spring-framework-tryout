@@ -2,7 +2,6 @@ package ticket.model.bean.user;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -24,29 +23,29 @@ public class UserTest {
 	
 	@BeforeEach
 	public void init_User() {
-		System.out.println("UserTest - Appel avant chaque test");
+		System.out.println("UserTest - Initialization before each test ");
 		first_user = new User();
 	}
 	
 	@AfterEach
 	public void end_User() {
 		first_user = null;
-		System.out.println("UserTest - Appel après chaque test");
+		System.out.println("UserTest - Clean after each test ");
 	}
 	
 	@BeforeAll 
 	public static void init_UserTest() {
-		System.out.println("UserTest - Début du test de classe User");
+		System.out.println("UserTest - Start of unite testing for class User");
 	}
 	
 	@AfterAll 
 	public static void end_UserTest() {
-		System.out.println("UserTest - Fin du test de classe User");
+		System.out.println("UserTest - End of unite testing for class User");
 	}
 	
 	
-	@ParameterizedTest(name = "Lidentifiant utilisateur ({0}) ne doit pas être négatif ou nul !")
-	@ValueSource(ints = { 10, -6, 0 })
+	@ParameterizedTest(name = "The primary key of the user ({0}) must not be negative or equal 0 !")
+		@ValueSource(ints = { 10, -6, 0 })
 	@Tag("User-primaryKey_invalidValue")
 	public void invalidValueOfUserID(int arg1) {
 		// Arrange
@@ -56,14 +55,16 @@ public class UserTest {
 			first_user.setUserID(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertFalse(first_user.getUserID() > 0);
+			return;
 		}
-		
+			
 		// Assert
 		assertTrue(first_user.getUserID() > 0);
 	}
 	
-	@ParameterizedTest(name = "Le nom et prénom utilisateur ({0},{1}) ne doivent pas dépasser 100 caractères !")
+	
+	@ParameterizedTest(name = "The names of the user ({0},{1}) must not contains more than 100 characters !")
 	@CsvSource({ "Thomas,Boullé", 
 				 "bzeuivbziueviubeziuvbuezbviuebviubeziuvbethetjegvbntrfbnsvdbzfesgtrjkuyljtykrhsffvsdbziubviuezbivbezivbiuezbvui,Boullé",
 				 "Thomas,abfiubavucvvbebvubezbvuezbvezbvezbovibezbvoiebvbeuebrbrebrbrbrebrbrbrbrbrebrebberhrtbeevbevbuezbvuebvubevbe",
@@ -79,7 +80,9 @@ public class UserTest {
 			first_user.setUser_lastname(arg2);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(first_user.getUser_firstname() == null				
+					|| first_user.getUser_lastname() == null);
+			return;
 		}
 		
 		// Assert
@@ -87,8 +90,8 @@ public class UserTest {
 				&& first_user.getUser_lastname().length() < this.name_length);
 	}
 	
-	
-	@ParameterizedTest(name = "Le nom et prénom utilisateur ({0},{1}) ne doivent pas être nuls !")
+
+	@ParameterizedTest(name = "The names of the user ({0},{1}) must not be empty or blank !")
 	@CsvSource({ "Thomas,Boullé", "'' , ''", "'', Boullé", "Thomas, ''" })
 	@Tag("User-Names_emptyness")
 	public void emptyFirstnameOrLastname(String arg1, String arg2) {
@@ -100,11 +103,13 @@ public class UserTest {
 			first_user.setUser_lastname(arg2);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(first_user.getUser_firstname() == null
+					|| first_user.getUser_lastname() == null);
+			return;
 		}
 		
 		// Assert
 		assertFalse(first_user.getUser_firstname().isEmpty()
-				 || first_user.getUser_lastname().isEmpty() );
+				 || first_user.getUser_lastname().isEmpty());
 	}
 }

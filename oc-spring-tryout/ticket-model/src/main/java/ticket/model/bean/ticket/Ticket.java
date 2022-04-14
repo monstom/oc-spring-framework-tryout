@@ -33,7 +33,7 @@ public class Ticket {
 	}
 	
 	public Ticket(int id, String tname, String cdate, int statut, int author, int project) {
-		this(tname,cdate,"",statut,author,project);
+		this(tname,cdate,null,statut,author,project);
 		try {
 			this.setTicketID(id);
 		} catch(Exception e) {
@@ -52,15 +52,11 @@ public class Ticket {
 		}
 	}
 	
-	public Ticket(String tname, String cdate, String desc) {
+	protected Ticket(String tname, String cdate, String desc) {
 		try {
-			this.setTicketID(0);
 			this.setTicket_title(tname);
 			this.setTicket_creationDate(cdate);
 			this.setTicket_description(desc);
-			this.setTicket_statutID(0);
-			this.setTicket_authorID(0);
-			this.setTicket_projectID(0);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -116,7 +112,7 @@ public class Ticket {
 
 	public void setTicket_statutID(int statut_id) throws InvalidAttributeNumericValueException {
 		if(GenericValidator.maxValue(statut_id,0)) 
-			throw new InvalidAttributeNumericValueException("The key identifying a ticket's status must not be negative or equal 0 !");
+			throw new InvalidAttributeNumericValueException("The key identifying the status of a ticket must not be negative or equal 0 !");
 		else this.id_statut = statut_id;
 	}
 
@@ -126,7 +122,7 @@ public class Ticket {
 
 	public void setTicket_authorID(int author_id) throws InvalidAttributeNumericValueException {
 		if(GenericValidator.maxValue(author_id,0)) 
-			throw new InvalidAttributeNumericValueException("The key identifying a ticket's author must not be negative or equal 0 !");
+			throw new InvalidAttributeNumericValueException("The key identifying the author of a ticket must not be negative or equal 0 !");
 		else this.id_author = author_id;
 	}
 
@@ -136,8 +132,19 @@ public class Ticket {
 
 	public void setTicket_projectID(int project_id) throws InvalidAttributeNumericValueException {
 		if(GenericValidator.maxValue(project_id,0)) 
-			throw new InvalidAttributeNumericValueException("The key identifying a ticket's project must not be negative or equal 0 !");
+			throw new InvalidAttributeNumericValueException("The key identifying the project of a ticket must not be negative or equal 0 !");
 		else this.id_project = project_id;
+	}
+	
+	
+	public String toString() {
+		return "--- Ticket Object ---\n id : "+ this.id_ticket 
+				+"\n title ; "+ this.title
+				+"\n creation date : "+ this.creation_date.toString()
+				+"\n description ; "+ this.description
+				+"\n statut_id ; "+ this.id_statut
+				+"\n author_id ; "+ this.id_author
+				+"\n project_id ; "+ this.id_project +"\n";
 	}
 	
 }

@@ -29,7 +29,7 @@ public class BugVersionAssociation {
 
 	public void setBugVersionAssociation_bugID(int bugID) throws InvalidAttributeNumericValueException {
 		if(GenericValidator.maxValue(bugID,0)) 
-			throw new InvalidAttributeNumericValueException("The key identifying a bug must not be negative or equal 0 !");
+			throw new InvalidAttributeNumericValueException("The key identifying the bug of the association must not be negative or equal 0 !");
 		else this.id_bug = bugID;
 	}
 
@@ -39,7 +39,7 @@ public class BugVersionAssociation {
 
 	public void setBugVersionAssociation_versionID(int versionID) throws InvalidAttributeNumericValueException {
 		if(GenericValidator.maxValue(versionID,0)) 
-			throw new InvalidAttributeNumericValueException("The key identifying a version must not be negative or equal 0 !");
+			throw new InvalidAttributeNumericValueException("The key identifying the project's id of the association must not be negative or equal 0 !");
 		else this.id_version = versionID;
 	}	
 	
@@ -49,9 +49,15 @@ public class BugVersionAssociation {
 
 	public void setBugVersionAssociation_versionLabel(String vlabel) throws InvalidAttributeLengthException {
 		if(GenericValidator.isBlankOrNull(vlabel)) 
-			throw new InvalidAttributeLengthException("The index identifying a version's label must not be empty or blank !");
+			throw new InvalidAttributeLengthException("The index identifying the version's label of the association must not be empty or blank !");
 		else if(GenericValidator.minLength(vlabel,30)) 
-			throw new InvalidAttributeLengthException("The index identifying a version's label must not contains more than 100 characters !");
+			throw new InvalidAttributeLengthException("The index identifying the version's label of the association must not contains more than 100 characters !");
 		else this.versionLabel = vlabel;
+	}
+	
+	public String toString() {
+		return "--- Bug-Version Association Object ---\n bug_id : "+ this.id_bug
+				+"\n project_id : "+ this.id_version
+				+"\n version_label : "+ this.versionLabel+"\n";
 	}
 }

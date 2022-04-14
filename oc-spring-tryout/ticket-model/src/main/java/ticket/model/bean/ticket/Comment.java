@@ -13,7 +13,7 @@ public class Comment {
 	private int id_user;
 	private int id_ticket;
 	
-	Comment() {}
+	protected Comment() {}
 	
 	public Comment(int id, String desc, int user, int ticket) {
 		this(desc,user,ticket);
@@ -25,30 +25,10 @@ public class Comment {
 	}
 	
 	public Comment(String desc, int user, int ticket) {
-		this(desc);
 		try {
+			this.setComment_description(desc);
 			this.setComment_userID(user);
 			this.setComment_ticketID(ticket);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
-	}
-	
-	public Comment(int id, String desc) {
-		this(desc);
-		try {
-			this.setCommentID(id);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
-	}
-	
-	public Comment(String desc) {
-		try {
-			this.setCommentID(0);
-			this.setComment_description(desc);
-			this.setComment_userID(0);
-			this.setComment_ticketID(0);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -82,7 +62,7 @@ public class Comment {
 
 	public void setComment_userID(int user_id) throws InvalidAttributeNumericValueException{
 		if(GenericValidator.maxValue(user_id,0)) 
-			throw new InvalidAttributeNumericValueException("The key identifying the comment's author must not be negative or equal 0 !");
+			throw new InvalidAttributeNumericValueException("The key identifying the author of a comment must not be negative or equal 0 !");
 		else this.id_user = user_id;
 	}
 
@@ -92,7 +72,14 @@ public class Comment {
 
 	public void setComment_ticketID(int ticket_id) throws InvalidAttributeNumericValueException {
 		if(GenericValidator.maxValue(ticket_id,0)) 
-			throw new InvalidAttributeNumericValueException("The key identifying the comment's ticket must not be negative or equal 0 !");
+			throw new InvalidAttributeNumericValueException("The key identifying the ticket of a comment must not be negative or equal 0 !");
 		else this.id_ticket = ticket_id;
-	}	
+	}
+		
+	public String toString() {
+		return "--- Comment Object ---\n id : "+ this.id_comment
+				+"\n description : "+ this.description
+				+"\n author_id : "+ this.id_user
+				+"\n ticket_id : "+ this.id_ticket+"\n";
+	}
 }

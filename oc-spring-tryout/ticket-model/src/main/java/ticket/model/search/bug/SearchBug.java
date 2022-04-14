@@ -17,7 +17,7 @@ public class SearchBug extends SearchTicket {
 
 	public SearchBug setSearchedSeverity(int searched_severity) throws InvalidAttributeNumericValueException {
 		if(GenericValidator.maxValue(searched_severity,0)) 
-			throw new InvalidAttributeNumericValueException("The researched key identifying a bug's severity must not be negative or equal 0 !");
+			throw new InvalidAttributeNumericValueException("The researched key identifying the severity of a bug must not be negative or equal 0 !");
 		else 
 			this.searched_severity = searched_severity;
 		return this;

@@ -33,4 +33,8 @@ public class Evolution extends Ticket {
 			throw new InvalidAttributeNumericValueException("The priority of an evolution must not be greater than 10 !");
 		else this.priority = epriority;
 	}
+	
+	public String toString() {
+		return super.toString().replace("Ticket","Evolution") +"priority : "+ this.getEvolution_priority() +"\n";
+	}
 }

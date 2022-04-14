@@ -2,7 +2,6 @@ package ticket.model.search.ticket;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -19,27 +18,27 @@ public class SearchStatutTest {
 	
 	@BeforeEach
 	public void init_SearchStatut() {
-		System.out.println("SearchStatutTest - Appel avant chaque test");
+		System.out.println("SearchStatutTest - Initialization before each test ");
 		first_searchStatut = new SearchStatut();
 	}
 	
 	@AfterEach
 	public void end_SearchStatut() {
 		first_searchStatut = null;
-		System.out.println("SearchStatutTest - Appel après chaque test");
+		System.out.println("SearchStatutTest - Clean after each test ");
 	}
 	
 	@BeforeAll 
 	public static void init_SearchStatutTest() {
-		System.out.println("SearchStatutTest - Début du test de classe SearchStatut");
+		System.out.println("SearchStatutTest - Start of unite testing for class SearchStatut");
 	}
 	
 	@AfterAll 
 	public static void end_SearchStatutTest() {
-		System.out.println("SearchStatutTest - Fin du test de classe SearchStatut");
+		System.out.println("SearchStatutTest - End of unite testing for class SearchStatut");
 	}
 	
-	@ParameterizedTest(name = "Lidentifiant et le libellé recherchés pour un statut ({0},{1}) doivent permettre l'agrégation des attributs de recherche !")
+	@ParameterizedTest(name = "The researched primary key and label of the status ({0},{1}) must allow the aggregation of the search attributes !")
 	@CsvSource({ "1,'Open'", "0,'Closed'", "-9,'Commited'", "1,''" })
 	@Tag("SearchStatut-Aggregation_valid")
 	public void validAggregationOf_SearchStatut(int statutID, String statut_label) {
@@ -58,7 +57,8 @@ public class SearchStatutTest {
 			this.first_searchStatut = this.first_searchStatut.setSearchedStatutID(statutID);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(this.first_searchStatut.getSearchedStatutID() == 0);
+			return;
 		}
 		
 		// Assert 1
@@ -72,7 +72,8 @@ public class SearchStatutTest {
 			this.first_searchStatut = this.first_searchStatut.setSearchedLabel(statut_label);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(this.first_searchStatut.getSearchedLabel() == null);
+			return;
 		}
 		
 		// Assert 2 

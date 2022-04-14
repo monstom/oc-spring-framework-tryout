@@ -4,7 +4,7 @@
   <parent>
     <artifactId>oc-spring-tryout</artifactId>
     <groupId>com.github.monstom</groupId>
-    <version>1.1.8-DEV</version>
+    <version>1.1.9-DEV</version>
   </parent>
 
   <artifactId>ticket-consumer</artifactId>
@@ -42,11 +42,12 @@
     <dependency>
       <groupId>com.github.monstom</groupId>
       <artifactId>ticket-model</artifactId>
-      <version>1.1.8-DEV</version>
+      <version>1.1.9-DEV</version>
     </dependency>
   </dependencies>
 
   <build>
+  <finalName>ticket-consumer</finalName>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->

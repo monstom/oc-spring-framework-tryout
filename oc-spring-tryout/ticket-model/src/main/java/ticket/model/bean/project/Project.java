@@ -79,12 +79,16 @@ public class Project {
 
 	public void setProject_managerID(int manager_ID) throws InvalidAttributeNumericValueException {
 		if(GenericValidator.maxValue(manager_ID,0)) 
-			throw new InvalidAttributeNumericValueException("The key identifying the project manager must not be negative or equal 0 !");
+			throw new InvalidAttributeNumericValueException("The key identifying the manager of a project must not be negative or equal 0 !");
 		else this.id_manager = manager_ID;
 	}
 	
 	public String toString() {
-		return this.title + "\n" + this.date_creation.toString() + "\n" + this.ongoing + "\n" + this.id_manager;
+		return "--- Project Object ---\n id : "+ this.id_project
+				+"\n title : "+ this.title
+				+"\n creation_date : "+ this.date_creation.toString()
+				+"\n closed : " + this.ongoing
+				+"\n manager_id : "+ this.id_manager+"\n"; 
 	}
 	
 }

@@ -28,8 +28,11 @@ public class Bug extends Ticket {
 
 	public void setBug_severity(int severity) throws InvalidAttributeNumericValueException {
 		if(GenericValidator.maxValue(severity,0)) 
-			throw new InvalidAttributeNumericValueException("The key identifying a bug's severity must not be negative or equal 0 !");
+			throw new InvalidAttributeNumericValueException("The key identifying the severity of a bug must not be negative or equal 0 !");
 		else this.severity = severity;
 	}
 	
+	public String toString() {
+		return super.toString().replace("Ticket","Bug") +"severity_id :  "+ this.getBug_severity() +"\n";
+	}
 }

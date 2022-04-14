@@ -30,9 +30,9 @@ public class SearchStatut {
 
 	public SearchStatut setSearchedLabel(String searched_slabel) throws InvalidAttributeLengthException {
 		if(GenericValidator.isBlankOrNull(searched_slabel)) 
-			throw new InvalidAttributeLengthException("The researched index identifying a status' label must not be empty or blank !");
+			throw new InvalidAttributeLengthException("The researched index identifying the label of a status must not be empty or blank !");
 		else if(GenericValidator.minLength(searched_slabel,100)) 
-			throw new InvalidAttributeLengthException("The researched index identifying a status' label must not contains more than 100 characters !");
+			throw new InvalidAttributeLengthException("The researched index identifying the label of a status must not contains more than 100 characters !");
 		else
 			this.searched_slabel = searched_slabel;
 		return this;

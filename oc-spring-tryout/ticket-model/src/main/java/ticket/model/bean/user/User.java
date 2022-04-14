@@ -12,7 +12,7 @@ public class User {
 	private String firstname;
 	private String lastname;
 	
-	User() {}
+	protected User() {}
 	
 	public User(int id, String fname, String lname) {
 		this(fname,lname);
@@ -25,7 +25,6 @@ public class User {
 	
 	public User(String fname, String lname) {
 		try {
-			this.setUserID(0);
 			this.setUser_firstname(fname);
 			this.setUser_lastname(lname);
 		} catch(Exception e) {
@@ -68,7 +67,7 @@ public class User {
 	}
 	
 	public String toString() {
-		return this.getUserID() +" : "+ this.getUser_firstname() +" "+ this.getUser_lastname();
+		return "--- User Object ---\n id : "+ this.id_user +"\n firstname : "+ this.firstname +"\n lastname : "+ this.lastname +"\n";
 	}
 
 }

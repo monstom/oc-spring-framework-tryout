@@ -2,7 +2,6 @@ package ticket.model.bean.ticket;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -23,28 +22,28 @@ public class StatutTest {
 	
 	@BeforeEach
 	public void init_Statut() {
-		System.out.println("StatutTest - Appel avant chaque test");
+		System.out.println("StatutTest - Initialization before each test ");
 		first_statut = new Statut();
 	}
 	
 	@AfterEach
 	public void end_Statut() {
 		first_statut = null;
-		System.out.println("StatutTest - Appel après chaque test");
+		System.out.println("StatutTest - Clean after each test ");
 	}
 	
 	@BeforeAll 
 	public static void init_StatutTest() {
-		System.out.println("StatutTest - Début du test de classe Statut");
+		System.out.println("StatutTest - Start of unite testing for class Statut");
 	}
 	
 	@AfterAll 
 	public static void end_StatutTest() {
-		System.out.println("StatutTest - Fin du test de classe Statut");
+		System.out.println("StatutTest - End of unite testing for class Statut");
 	}
 	
-	
-	@ParameterizedTest(name = "La clé primaire du statut : id ({0}) ne doit pas être négative ou nulle !")
+
+	@ParameterizedTest(name = "The primary key of the status ({0}) must not be negative or equal 0 !")
 	@ValueSource(ints = { 10, 0, -3  })
 	@Tag("Statut-primaryKey_invalidValue")
 	public void invalidValueOf_PrimaryKey_StatutID(int arg1) {
@@ -55,15 +54,16 @@ public class StatutTest {
 			first_statut.setStatutID(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertFalse(first_statut.getStatutID() > 0);
+			return;
 		}
 		
 		// Assert
 		assertTrue(first_statut.getStatutID() > 0);
 	}
 	
-	
-	@ParameterizedTest(name = "Le libellé du statut ({0}) ne doit pas dépasser 100 caractères !")
+
+	@ParameterizedTest(name = "The label of the status ({0}) must not contains more than 100 characters !")
 	@ValueSource(strings = { "Open", "Closed", "Commited", "Stashed", "Resolving require admin verification",
 							 "bzeuivbziueviubeziuvbuezbviuebviubeziuvbethetjegvbntrfbnsvdbzfesgtrjkuyljtykrhsffvsdbziubviuezbivbezivbiuezbvui" 
 						   })
@@ -76,15 +76,16 @@ public class StatutTest {
 			first_statut.setStatut_label(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue( first_statut.getStatut_label() == null);
+			return;
 		}
 		
 		// Assert
 		assertTrue( first_statut.getStatut_label().length() < this.statut_label_length );
 	}
 	
-	
-	@ParameterizedTest(name = "Le libellé du statut ({0}) ne doit pas être nul !")
+
+	@ParameterizedTest(name = "The label of the status ({0}) must not be empty or blank !")
 	@ValueSource(strings = { "Open", "Closed", "Commited", "Stashed", " " })
 	@Tag("Statut-label_emptyness")
 	public void isEmpty_Label(String arg1) {
@@ -95,7 +96,8 @@ public class StatutTest {
 			first_statut.setStatut_label(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue( first_statut.getStatut_label() == null);
+			return;
 		}
 		
 		// Assert

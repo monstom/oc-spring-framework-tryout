@@ -18,7 +18,7 @@ public class HistoryStatut {
 	private int id_user;
 	private int id_comment;
 	
-	HistoryStatut() {}
+	protected HistoryStatut() {}
 	
 	public HistoryStatut(int ticket, int statut, String cdate, int user, int comment) {
 		this(ticket,statut,cdate,user);
@@ -39,22 +39,10 @@ public class HistoryStatut {
 	}
 	
 	public HistoryStatut(int ticket, int statut, String cdate) {
-		this(cdate);
 		try {
+			this.setHistory_creationDate(cdate);
 			this.setHistory_ticketID(ticket);
 			this.setHistory_statutID(statut);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
-	}
-	
-	public HistoryStatut(String cdate) {
-		try {
-			this.setHistory_ticketID(0);
-			this.setHistory_statutID(0);
-			this.setHistory_creationDate(cdate);
-			this.setHistory_commentID(0);
-			this.setHistory_userID(0);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -66,7 +54,7 @@ public class HistoryStatut {
 
 	public void setHistory_ticketID(int ticket_id) throws InvalidAttributeNumericValueException {
 		if(GenericValidator.maxValue(ticket_id,0)) 
-			throw new InvalidAttributeNumericValueException("The key identifying a status history's ticket must not be negative or equal 0 !");
+			throw new InvalidAttributeNumericValueException("The key identifying the ticket of an history of status must not be negative or equal 0 !");
 		else this.id_ticket = ticket_id;
 	}
 
@@ -76,7 +64,7 @@ public class HistoryStatut {
 
 	public void setHistory_statutID(int statut_id) throws InvalidAttributeNumericValueException {
 		if(GenericValidator.maxValue(statut_id,0)) 
-			throw new InvalidAttributeNumericValueException("The key identifying a status history's status must not be negative or equal 0 !");
+			throw new InvalidAttributeNumericValueException("The key identifying the status of an history of status must not be negative or equal 0 !");
 		else this.id_statut = statut_id;
 	}
 
@@ -86,7 +74,7 @@ public class HistoryStatut {
 
 	public void setHistory_creationDate(String cdate) throws InvalidAttributeDateException {
 		if(!TimeValidator.getInstance().isValid(cdate, "yyyy-mm-dd HH:mm:ss")) 
-			throw new InvalidAttributeDateException("The creation date of a project must be in the correct format !");
+			throw new InvalidAttributeDateException("The creation date of an history of status must be in the correct format !");
 		else this.creation_date = Timestamp.valueOf(cdate);
 	}
 
@@ -96,7 +84,7 @@ public class HistoryStatut {
 
 	public void setHistory_userID(int user_id) throws InvalidAttributeNumericValueException {
 		if(GenericValidator.maxValue(user_id,0)) 
-			throw new InvalidAttributeNumericValueException("The key identifying a status history's author must not be negative or equal 0 !");
+			throw new InvalidAttributeNumericValueException("The key identifying the author of an history of status must not be negative or equal 0 !");
 		else this.id_user = user_id;
 	}
 
@@ -105,8 +93,16 @@ public class HistoryStatut {
 	}
 
 	public void setHistory_commentID(int comment_id) throws InvalidAttributeNumericValueException {
-		if(GenericValidator.maxValue(comment_id,0)) 
-			throw new InvalidAttributeNumericValueException("The key identifying a status history's comment must not be negative or equal 0 !");
+		if(GenericValidator.maxValue(comment_id,-1)) 
+			throw new InvalidAttributeNumericValueException("The key identifying the comment of an history of status must not be negative or equal 0 !");
 		else this.id_comment = comment_id;
+	}
+	
+	public String toString() {
+		return "--- HistoryStatut Object ---\n ticket_id : "+ this.id_ticket
+				+"\n statut_id : "+ this.id_statut
+				+"\n creation_date : "+ this.creation_date.toString()
+				+"\n comment_id : "+ this.id_comment
+				+"\n author_id : "+ this.id_user+"\n";
 	}
 }

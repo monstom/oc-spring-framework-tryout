@@ -17,7 +17,7 @@ public class SearchEvolution extends SearchTicket {
 
 	public SearchEvolution setSearchedPriority(int searched_priority) throws InvalidAttributeNumericValueException {
 		if(GenericValidator.maxValue(searched_priority,0)) 
-			throw new InvalidAttributeNumericValueException("The researched index identifying an evolution's priority must not be negative or equal 0 !");
+			throw new InvalidAttributeNumericValueException("The researched index identifying the priority of an evolution must not be negative or equal 0 !");
 		else 
 			this.searched_priority = searched_priority;
 		return this;

@@ -1,7 +1,7 @@
 package ticket.model.bean.ticket;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -21,28 +21,28 @@ public class HistoryStatutTest {
 	
 	@BeforeEach
 	public void init_HistoryStatut() {
-		System.out.println("HistoryStatutTest - Appel avant chaque test");
+		System.out.println("HistoryStatutTest - Initialization before each test ");
 		first_history = new HistoryStatut();
 	}
 	
 	@AfterEach
 	public void end_HistoryStatut() {
 		first_history = null;
-		System.out.println("HistoryStatutTest - Appel après chaque test");
+		System.out.println("HistoryStatutTest - Clean after each test ");
 	}
 	
 	@BeforeAll 
 	public static void init_HistoryStatutTest() {
-		System.out.println("HistoryStatutTest - Début du test de classe HistoryStatut");
+		System.out.println("HistoryStatutTest - Start of unite testing for class HistoryStatut");
 	}
 	
 	@AfterAll 
 	public static void end_HistoryStatutTest() {
-		System.out.println("HistoryStatutTest - Fin du test de classe HistoryStatut");
+		System.out.println("HistoryStatutTest - End of unite testing for class HistoryStatut");
 	}
 	
 	
-	@ParameterizedTest(name = " Les clés primaires de lhistorique : statutID et ticketID ({0},{1}) ne doivent pas être négatives ou nulles !")
+	@ParameterizedTest(name = "Both primary and foreign ticket/status keys of the history of status ({0},{1}) must not be negative or equal 0 !")
 	@CsvSource({ "10, 5", "0, 6", "-3, 10", "70, -9", "15, 0", "-1, 0", "0, -9", "-7, -14", "0, 0" })
 	@Tag("HistoryStatut-primaryKeys_StatutTicket_invalidValue")
 	public void invalidValueOf_PrimaryKeys_StatutID_TicketID(int arg1, int arg2) {
@@ -54,16 +54,18 @@ public class HistoryStatutTest {
 			first_history.setHistory_ticketID(arg2);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(first_history.getHistory_statutID() <= 0
+					|| first_history.getHistory_ticketID() <= 0);
+			return;
 		}
 		
 		// Assert
 		assertTrue(first_history.getHistory_statutID() > 0
-				&& first_history.getHistory_ticketID() > 0 );
+				&& first_history.getHistory_ticketID() > 0);
 	}
 	
 	
-	@ParameterizedTest(name = "La date de création de lhistorique ({0}) doit être non nulle et correctement définie !")
+	@ParameterizedTest(name = "The creation date of the history of status ({0}) must be defined in a correct format !")
 	@ValueSource(strings = { "2022-03-17 17:15:23", "2022-03-17", "-8", " " })
 	@Tag("HistoryStatut-creationDate_invalidValue")
 	public void isEmpty_CreationDate(String arg1) {
@@ -74,15 +76,16 @@ public class HistoryStatutTest {
 			first_history.setHistory_creationDate(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(first_history.getHistory_creationDate() == null);
+			return;
 		}
 				
 		// Assert
 		assertTrue(first_history.getHistory_creationDate().getTime() > 0);
 	}
 	
-	
-	@ParameterizedTest(name = "Cette clé étrangère de lhistorique : commentID ({0}) ne doit pas être négative mais peut être nulle !")
+
+	@ParameterizedTest(name = "The foreign comment key of the history of status ({0}) must not be negative or equal 0")
 	@ValueSource(ints = { 10, 0, -8 })
 	@Tag("HistoryStatut-foreignKey_Comment_invalidValue")
 	public void invalidValueOf_ForeignKey_CommentID(int arg1) {
@@ -93,15 +96,16 @@ public class HistoryStatutTest {
 			first_history.setHistory_commentID(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(first_history.getHistory_commentID() <= 0);
+			return;
 		}
 		
 		// Assert
 		assertTrue(first_history.getHistory_commentID() >= 0);
 	}
 	
-	
-	@ParameterizedTest(name = "Cette clé étrangère de lhistorique : userID ({0}) ne doit pas être négative ou nulle !")
+
+	@ParameterizedTest(name = "The foreign user key of the history of status ({0}) must not be negative or equal 0")
 	@ValueSource(ints = { 10, 0, -8 })
 	@Tag("HistoryStatut-foreignKey_User_invalidValue")
 	public void invalidValueOf_ForeignKey_UserID(int arg1) {
@@ -112,7 +116,8 @@ public class HistoryStatutTest {
 			first_history.setHistory_userID(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertFalse(first_history.getHistory_userID() > 0);
+			return;
 		}
 		
 		// Assert

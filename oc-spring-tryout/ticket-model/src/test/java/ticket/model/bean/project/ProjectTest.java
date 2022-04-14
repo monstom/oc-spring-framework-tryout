@@ -2,7 +2,6 @@ package ticket.model.bean.project;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -23,28 +22,28 @@ public class ProjectTest {
 	
 	@BeforeEach
 	public void init_Project() {
-		System.out.println("ProjectTest - Appel avant chaque test");
+		System.out.println("ProjectTest - Initialization before each test ");
 		first_project = new Project();
 	}
 	
 	@AfterEach
 	public void end_Project() {
 		first_project = null;
-		System.out.println("ProjectTest - Appel après chaque test");
+		System.out.println("ProjectTest - Clean after each test ");
 	}
 	
 	@BeforeAll 
 	public static void init_ProjectTest() {
-		System.out.println("ProjectTest - Début du test de classe Project");
+		System.out.println("ProjectTest - Start of unite testing for class Project");
 	}
 	
 	@AfterAll 
 	public static void end_ProjectTest() {
-		System.out.println("ProjectTest - Fin du test de classe Project");
+		System.out.println("ProjectTest - End of unite testing for class Project");
 	}
 	
 	
-	@ParameterizedTest(name = "La clé primaire du projet : id ({0}) ne doit pas être négative ou nulle !")
+	@ParameterizedTest(name = "The primary key of the project ({0}) must not be negative or equal 0 !")
 	@ValueSource(ints = { 10, -6, 0 })
 	@Tag("Project-primaryKey_invalidValue")
 	public void invalidValueOf_PrimaryKey_ProjectID(int arg1) {
@@ -55,7 +54,8 @@ public class ProjectTest {
 			first_project.setProjectID(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertFalse(first_project.getProjectID() > 0);
+			return;
 		}
 		
 		// Assert
@@ -63,7 +63,7 @@ public class ProjectTest {
 	}
 	
 	
-	@ParameterizedTest(name = "Le titre du projet ({0}) ne doit pas dépasser 100 caractères !")
+	@ParameterizedTest(name = "The title of the project ({0}) must not contains more than 100 characters !")
 	@ValueSource(strings = { "Développement Java",
 							 "bzeuivbziueviubeziuvbuezbviuebviubeziuvbethetjegvbntrfbnsvdbzfesgtrjkuyljtykrhsffvsdbziubviuezbivbezivbiuezbvui" 
 						   })
@@ -76,15 +76,16 @@ public class ProjectTest {
 			first_project.setProject_title(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(first_project.getProject_title() == null);
+			return;
 		}
 		
 		// Assert
 		assertTrue(first_project.getProject_title().length() < this.title_length);
 	}
 	
-	
-	@ParameterizedTest(name = "Le titre du projet ({0}) ne doit pas être nul !")
+
+	@ParameterizedTest(name = "The title of the project ({0}) must not empty or blank !")
 	@ValueSource(strings = { "Développement Java", " " })
 	@Tag("Project-title_emptyness")
 	public void isEmpty_Title(String arg1) {
@@ -95,7 +96,8 @@ public class ProjectTest {
 			first_project.setProject_title(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(first_project.getProject_title() == null);
+			return;
 		}
 		
 		// Assert
@@ -104,7 +106,7 @@ public class ProjectTest {
 	}
 	
 	
-	@ParameterizedTest(name = "La date de création du projet ({0}) doit être non nulle et correctement définie !")
+	@ParameterizedTest(name = "The creation date of the project ({0}) must be defined in a correct format !")
 	@ValueSource(strings = { "2022-03-21 18:15:23", "2022-03-17", "-8", " " })
 	@Tag("Project-creationDate_invalidValue")
 	public void isEmpty_CreationDate(String arg1) {
@@ -115,16 +117,16 @@ public class ProjectTest {
 			first_project.setProject_creationDate(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(first_project.getProject_creationDate() == null);
+			return;
 		}
-		System.out.println(first_project.getProject_creationDate());
 				
 		// Assert
 		assertTrue(first_project.getProject_creationDate().getTime() > 0);
 	}
 	
-	
-	@ParameterizedTest(name = "La clé étrangère du projet : managerID ({0}) ne doit pas être négatif ou nul !")
+
+	@ParameterizedTest(name = "The foreign manager key of the project ({0}) must not be negative or equal 0 !")
 	@ValueSource(ints = { 10, -6, 0 })
 	@Tag("Project-foreignKey_manager_invalidValue")
 	public void invalidValueOf_ForeignKey_ManagerID(int arg1) {
@@ -135,7 +137,8 @@ public class ProjectTest {
 			first_project.setProject_managerID(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertFalse(first_project.getProject_managerID() > 0);
+			return;
 		}		
 		
 		// Assert

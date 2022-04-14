@@ -10,20 +10,11 @@ public class Version {
 	private int id_project;
 	private String version_label;
 	
-	Version() {}
+	protected Version() {}
 	
 	public Version(int project_id, String vlabel) {
-		this(vlabel);
 		try {
 			this.setVersion_projectID(project_id);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
-	}
-	
-	public Version(String vlabel) {
-		try {
-			this.setVersion_projectID(0);
 			this.setVersion_label(vlabel);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -35,8 +26,8 @@ public class Version {
 	}
 
 	public void setVersion_projectID(int project_id) throws InvalidAttributeNumericValueException {
-		if(!GenericValidator.maxValue(project_id,0)) 
-			throw new InvalidAttributeNumericValueException("The identifying key of a version must not be negative or equal 0 !");
+		if(GenericValidator.maxValue(project_id,0)) 
+			throw new InvalidAttributeNumericValueException("The identifying key the project of a version must not be negative or equal 0 !");
 		else this.id_project = project_id;
 	}
 
@@ -46,10 +37,14 @@ public class Version {
 
 	public void setVersion_label(String vlabel) throws InvalidAttributeLengthException {
 		if(GenericValidator.isBlankOrNull(vlabel)) 
-			throw new InvalidAttributeLengthException("The label of a version must not be empty or blank !");
+			throw new InvalidAttributeLengthException("The index identifying the label of a version must not be empty or blank !");
 		else if(GenericValidator.minLength(vlabel,30)) 
-			throw new InvalidAttributeLengthException("The label of a version must not contains more than 100 characters !");
+			throw new InvalidAttributeLengthException("The index identifying the label of a version must not contains more than 100 characters !");
 		else this.version_label = vlabel;
+	}
+	
+	public String toString() {
+		return "--- Version Object ---\n project_id : "+ this.id_project +"\n version_label : "+ this.version_label +"\n";
 	}
 	
 }

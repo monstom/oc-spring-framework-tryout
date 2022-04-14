@@ -2,7 +2,6 @@ package ticket.model.bean.bug;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -24,28 +23,28 @@ public class BugVersionAssociationTest {
 	
 	@BeforeEach
 	public void init_BugVersionAssociation() {
-		System.out.println("BugVersionAssociationTest - Appel avant chaque test");
+		System.out.println("BugVersionAssociationTest - Initialization before each test ");
 		first_association = new BugVersionAssociation();
 	}
 	
 	@AfterEach
 	public void end_BugVersionAssociation() {
 		first_association = null;
-		System.out.println("BugVersionAssociationTest - Appel après chaque test");
+		System.out.println("BugVersionAssociationTest - Clean after each test ");
 	}
 	
 	@BeforeAll 
 	public static void init_BugVersionAssociationTest() {
-		System.out.println("BugVersionAssociationTest - Début du test de classe BugVersionAssociation");
+		System.out.println("BugVersionAssociationTest - Start of unite testing for class BugVersionAssociation");
 	}
 	
 	@AfterAll 
 	public static void end_BugVersionAssociationTest() {
-		System.out.println("BugVersionAssociationTest - Fin du test de classe BugVersionAssociation");
+		System.out.println("BugVersionAssociationTest - End of unite testing for class BugVersionAssociation");
 	}
 	
 	
-	@ParameterizedTest(name = "Ces clés primaires de lassociation : bugID et versionID ({0},{1}) ne doivent pas être négatives ou nulles !")
+	@ParameterizedTest(name = "The primary bug and version keys of the association ({0},{1}) must not be negative or equal 0 !")
 	@CsvSource({ "10, 5", "0, 6", "-3, 10", "70, -9", "15, 0", "-1, 0", "0, -9", "-7, -14", "0, 0" })
 	@Tag("BugVersionAssociation-foreignKeys_BugVersion_invalidValue")
 	public void invalidValueOf_ForeignKeys_BugID_VersionID(int arg1, int arg2) {
@@ -57,15 +56,18 @@ public class BugVersionAssociationTest {
 			first_association.setBugVersionAssociation_versionID(arg2);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(first_association.getBugVersionAssociation_bugID() <= 0
+					|| first_association.getBugVersionAssociation_versionID() <= 0);
+			return;
 		}
 		
 		// Assert
 		assertTrue(first_association.getBugVersionAssociation_bugID() > 0
-				&& first_association.getBugVersionAssociation_versionID() > 0 );
+				&& first_association.getBugVersionAssociation_versionID() > 0);
 	}
 	
-	@ParameterizedTest(name = "Cette clé étrangère de lassociation : libéllé ({0}) ne doit pas dépasser 30 caractères !")
+	
+	@ParameterizedTest(name = "The foreign version label key of the association ({0}) must not contains more than 30 characters !")
 	@ValueSource(strings = { "Développement Java", "1.0.1-SNAPSHOT", "3.1.5-RELEASE",
 							 "bzeuivbziueviubeziuvbueivbezivbiuezbvui" 
 						   })
@@ -78,15 +80,16 @@ public class BugVersionAssociationTest {
 			first_association.setBugVersionAssociation_versionLabel(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(first_association.getBugVersionAssociation_versionLabel() == null);
+			return;
 		}
 		
 		// Assert
-		assertTrue( first_association.getBugVersionAssociation_versionLabel().length() < this.version_label_length );
+		assertTrue(first_association.getBugVersionAssociation_versionLabel().length() < this.version_label_length);
 	}
 	
-	
-	@ParameterizedTest(name = "Cette clé étrangère de lassociation : libéllé ({0}) ne doit pas être vide ou nulle !")
+
+	@ParameterizedTest(name = "The foreign version label key of the association ({0}) must not be empty or blank !")
 	@ValueSource(strings = { "1.0.1-SNAPSHOT", "3.1.5-RELEASE", " " })
 	@Tag("BugVersionAssociation-foreignKey_versionlabel_emptyness")
 	public void isEmpty_ForeignKey_VersionLabel(String arg1) {
@@ -97,12 +100,13 @@ public class BugVersionAssociationTest {
 			first_association.setBugVersionAssociation_versionLabel(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(first_association.getBugVersionAssociation_versionLabel() == null);
+			return;
 		}
 		
 		// Assert
-		assertFalse( first_association.getBugVersionAssociation_versionLabel().isEmpty() 
-				  || first_association.getBugVersionAssociation_versionLabel().isBlank() );
+		assertFalse(first_association.getBugVersionAssociation_versionLabel().isEmpty() 
+				 || first_association.getBugVersionAssociation_versionLabel().isBlank());
 	}
 
 }

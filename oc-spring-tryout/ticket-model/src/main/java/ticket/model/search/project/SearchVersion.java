@@ -18,7 +18,7 @@ public class SearchVersion {
 
 	public SearchVersion setSearchedVersionID(int searched_versionID) throws InvalidAttributeNumericValueException {
 		if(GenericValidator.maxValue(searched_versionID,0)) 
-			throw new InvalidAttributeNumericValueException("The researched key identifying a version must not be negative or equal 0 !");
+			throw new InvalidAttributeNumericValueException("The researched key identifying the project of a version must not be negative or equal 0 !");
 		else 
 			this.searched_versionID = searched_versionID;
 		return this;
@@ -30,9 +30,9 @@ public class SearchVersion {
 
 	public SearchVersion setSearchedLabel(String searched_label) throws InvalidAttributeLengthException {
 		if(GenericValidator.isBlankOrNull(searched_label)) 
-			throw new InvalidAttributeLengthException("The researched key identifying a version's label must not be empty or blank !");
+			throw new InvalidAttributeLengthException("The researched key identifying the label of a version must not be empty or blank !");
 		else if(GenericValidator.minLength(searched_label,30)) 
-			throw new InvalidAttributeLengthException("The researched key identifying a version's label must not contains more than 100 characters !");
+			throw new InvalidAttributeLengthException("The researched key identifying the label of a version must not contains more than 100 characters !");
 		else
 			this.searched_label = searched_label;
 		return this;

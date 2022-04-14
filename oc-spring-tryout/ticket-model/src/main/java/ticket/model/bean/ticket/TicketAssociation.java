@@ -9,9 +9,9 @@ public class TicketAssociation {
 	private int id_ticket;
 	private int id_associatedTicket;
 	
-	TicketAssociation() {}
+	protected TicketAssociation() {}
 	
-	TicketAssociation(int first_ticket, int second_ticket) {
+	public TicketAssociation(int first_ticket, int second_ticket) {
 		try {
 			this.setAssociation_mainTicketID(first_ticket);
 			this.setAssociation_associatedTicketID(second_ticket);
@@ -26,17 +26,21 @@ public class TicketAssociation {
 
 	public void setAssociation_mainTicketID(int main_ticket) throws InvalidAttributeNumericValueException {
 		if(GenericValidator.maxValue(main_ticket,0)) 
-			throw new InvalidAttributeNumericValueException("The key identifying the first ticket of the association must not be negative or equal 0 !");
+			throw new InvalidAttributeNumericValueException("The key identifying the first ticket of an association must not be negative or equal 0 !");
 		else this.id_ticket = main_ticket;
 	}
 
 	public int getAssociation_associatedTicketID() {
-		return id_associatedTicket;
+		return this.id_associatedTicket;
 	}
 
 	public void setAssociation_associatedTicketID(int id_associatedTicket) throws InvalidAttributeNumericValueException {
 		if(GenericValidator.maxValue(id_associatedTicket,0)) 
-			throw new InvalidAttributeNumericValueException("The key identifying the second ticket of the association must not be negative or equal 0 !");
+			throw new InvalidAttributeNumericValueException("The key identifying the second ticket of an association must not be negative or equal 0 !");
 		else this.id_associatedTicket = id_associatedTicket;
+	}
+	
+	public String toString() {
+		return "--- Ticket Association Object ---\n main_ticket_id : "+ this.id_ticket	+"\n associated_ticket_id : "+ this.id_associatedTicket +"\n";
 	}
 }

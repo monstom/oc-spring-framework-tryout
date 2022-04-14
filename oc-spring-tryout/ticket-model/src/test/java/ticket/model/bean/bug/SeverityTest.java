@@ -2,7 +2,6 @@ package ticket.model.bean.bug;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -23,28 +22,28 @@ public class SeverityTest {
 	
 	@BeforeEach
 	public void init_Severity() {
-		System.out.println("SeverityTest - Appel avant chaque test");
+		System.out.println("SeverityTest - Initialization before each test ");
 		first_severity = new Severity();
 	}
 	
 	@AfterEach
 	public void end_Severity() {
 		first_severity = null;
-		System.out.println("SeverityTest - Appel après chaque test");
+		System.out.println("SeverityTest - Clean after each test ");
 	}
 	
 	@BeforeAll 
 	public static void init_SeverityTest() {
-		System.out.println("SeverityTest - Début du test de classe Severity");
+		System.out.println("SeverityTest - Start of unite testing for class Severity");
 	}
 	
 	@AfterAll 
 	public static void end_SeverityTest() {
-		System.out.println("SeverityTest - Fin du test de classe Severity");
+		System.out.println("SeverityTest - End of unite testing for class Severity");
 	}
 	
 	
-	@ParameterizedTest(name = "La clé primaire de la sévérité : id ({0}) ne doit pas être négative ou nulle !")
+	@ParameterizedTest(name = "The primary key of the severity ({0}) must not be negative or equal 0 !")
 	@ValueSource(ints = { 10, -6, 0 })
 	@Tag("Severity-primaryKey_invalidValue")
 	public void invalidValueOf_PrimaryKey_SeverityID(int arg1) {
@@ -55,15 +54,16 @@ public class SeverityTest {
 			first_severity.setSeverityID(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertFalse(first_severity.getSeverityID() > 0);
+			return;
 		}
 		
 		// Assert
 		assertTrue(first_severity.getSeverityID() > 0);
 	}
 	
-	
-	@ParameterizedTest(name = "Le niveau de la sévérité ({0}) ne doit être compris entre 1 et 10 !")
+
+	@ParameterizedTest(name = "The level of the severity ({0}) must be in range of 1 to 5!")
 	@ValueSource(ints = { 1, 8, 10, -9, 0, 15 })
 	@Tag("Severity-level_invalidRange")
 	public void invalidValueOf_Level(int arg1) {
@@ -74,7 +74,9 @@ public class SeverityTest {
 			first_severity.setSeverity_level(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(first_severity.getSeverity_level() <= 0
+					|| first_severity.getSeverity_level() > 10);
+			return;
 		}
 		
 		// Assert
@@ -82,8 +84,8 @@ public class SeverityTest {
 				&& first_severity.getSeverity_level() <= 10);
 	}
 	
-	
-	@ParameterizedTest(name = "Le libellé de la sévérité ({0}) ne doit pas dépasser 100 caractères !")
+
+	@ParameterizedTest(name = "The label of the severity ({0}) must not contains more than 100 characters !")
 	@ValueSource(strings = { "Low", "Minor", "Major", "None", "Critical", "Breaking all or parts of project",
 							 "bzeuivbziueviubeziuvbuezbviuebviubeziuvbethetjegvbntrfbnsvdbzfesgtrjkuyljtykrhsffvsdbziubviuezbivbezivbiuezbvui" 
 						   })
@@ -96,15 +98,16 @@ public class SeverityTest {
 			first_severity.setSeverity_label(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue( first_severity.getSeverity_label() == null);
+			return;
 		}
 		
 		// Assert
-		assertTrue( first_severity.getSeverity_label().length() < this.severity_label_length );
+		assertTrue(first_severity.getSeverity_label().length() < this.severity_label_length);
 	}
 	
-	
-	@ParameterizedTest(name = "Le libellé de la sévérité ({0}) ne doit pas être nul !")
+
+	@ParameterizedTest(name = "The label of the severity ({0}) must not empty or blank !")
 	@ValueSource(strings = { "Low", "Minor", "Major", "None", "Critical", "" })
 	@Tag("Severity-label_emptyness")
 	public void isEmpty_Label(String arg1) {
@@ -115,11 +118,12 @@ public class SeverityTest {
 			first_severity.setSeverity_label(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue( first_severity.getSeverity_label() == null);
+			return;
 		}
 		
 		// Assert
-		assertFalse( first_severity.getSeverity_label().isEmpty() 
-				  || first_severity.getSeverity_label().isBlank() );
+		assertFalse(first_severity.getSeverity_label().isEmpty() 
+				 || first_severity.getSeverity_label().isBlank());
 	}
 }

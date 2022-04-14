@@ -1,8 +1,8 @@
 package ticket.model.search.user;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -20,28 +20,28 @@ public class SearchUserTest {
 		
 	@BeforeEach
 	public void init_SearchUser() {
-		System.out.println("SearchUserTest - Appel avant chaque test");
+		System.out.println("SearchUserTest - Initialization before each test ");
 		first_searchUser = new SearchUser();
 	}
 	
 	@AfterEach
 	public void end_SearchUser() {
 		first_searchUser = null;
-		System.out.println("SearchUserTest - Appel après chaque test");
+		System.out.println("SearchUserTest - Clean after each test ");
 	}
 	
 	@BeforeAll 
 	public static void init_SearchUserTest() {
-		System.out.println("SearchUserTest - Début du test de classe SearchUser");
+		System.out.println("SearchUserTest - Start of unite testing for class SearchUser");
 	}
 	
 	@AfterAll 
 	public static void end_SearchUserTest() {
-		System.out.println("SearchUserTest - Fin du test de classe SearchUser");
+		System.out.println("SearchUserTest - End of unite testing for class SearchUser");
 	}
 	
 	
-	@ParameterizedTest(name = "Lidentifiant et le couple (nom,prénom) recherchés pour un utilisateur ({0},{1}) doivent permettre l'agrégation des attributs de recherche !")
+	@ParameterizedTest(name = "The researched primary and secondary fullname keys of the user ({0},{1}) must allow the aggregation of the search attributes !")
 	@CsvSource({ "1,Thomas Boullé", "1, ", "-9,Tom", "0,Thomas", "-4,''" })
 	@Tag("SearchUser-Aggregation_valid")
 	public void validAggregationOf_SearchUser(int userID, String fname) {
@@ -56,7 +56,8 @@ public class SearchUserTest {
 			this.first_searchUser = this.first_searchUser.setSearchedUserID(userID);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertFalse(first_searchUser.getSearchedUserID() > 0);
+			return;
 		}
 		
 		// Assert 1
@@ -70,7 +71,8 @@ public class SearchUserTest {
 			this.first_searchUser = this.first_searchUser.setSearchedFullname(fname);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(this.first_searchUser.getSearchedFullname() == null);
+			return;
 		}
 		
 		// Assert 2

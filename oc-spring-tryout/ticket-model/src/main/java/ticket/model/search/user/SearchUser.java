@@ -31,9 +31,9 @@ public class SearchUser {
 
 	public SearchUser setSearchedFullname(String searched_fname) throws InvalidAttributeLengthException {
 		if(GenericValidator.isBlankOrNull(searched_fname)) 
-			throw new InvalidAttributeLengthException("The researched index identifying a user's fullname must not be empty or blank !");
+			throw new InvalidAttributeLengthException("The researched index identifying the fullname of a user must not be empty or blank !");
 		else if(GenericValidator.minLength(searched_fname,200)) 
-			throw new InvalidAttributeLengthException("The researched index identifying a user's fullname must not contains more than 100 characters !");
+			throw new InvalidAttributeLengthException("The researched index identifying the fullname of a user must not contains more than 100 characters !");
 		else
 			this.searched_fullname = searched_fname;
 		return this;

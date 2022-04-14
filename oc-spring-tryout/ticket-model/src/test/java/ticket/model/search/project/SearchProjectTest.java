@@ -2,7 +2,6 @@ package ticket.model.search.project;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -19,27 +18,28 @@ public class SearchProjectTest {
 	
 	@BeforeEach
 	public void init_SearchProject() {
-		System.out.println("SearchProjectTest - Appel avant chaque test");
+		System.out.println("SearchProjectTest - Initialization before each test ");
 		first_searchProject = new SearchProject();
 	}
 	
 	@AfterEach
 	public void end_SearchProject() {
 		first_searchProject = null;
-		System.out.println("SearchProjectTest - Appel après chaque test");
+		System.out.println("SearchProjectTest - Clean after each test ");
 	}
 	
 	@BeforeAll 
 	public static void init_SearchProjectTest() {
-		System.out.println("SearchProjectTest - Début du test de classe SearchProject");
+		System.out.println("SearchProjectTest - Start of unite testing for class SearchProject");
 	}
 	
 	@AfterAll 
 	public static void end_SearchProjectTest() {
-		System.out.println("SearchProjectTest - Fin du test de classe SearchProject");
+		System.out.println("SearchProjectTest - End of unite testing for class SearchProject");
 	}
-	
-	@ParameterizedTest(name = "Lidentifiant et le manager recherchés pour un projet ({0},{1}) doivent permettre l'agrégation des attributs de recherche !")
+
+
+	@ParameterizedTest(name = "The researched primary project and foreign manager keys of the project ({0},{1}) must allow the aggregation of the search attributes !")
 	@CsvSource({ "1,2", "1,0", "-9,9", "0,3", "-4,-2", "0,0" })
 	@Tag("SearchProject-Aggregation_valid")
 	public void validAggregationOf_SearchProject(int projectID, int managerID) {
@@ -54,7 +54,8 @@ public class SearchProjectTest {
 			this.first_searchProject = this.first_searchProject.setSearchedProjectID(projectID);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(this.first_searchProject.getSearchedProjectID() == 0);
+			return;
 		}
 		
 		// Assert 1
@@ -67,7 +68,8 @@ public class SearchProjectTest {
 			this.first_searchProject = this.first_searchProject.setSearchedManager(managerID);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(this.first_searchProject.getSearchedManager() == 0);
+			return;
 		}
 		
 		// Assert 2

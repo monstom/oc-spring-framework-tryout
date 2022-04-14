@@ -2,7 +2,6 @@ package ticket.model.search.evolution;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -20,27 +19,28 @@ public class SearchEvolutionTest extends SearchTicketTest {
 	
 	@BeforeEach
 	public void init_SearchEvolution() {
-		System.out.println("SearchEvolutionTest - Appel avant chaque test");
+		System.out.println("SearchEvolutionTest - Initialization before each test ");
 		first_searchEvolution = new SearchEvolution();
 	}
 	
 	@AfterEach
 	public void end_SearchEvolution() {
 		first_searchEvolution = null;
-		System.out.println("SearchEvolutionTest - Appel après chaque test");
+		System.out.println("SearchEvolutionTest - Clean after each test ");
 	}
 	
 	@BeforeAll 
 	public static void init_SearchEvolutionTest() {
-		System.out.println("SearchEvolutionTest - Début du test de classe SearchEvolution");
+		System.out.println("SearchEvolutionTest - Start of unite testing for class SearchEvolution");
 	}
 	
 	@AfterAll 
 	public static void end_SearchEvolutionTest() {
-		System.out.println("SearchEvolutionTest - Fin du test de classe SearchEvolution");
+		System.out.println("SearchEvolutionTest - End of unite testing for class SearchEvolution");
 	}
 	
-	@ParameterizedTest(name = "La priorité recherchée pour une évolution ({0}) doit permettre l'agrégation des attributs de recherche !")
+	
+	@ParameterizedTest(name = "The researched priority of the evolution ({0}) must allow the aggregation of the search attributes !")
 	@ValueSource(ints = { 1, 0, -9 })
 	@Tag("SearchEvolution-Aggregation_valid")
 	public void validAggregationOf_SearchEvolution(int priority) {
@@ -55,7 +55,8 @@ public class SearchEvolutionTest extends SearchTicketTest {
 			this.first_searchEvolution = this.first_searchEvolution.setSearchedPriority(priority);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(this.first_searchEvolution.getSearchedPriority() == 0);
+			return;
 		}
 		
 		// Assert 1

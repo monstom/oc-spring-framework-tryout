@@ -2,7 +2,6 @@ package ticket.model.search.bug;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -21,27 +20,28 @@ public class SearchBugTest extends SearchTicketTest {
 	
 	@BeforeEach
 	public void init_SearchBug() {
-		System.out.println("SearchBugTest - Appel avant chaque test");
+		System.out.println("SearchBugTest - Initialization before each test ");
 		first_searchBug = new SearchBug();
 	}
 	
 	@AfterEach
 	public void end_SearchBug() {
 		first_searchBug = null;
-		System.out.println("SearchBugTest - Appel après chaque test");
+		System.out.println("SearchBugTest - Clean after each test ");
 	}
 	
 	@BeforeAll 
 	public static void init_SearchBugTest() {
-		System.out.println("SearchBugTest - Début du test de classe SearchBug");
+		System.out.println("SearchBugTest - Start of unite testing for class SearchBug");
 	}
 	
 	@AfterAll 
 	public static void end_SearchBugTest() {
-		System.out.println("SearchBugTest - Fin du test de classe SearchBug");
+		System.out.println("SearchBugTest - End of unite testing for class SearchBug");
 	}
 	
-	@ParameterizedTest(name = "La sévérité recherchée pour un bug ({0}) doit permettre l'agrégation des attributs de recherche !")
+	
+	@ParameterizedTest(name = "The researched foreign severity key of the association ({0}) must allow the aggregation of the search attributes !")
 	@ValueSource(ints = { 1, 0, -9 })
 	@Tag("SearchBug-Aggregation_valid")
 	public void validAggregationOf_SearchBug(int severityID) {
@@ -56,7 +56,8 @@ public class SearchBugTest extends SearchTicketTest {
 			this.first_searchBug = this.first_searchBug.setSearchedSeverity(severityID);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(this.first_searchBug.getSearchedSeverity() == 0);
+			return;
 		}
 		
 		// Assert 1

@@ -2,7 +2,6 @@ package ticket.model.bean.project;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -23,28 +22,28 @@ public class VersionTest {
 	
 	@BeforeEach
 	public void init_Version() {
-		System.out.println("VersionTest - Appel avant chaque test");
+		System.out.println("VersionTest - Initialization before each test ");
 		first_version = new Version();
 	}
 	
 	@AfterEach
 	public void end_Version() {
 		first_version = null;
-		System.out.println("VersionTest - Appel après chaque test");
+		System.out.println("VersionTest - Clean after each test ");
 	}
 	
 	@BeforeAll 
 	public static void init_VersionTest() {
-		System.out.println("VersionTest - Début du test de classe Version");
+		System.out.println("VersionTest - Start of unite testing for class Version");
 	}
 	
 	@AfterAll 
 	public static void end_VersionTest() {
-		System.out.println("VersionTest - Fin du test de classe Version");
+		System.out.println("VersionTest - End of unite testing for class Version");
 	}
 	
 	
-	@ParameterizedTest(name = "La clé étrangère de la version : projectID ({0}) ne doit pas être négative ou nulle !")
+	@ParameterizedTest(name = "The foreign project primary key of the version ({0}) must not be negative or equal 0 !")
 	@ValueSource(ints = { 10, 0, -3 })
 	@Tag("Version-foreignKey_project_invalidValue")
 	public void invalidValueOf_PrimaryKey_ProjectID(int arg1) {
@@ -55,7 +54,8 @@ public class VersionTest {
 			first_version.setVersion_projectID(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertFalse(first_version.getVersion_projectID() > 0);
+			return;
 		}
 		
 		// Assert
@@ -63,7 +63,7 @@ public class VersionTest {
 	}
 	
 	
-	@ParameterizedTest(name = "Cette clé primaire de la version : libéllé ({0}) ne doit pas dépasser 30 caractères !")
+	@ParameterizedTest(name = "The primary label key of the version ({0}) must not contains more than 30 characters !")
 	@ValueSource(strings = { "Développement Java", "1.0.1-SNAPSHOT", "3.1.5-RELEASE",
 							 "bzeuivbziueviubeziuvbueivbezivbiuezbvui" 
 						   })
@@ -76,15 +76,16 @@ public class VersionTest {
 			first_version.setVersion_label(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(first_version.getVersion_label() == null);
+			return;
 		}
 		
 		// Assert
-		assertTrue( first_version.getVersion_label().length() < this.version_label_length );
+		assertTrue(first_version.getVersion_label().length() < this.version_label_length);
 	}
 	
 	
-	@ParameterizedTest(name = "Cette clé primaire de la version : libéllé ({0}) ne doit pas être vide ou nulle !")
+	@ParameterizedTest(name = "The primary label key of the version ({0}) must not by empty or blank !")
 	@ValueSource(strings = { "1.0.1-SNAPSHOT", "3.1.5-RELEASE", " " })
 	@Tag("Version-primaryKey_Label_emptyness")
 	public void isEmpty_PrimaryKey_Label(String arg1) {
@@ -95,12 +96,13 @@ public class VersionTest {
 			first_version.setVersion_label(arg1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(first_version.getVersion_label() == null);
+			return;
 		}
 		
 		// Assert
-		assertFalse( first_version.getVersion_label().isEmpty() 
-				  || first_version.getVersion_label().isBlank() );
+		assertFalse(first_version.getVersion_label().isEmpty() 
+				 || first_version.getVersion_label().isBlank());
 	}
 	
 }

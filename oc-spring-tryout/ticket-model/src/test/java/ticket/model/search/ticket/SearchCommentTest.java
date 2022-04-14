@@ -2,7 +2,6 @@ package ticket.model.search.ticket;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -19,27 +18,27 @@ public class SearchCommentTest {
 	
 	@BeforeEach
 	public void init_SearchComment() {
-		System.out.println("SearchCommentTest - Appel avant chaque test");
+		System.out.println("SearchCommentTest - Initialization before each test ");
 		first_searchComment = new SearchComment();
 	}
 	
 	@AfterEach
 	public void end_SearchComment() {
 		first_searchComment = null;
-		System.out.println("SearchCommentTest - Appel après chaque test");
+		System.out.println("SearchCommentTest - Clean after each test ");
 	}
 	
 	@BeforeAll 
 	public static void init_SearchCommentTest() {
-		System.out.println("SearchCommentTest - Début du test de classe SearchComment");
+		System.out.println("SearchCommentTest - Start of unite testing for class SearchComment");
 	}
 	
 	@AfterAll 
 	public static void end_SearchCommentTest() {
-		System.out.println("SearchCommentTest - Fin du test de classe SearchComment");
+		System.out.println("SearchCommentTest - End of unite testing for class SearchComment");
 	}
 	
-	@ParameterizedTest(name = "Lidentifiant ainsi que le ticket et lauteur recherchés pour un commentaire ({0},{1},{2}) doivent permettre l'agrégation des attributs de recherche !")
+	@ParameterizedTest(name = "The researched primary and foreign author/ticket keys of the comment ({0},{1},{2}) must allow the aggregation of the search attributes !")
 	@CsvSource({ "1,2,3", "1,0,2", "9,9,-5", "0,-3,-4", "-4,-2,-1", "0,0,0" })
 	@Tag("SearchComment-Aggregation_valid")
 	public void validAggregationOf_SearchComment(int commentID, int ticketID, int authorID) {
@@ -58,7 +57,8 @@ public class SearchCommentTest {
 			this.first_searchComment = this.first_searchComment.setSearchedCommentID(commentID);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(this.first_searchComment.getSearchedCommentID() == 0);
+			return;
 		}
 		
 		// Assert 1
@@ -73,7 +73,8 @@ public class SearchCommentTest {
 			this.first_searchComment = this.first_searchComment.setSearchedTicket(ticketID);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(this.first_searchComment.getSearchedTicket() == 0);
+			return;
 		}
 		
 		// Assert 2 
@@ -87,7 +88,8 @@ public class SearchCommentTest {
 			this.first_searchComment = this.first_searchComment.setSearchedAuthor(authorID);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(this.first_searchComment.getSearchedAuthor() == 0);
+			return;
 		}
 		
 		// Assert 3

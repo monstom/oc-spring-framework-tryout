@@ -13,26 +13,8 @@ public class Statut {
 	protected Statut() {}
 	
 	public Statut(int id, String slabel) {
-		this(slabel);
 		try {
 			this.setStatutID(id);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
-	}
-	
-	public Statut(int id) {
-		this("");
-		try {
-			this.setStatutID(id);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
-	}
-	
-	public Statut(String slabel) {
-		try {
-			this.setStatutID(0);
 			this.setStatut_label(slabel);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -40,7 +22,7 @@ public class Statut {
 	}
 
 	public int getStatutID() {
-		return id_statut;
+		return this.id_statut;
 	}
 
 	public void setStatutID(int statut_id) throws InvalidAttributeNumericValueException {
@@ -50,15 +32,19 @@ public class Statut {
 	}
 
 	public String getStatut_label() {
-		return label;
+		return this.label;
 	}
 
 	public void setStatut_label(String slabel) throws InvalidAttributeLengthException {
 		if(GenericValidator.isBlankOrNull(slabel)) 
-			throw new InvalidAttributeLengthException("The title of a project must not be empty or blank !");
+			throw new InvalidAttributeLengthException("The label of a status must not be empty or blank !");
 		else if(GenericValidator.minLength(slabel,100)) 
-			throw new InvalidAttributeLengthException("The title of a project must not contains more than 100 characters !");
+			throw new InvalidAttributeLengthException("The label of a status must not contains more than 100 characters !");
 		else this.label = slabel;
+	}
+	
+	public String toString() {
+		return "--- Statut Object ---\n id : "+ this.id_statut +"\n label : "+ this.label +"\n";
 	}
 	
 	

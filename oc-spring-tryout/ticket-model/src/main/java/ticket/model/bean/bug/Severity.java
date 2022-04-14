@@ -57,4 +57,10 @@ public class Severity {
 			throw new InvalidAttributeLengthException("The title of a severity must not contains more than 100 characters !");
 		else this.label = slabel;
 	}
+	
+	public String toString() {
+		return "--- Severity Object ---\n id : "+ this.id_severity
+				+"\n level : "+ this.level
+				+"\n label : "+ this.label+"\n";
+	}
 }

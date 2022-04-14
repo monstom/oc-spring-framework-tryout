@@ -2,7 +2,6 @@ package ticket.model.search.project;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -18,27 +17,27 @@ private SearchVersion first_searchVersion;
 	
 	@BeforeEach
 	public void init_SearchVersion() {
-		System.out.println("SearchVersionTest - Appel avant chaque test");
+		System.out.println("SearchVersionTest - Initialization before each test ");
 		first_searchVersion = new SearchVersion();
 	}
 	
 	@AfterEach
 	public void end_SearchVersion() {
 		first_searchVersion = null;
-		System.out.println("SearchVersionTest - Appel après chaque test");
+		System.out.println("SearchVersionTest - Clean after each test ");
 	}
 	
 	@BeforeAll 
 	public static void init_SearchVersionTest() {
-		System.out.println("SearchVersionTest - Début du test de classe SearchVersion");
+		System.out.println("SearchVersionTest - Start of unite testing for class SearchVersion");
 	}
 	
 	@AfterAll 
 	public static void end_SearchVersionTest() {
-		System.out.println("SearchVersionTest - Fin du test de classe SearchVersion");
+		System.out.println("SearchVersionTest - End of unite testing for class SearchVersion");
 	}
 	
-	@ParameterizedTest(name = "Lidentifiant et le libellé recherchés pour une version ({0},{1}) doivent permettre l'agrégation des attributs de recherche !")
+	@ParameterizedTest(name = "The researched primary project and label keys of the version ({0},{1}) must allow the aggregation of the search attributes !")
 	@CsvSource({ "1,'1.0.2'", "1,''", "-9,''", "0,8", "-4,'1.2.2'", "0,''" })
 	@Tag("SearchVersion-Aggregation_valid")
 	public void validAggregationOf_SearchVersion(int projectID, String version_label) {
@@ -53,7 +52,8 @@ private SearchVersion first_searchVersion;
 			this.first_searchVersion = this.first_searchVersion.setSearchedVersionID(projectID);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(this.first_searchVersion.getSearchedVersionID() == 0);
+			return;
 		}
 		
 		// Assert 1
@@ -67,7 +67,8 @@ private SearchVersion first_searchVersion;
 			this.first_searchVersion = this.first_searchVersion.setSearchedLabel(version_label);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			fail(e.getMessage());
+			assertTrue(this.first_searchVersion.getSearchedLabel() == null);
+			return;
 		}
 		
 		// Assert
