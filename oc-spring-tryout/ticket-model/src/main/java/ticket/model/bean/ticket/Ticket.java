@@ -11,6 +11,8 @@ import ticket.model.exception.InvalidAttributeLengthException;
 import ticket.model.exception.InvalidAttributeNumericValueException;
 
 public class Ticket {
+
+	//private static final Logger logger = LoggerFactory.getLogger(Ticket.class);
 	
 	private int id_ticket;
 	
@@ -29,7 +31,9 @@ public class Ticket {
 			this.setTicketID(id);	
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
 		}
+		//logger.info("ticket bean successfully created/retrieved with id : "+id+" !");
 	}
 	
 	public Ticket(int id, String tname, String cdate, int statut, int author, int project) {
@@ -38,28 +42,34 @@ public class Ticket {
 			this.setTicketID(id);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
 		}
+		//logger.info("ticket bean successfully created/retrieved with no description and id : "+id+" !");
 	}
 	
 	public Ticket(String tname, String cdate, String desc, int statut, int author, int project) {
-		this(tname,cdate,desc);
 		try {
+			this.setTicket_title(tname);
+			this.setTicket_creationDate(cdate);
+			this.setTicket_description(desc);
 			this.setTicket_statutID(statut);
 			this.setTicket_authorID(author);
 			this.setTicket_projectID(project);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
 		}
+		//logger.info("anonymous ticket bean successfully created/retrieved !");
 	}
 	
-	protected Ticket(String tname, String cdate, String desc) {
+	protected Ticket(int id) {
 		try {
-			this.setTicket_title(tname);
-			this.setTicket_creationDate(cdate);
-			this.setTicket_description(desc);
+			this.setTicketID(id);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
 		}
+		//logger.info("ticket bean successfully created/retrieved by its id : "+id+" !");
 	}
 
 	public int getTicketID() {
@@ -99,9 +109,7 @@ public class Ticket {
 	}
 
 	public void setTicket_description(String desc) throws InvalidAttributeLengthException {
-		if(GenericValidator.isBlankOrNull(desc)) 
-			throw new InvalidAttributeLengthException("The description of a ticket must not be empty or blank !");
-		else if(GenericValidator.minLength(desc,1000)) 
+		if(GenericValidator.minLength(desc,1000)) 
 			throw new InvalidAttributeLengthException("The description of a ticket must not contains more than 100 characters !");
 		else this.description = desc;
 	}

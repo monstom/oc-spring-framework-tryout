@@ -41,15 +41,21 @@ public class SearchUserTest {
 	}
 	
 	
-	@ParameterizedTest(name = "The researched primary and secondary fullname keys of the user ({0},{1}) must allow the aggregation of the search attributes !")
-	@CsvSource({ "1,Thomas Boullé", "1, ", "-9,Tom", "0,Thomas", "-4,''" })
+	@ParameterizedTest(name = "The researched primary and the names of the user ({0},{1},{2}) must allow the aggregation of the search attributes !")
+	@CsvSource({ "1,Thomas,Boullé", "1, , ", "1,Tom, ", "-2,Thomas,Boullé ", "1,'',''" })
 	@Tag("SearchUser-Aggregation_valid")
-	public void validAggregationOf_SearchUser(int userID, String fname) {
+	public void validAggregationOf_SearchUser(int userID, String firstname, String lastname) {
 		// Arrange
 		
 		// Assert 0 
 		assertTrue(this.first_searchUser.getSearchedUserID() == 0
 				|| this.first_searchUser.getSearchedUserID() == (Integer)null);
+		assertTrue(this.first_searchUser.getSearchedFirstname() == null
+				 || this.first_searchUser.getSearchedFirstname().isEmpty() 
+				 || this.first_searchUser.getSearchedFirstname().isBlank());
+		assertTrue(this.first_searchUser.getSearchedLastname() == null
+				 || this.first_searchUser.getSearchedLastname().isEmpty() 
+				 || this.first_searchUser.getSearchedLastname().isBlank());
 		
 		// Act 1 
 		try {
@@ -62,21 +68,44 @@ public class SearchUserTest {
 		
 		// Assert 1
 		assertSame(this.first_searchUser.getSearchedUserID(),userID);
-		assertTrue(this.first_searchUser.getSearchedFullname() == null
-				 || this.first_searchUser.getSearchedFullname().isEmpty() 
-				 || this.first_searchUser.getSearchedFullname().isBlank());
+		assertTrue(this.first_searchUser.getSearchedFirstname() == null
+				 || this.first_searchUser.getSearchedFirstname().isEmpty() 
+				 || this.first_searchUser.getSearchedFirstname().isBlank());
+		assertTrue(this.first_searchUser.getSearchedLastname() == null
+				 || this.first_searchUser.getSearchedLastname().isEmpty() 
+				 || this.first_searchUser.getSearchedLastname().isBlank());
 		
 		// Act 2
 		try {
-			this.first_searchUser = this.first_searchUser.setSearchedFullname(fname);
+			this.first_searchUser.setSearchedFirstname(null);
+			this.first_searchUser = this.first_searchUser.setSearchedFirstname(firstname);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			assertTrue(this.first_searchUser.getSearchedFullname() == null);
+			assertTrue(this.first_searchUser.getSearchedFirstname() == null);
 			return;
 		}
 		
 		// Assert 2
 		assertSame(this.first_searchUser.getSearchedUserID(),userID);
-		assertSame(this.first_searchUser.getSearchedFullname(),fname);
+		assertSame(this.first_searchUser.getSearchedFirstname(),firstname);
+		assertTrue(this.first_searchUser.getSearchedLastname() == null
+				 || this.first_searchUser.getSearchedLastname().isEmpty() 
+				 || this.first_searchUser.getSearchedLastname().isBlank());
+		
+		// Act 3
+		try {
+			this.first_searchUser.setSearchedLastname(null);
+			this.first_searchUser = this.first_searchUser.setSearchedLastname(lastname);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			assertTrue(this.first_searchUser.getSearchedLastname() == null);
+			return;
+		}
+		
+		// Assert 3
+		assertSame(this.first_searchUser.getSearchedUserID(),userID);
+		assertSame(this.first_searchUser.getSearchedFirstname(),firstname);
+		assertSame(this.first_searchUser.getSearchedLastname(),lastname);
+		
 	}
 }

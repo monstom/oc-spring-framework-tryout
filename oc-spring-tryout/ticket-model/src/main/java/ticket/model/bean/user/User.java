@@ -6,6 +6,8 @@ import ticket.model.exception.InvalidAttributeLengthException;
 import ticket.model.exception.InvalidAttributeNumericValueException;
 
 public class User {
+
+	//private static final Logger logger = LoggerFactory.getLogger(User.class);
 	
 	private int id_user;
 	
@@ -20,7 +22,9 @@ public class User {
 			this.setUserID(id);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
 		}
+		//logger.info("user bean successfully created/retrieved with id : "+id+" !");
 	}
 	
 	public User(String fname, String lname) {
@@ -29,7 +33,19 @@ public class User {
 			this.setUser_lastname(lname);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
 		}
+		//logger.info("anonymous user bean successfully created/retrieved !");
+	}
+	
+	public User(int id) {
+		try {
+			this.setUserID(id);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
+		}
+		//logger.info("user bean successfully created/retrieved by its id : "+id+" !");
 	}
 
 	public int getUserID() {

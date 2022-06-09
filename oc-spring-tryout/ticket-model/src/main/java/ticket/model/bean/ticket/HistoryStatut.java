@@ -10,6 +10,8 @@ import ticket.model.exception.InvalidAttributeDateException;
 import ticket.model.exception.InvalidAttributeNumericValueException;
 
 public class HistoryStatut {
+
+	//private static final Logger logger = LoggerFactory.getLogger(HistoryStatut.class);
 	
 	private int id_ticket;
 	private int id_statut;
@@ -21,31 +23,27 @@ public class HistoryStatut {
 	protected HistoryStatut() {}
 	
 	public HistoryStatut(int ticket, int statut, String cdate, int user, int comment) {
-		this(ticket,statut,cdate,user);
+		this(ticket,statut);
 		try {
+			this.setHistory_creationDate(cdate);
+			this.setHistory_userID(user);
 			this.setHistory_commentID(comment);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
 		}
+		//logger.info("history of status bean successfully created/retrieved with ids : "+ticket+","+status+"  !");
 	}
 	
-	public HistoryStatut(int ticket, int statut, String cdate, int user) {
-		this(ticket,statut,cdate);
+	public HistoryStatut(int ticket, int statut) {
 		try {
-			this.setHistory_userID(user);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
-	}
-	
-	public HistoryStatut(int ticket, int statut, String cdate) {
-		try {
-			this.setHistory_creationDate(cdate);
 			this.setHistory_ticketID(ticket);
 			this.setHistory_statutID(statut);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
 		}
+		//logger.info("history of status bean successfully created/retrieved by its ids : "+ticket+","+status+" !");
 	}
 	
 	public int getHistory_ticketID() {

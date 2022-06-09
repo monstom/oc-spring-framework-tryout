@@ -5,6 +5,8 @@ import org.apache.commons.validator.GenericValidator;
 import ticket.model.exception.InvalidAttributeNumericValueException;
 
 public class TicketAssociation {
+
+	//private static final Logger logger = LoggerFactory.getLogger(TicketAssociation.class);
 	
 	private int id_ticket;
 	private int id_associatedTicket;
@@ -17,7 +19,9 @@ public class TicketAssociation {
 			this.setAssociation_associatedTicketID(second_ticket);
 		} catch(InvalidAttributeNumericValueException e) {
 			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
 		}
+		//logger.info("ticket association bean successfully created/retrieved !");
 	}
 
 	public int getAssociation_mainTicketID() {

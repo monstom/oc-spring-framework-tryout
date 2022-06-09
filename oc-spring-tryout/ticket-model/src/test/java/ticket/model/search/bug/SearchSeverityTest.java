@@ -12,6 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 
+@Tag("SearchSeverityClass_UniteTesting")
 public class SearchSeverityTest {
 
 	private SearchSeverity first_searchSeverity;

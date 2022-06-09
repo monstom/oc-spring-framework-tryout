@@ -11,9 +11,11 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+
+@Tag("SearchVersionClass_UniteTesting")
 public class SearchVersionTest {
 
-private SearchVersion first_searchVersion;
+	private SearchVersion first_searchVersion;
 	
 	@BeforeEach
 	public void init_SearchVersion() {

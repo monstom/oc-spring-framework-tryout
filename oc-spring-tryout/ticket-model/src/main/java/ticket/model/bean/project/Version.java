@@ -6,6 +6,8 @@ import ticket.model.exception.InvalidAttributeLengthException;
 import ticket.model.exception.InvalidAttributeNumericValueException;
 
 public class Version {
+	
+	//private static final Logger logger = LoggerFactory.getLogger(Version.class);
 
 	private int id_project;
 	private String version_label;
@@ -18,7 +20,9 @@ public class Version {
 			this.setVersion_label(vlabel);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
 		}
+		//logger.info("version bean successfully created/retrieved !");
 	}
 
 	public int getVersion_projectID() {

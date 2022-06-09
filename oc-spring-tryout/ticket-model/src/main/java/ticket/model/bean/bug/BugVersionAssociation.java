@@ -6,6 +6,8 @@ import ticket.model.exception.InvalidAttributeLengthException;
 import ticket.model.exception.InvalidAttributeNumericValueException;
 
 public class BugVersionAssociation {
+
+	//private static final Logger logger = LoggerFactory.getLogger(BugVersionAssociation.class);
 	
 	private int id_bug;
 	private int id_version;
@@ -20,7 +22,9 @@ public class BugVersionAssociation {
 			this.setBugVersionAssociation_versionLabel(vlabel);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
 		}
+		//logger.info("bug-version association bean successfully created/retrieved !");
 	}
 
 	public int getBugVersionAssociation_bugID() {

@@ -12,7 +12,7 @@ public class SearchProject {
 	private int searched_projectID;
 	private String searched_title;
 	private String searched_cdate;
-	private boolean searched_state;
+	private int searched_state;
 	private int searched_manager;
 	
 	public SearchProject() {}
@@ -62,11 +62,11 @@ public class SearchProject {
 		return this;
 	}
 
-	public boolean getSearchedState() {
+	public int getSearchedState() {
 		return searched_state;
 	}
 
-	public SearchProject setSearchedState(boolean searched_state) {
+	public SearchProject setSearchedState(int searched_state) {
 		this.searched_state = searched_state;
 		return this;
 	}

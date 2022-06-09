@@ -111,7 +111,7 @@ public class TicketTest {
 	
 	
 	@ParameterizedTest(name = "The creation date of the ticket ({0}) must be defined in a correct format !")
-	@ValueSource(strings = { "2022-03-17 17:15:23", "2022-03-17", "-8", " " })
+	@ValueSource(strings = { "2022-03-17 17:15:23", "2022-03-17", "-8", "" })
 	@Tag("Ticket-creationDate_invalidValue")
 	public void isEmpty_CreationDate(String arg1) {
 		// Arrange

@@ -29,7 +29,7 @@ public class SearchBugVersionAssociation {
 		return searched_VID;
 	}
 
-	protected SearchBugVersionAssociation setSearchedVersionID(int searched_version) throws InvalidAttributeNumericValueException {
+	public SearchBugVersionAssociation setSearchedVersionID(int searched_version) throws InvalidAttributeNumericValueException {
 		if(GenericValidator.maxValue(searched_version,0)) 
 			throw new InvalidAttributeNumericValueException("The researched key identifying the project of an association must not be negative or equal 0 !");
 		else 
@@ -41,7 +41,7 @@ public class SearchBugVersionAssociation {
 		return searched_vlabel;
 	}
 
-	protected SearchBugVersionAssociation setSearchedVersionLabel(String searched_vlabel) throws InvalidAttributeLengthException {
+	public SearchBugVersionAssociation setSearchedVersionLabel(String searched_vlabel) throws InvalidAttributeLengthException {
 		if(GenericValidator.isBlankOrNull(searched_vlabel)) 
 			throw new InvalidAttributeLengthException("The researched index identifying the version of an association must not be empty or blank !");
 		else if(GenericValidator.minLength(searched_vlabel,30)) 
@@ -54,14 +54,13 @@ public class SearchBugVersionAssociation {
 	public SearchBugVersionAssociation setBugVersionAssociation_versionParams(int vid, String vlabel) throws InvalidAttributeLengthException, InvalidAttributeNumericValueException {
 		if(GenericValidator.isBlankOrNull(vlabel) && GenericValidator.maxValue(vid,0))
 			throw new InvalidAttributeLengthException("The reasearched keys identifying the project and the version of an association must not be both undefined !");
-		else if(GenericValidator.maxValue(vid,0)) 
-			this.setSearchedVersionLabel(vlabel);
-		else if(GenericValidator.isBlankOrNull(vlabel))
+		
+		if(!GenericValidator.maxValue(vid,0)) 
 			this.setSearchedVersionID(vid);
-		else {
-			this.setSearchedVersionID(vid);
+		
+		if(!GenericValidator.isBlankOrNull(vlabel))
 			this.setSearchedVersionLabel(vlabel);
-		}
+		
 		return this;
 	}
 }

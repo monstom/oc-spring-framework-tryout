@@ -9,12 +9,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-
-import ticket.model.search.ticket.SearchTicketTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 
-public class SearchBugTest extends SearchTicketTest {
+@Tag("SearchBugClass_UniteTesting")
+public class SearchBugTest {
 
 	private SearchBug first_searchBug;
 	
@@ -41,17 +40,33 @@ public class SearchBugTest extends SearchTicketTest {
 	}
 	
 	
-	@ParameterizedTest(name = "The researched foreign severity key of the association ({0}) must allow the aggregation of the search attributes !")
-	@ValueSource(ints = { 1, 0, -9 })
+	@ParameterizedTest(name = "The researched primary key and the foreign severity key of the association ({0}) must allow the aggregation of the search attributes !")
+	@CsvSource({ "1,1", "1,0", "-9,9", "0,3", "-4,-2", "0,0" })
 	@Tag("SearchBug-Aggregation_valid")
-	public void validAggregationOf_SearchBug(int severityID) {
+	public void validAggregationOf_SearchBug(int ticketID, int severityID) {
 		// Arrange
 		
 		// Assert 0
+		assertTrue(this.first_searchBug.getSearchedTicketID() == 0
+				|| this.first_searchBug.getSearchedTicketID() == (Integer)null);
 		assertTrue(this.first_searchBug.getSearchedSeverity() == 0
 				|| this.first_searchBug.getSearchedSeverity() == (Integer)null);
 		
 		// Act 1
+		try {
+			this.first_searchBug = this.first_searchBug.setSearchedTicketID(ticketID);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			assertTrue(this.first_searchBug.getSearchedTicketID() == 0);
+			return;
+		}
+		
+		// Assert 1
+		assertSame(this.first_searchBug.getSearchedTicketID(),ticketID);
+		assertTrue(this.first_searchBug.getSearchedSeverity() == 0
+				|| this.first_searchBug.getSearchedSeverity() == (Integer)null);
+		
+		// Act 2
 		try {
 			this.first_searchBug = this.first_searchBug.setSearchedSeverity(severityID);
 		} catch(Exception e) {
@@ -60,7 +75,8 @@ public class SearchBugTest extends SearchTicketTest {
 			return;
 		}
 		
-		// Assert 1
+		// Assert 2
+		assertSame(this.first_searchBug.getSearchedTicketID(),ticketID);
 		assertSame(this.first_searchBug.getSearchedSeverity(),severityID);
 	}
 

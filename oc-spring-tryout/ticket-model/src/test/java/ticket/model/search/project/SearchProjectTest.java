@@ -12,6 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 
+@Tag("SearchProjectClass_UniteTesting")
 public class SearchProjectTest {
 
 	private SearchProject first_searchProject;

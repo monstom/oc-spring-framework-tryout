@@ -56,9 +56,7 @@ public class SearchTicket {
 	}
 
 	public SearchTicket setSearchedDescription(String searched_desc) throws InvalidAttributeLengthException {
-		if(GenericValidator.isBlankOrNull(searched_desc))
-			throw new InvalidAttributeLengthException("The researched index identifying the description of a ticket must not be empty or blank !");			
-		else if(GenericValidator.minLength(searched_desc,1000)) 
+		if(GenericValidator.minLength(searched_desc,1000)) 
 			throw new InvalidAttributeLengthException("The researched index identifying the description of a ticket must not contains more than 1000 characters !");
 		else this.searched_desc = searched_desc;
 		return this;

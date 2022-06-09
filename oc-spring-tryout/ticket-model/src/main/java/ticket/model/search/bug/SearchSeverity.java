@@ -47,7 +47,7 @@ public class SearchSeverity {
 		return this;
 	}
 
-	public String getSearched_label() {
+	public String getSearchedLabel() {
 		return searched_label;
 	}
 

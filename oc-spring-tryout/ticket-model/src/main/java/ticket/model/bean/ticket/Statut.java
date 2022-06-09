@@ -7,6 +7,8 @@ import ticket.model.exception.InvalidAttributeNumericValueException;
 
 public class Statut {
 	
+	//private static final Logger logger = LoggerFactory.getLogger(Statut.class);
+	
 	private int id_statut;
 	private String label;
 	
@@ -18,7 +20,29 @@ public class Statut {
 			this.setStatut_label(slabel);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
 		}
+		//logger.info("status bean successfully created/retrieved with id : "+id+" !");		
+	}
+	
+	public Statut(int id) {
+		try {
+			this.setStatutID(id);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
+		}
+		//logger.info("status bean successfully created/retrieved by its id : "+id+" !");		
+	}
+	
+	public Statut(String slabel) {
+		try {
+			this.setStatut_label(slabel);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
+		}
+		//logger.info("anonymous status bean successfully created/retrieved !");		
 	}
 
 	public int getStatutID() {

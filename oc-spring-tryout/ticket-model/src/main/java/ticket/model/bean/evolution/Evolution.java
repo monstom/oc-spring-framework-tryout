@@ -1,25 +1,46 @@
 package ticket.model.bean.evolution;
 
 import org.apache.commons.validator.GenericValidator;
-
-import ticket.model.bean.ticket.Ticket;
 import ticket.model.exception.InvalidAttributeNumericValueException;
 
-public class Evolution extends Ticket {
+public class Evolution {
 	
+	//private static final Logger logger = LoggerFactory.getLogger(Evolution.class);
+	
+	private int ticket_id;
 	private int priority;
 	
-	protected Evolution() {
-		super();
+	protected Evolution() {}
+	
+	public Evolution(int ticket, int epriority) {
+		try {
+			this.setEvolution_ticketID(ticket);
+			this.setEvolution_priority(epriority);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
+		}
+		//logger.info("evolution bean successfully created/retrieved with id : "+ticket+" !");
+	}
+	
+	public Evolution(int ticket) {
+		try {
+			this.setEvolution_ticketID(ticket);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
+		}
+		//logger.info("evolution bean successfully created/retrieved by its id : "+ticket+" !");
 	}
 
-	public Evolution(int id, String tname, String cdate, String desc, int statut, int author, int project, int priority) {
-		super(id, tname, cdate, desc, statut, author, project);
-		try {
-			this.setEvolution_priority(priority);
-		} catch(InvalidAttributeNumericValueException e) {
-			System.out.println(e.getMessage());
-		}
+	public int getEvolution_ticketID() {
+		return this.ticket_id;
+	}
+
+	public void setEvolution_ticketID(int ticket) throws InvalidAttributeNumericValueException {
+		if(GenericValidator.maxValue(ticket,0)) 
+			throw new InvalidAttributeNumericValueException("The key identifying the ticket of an evolution must not be negative or equal 0 !");
+		else this.ticket_id = ticket;
 	}
 
 	public int getEvolution_priority() {

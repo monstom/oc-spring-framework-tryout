@@ -12,6 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 
+@Tag("SearchBugVersionAssociationClass_UniteTesting")
 public class SearchBugVersionAssociationTest {
 
 	private SearchBugVersionAssociation first_searchBugVersionAsso;

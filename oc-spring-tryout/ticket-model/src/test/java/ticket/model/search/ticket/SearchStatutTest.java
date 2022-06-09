@@ -12,6 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 
+@Tag("SearchStatutClass_UniteTesting")
 public class SearchStatutTest {
 
 	private SearchStatut first_searchStatut;

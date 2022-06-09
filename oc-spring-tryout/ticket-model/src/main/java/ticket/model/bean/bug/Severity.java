@@ -7,6 +7,8 @@ import ticket.model.exception.InvalidAttributeNumericValueException;
 
 public class Severity {
 	
+	//private static final Logger logger = LoggerFactory.getLogger(Severity.class);
+	
 	private int id_severity;
 	
 	private int level;
@@ -21,7 +23,30 @@ public class Severity {
 			this.setSeverity_label(slabel);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
 		}
+		//logger.info("severity bean successfully created/retrieved with id : "+id+" !");
+	}
+	
+	public Severity(int slevel, String slabel) {
+		try {
+			this.setSeverity_level(slevel);
+			this.setSeverity_label(slabel);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
+		}
+		//logger.info("anonymous severity bean successfully created/retrieved !");
+	}
+	
+	public Severity(int id) {
+		try {
+			this.setSeverityID(id);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
+		}
+		//logger.info("severity bean successfully created/retrieved only by id : "+id+" !");
 	}
 
 	public int getSeverityID() {

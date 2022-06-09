@@ -8,7 +8,8 @@ import ticket.model.exception.InvalidAttributeNumericValueException;
 public class SearchUser {
 	
 	private int searched_userID;
-	private String searched_fullname;
+	private String searched_firstname;
+	private String searched_lastname;
 	
 	
 	public SearchUser() {}
@@ -25,17 +26,44 @@ public class SearchUser {
 		return this;
 	}
 
-	public String getSearchedFullname() {
-		return searched_fullname;
+	public String getSearchedFirstname() {
+		return searched_firstname;
 	}
-
-	public SearchUser setSearchedFullname(String searched_fname) throws InvalidAttributeLengthException {
+	
+	public SearchUser setSearchedFirstname(String searched_fname) throws InvalidAttributeLengthException {
 		if(GenericValidator.isBlankOrNull(searched_fname)) 
-			throw new InvalidAttributeLengthException("The researched index identifying the fullname of a user must not be empty or blank !");
-		else if(GenericValidator.minLength(searched_fname,200)) 
-			throw new InvalidAttributeLengthException("The researched index identifying the fullname of a user must not contains more than 100 characters !");
+			throw new InvalidAttributeLengthException("The researched index identifying the firstname of a user must not be empty or blank !");
+		else if(GenericValidator.minLength(searched_fname,100)) 
+			throw new InvalidAttributeLengthException("The researched index identifying the firstname of a user must not contains more than 100 characters !");
 		else
-			this.searched_fullname = searched_fname;
+			this.searched_firstname = searched_fname;
+		return this;
+	}
+	
+	public String getSearchedLastname() {
+		return searched_lastname;
+	}
+	
+	public SearchUser setSearchedLastname(String searched_lname) throws InvalidAttributeLengthException {
+		if(GenericValidator.isBlankOrNull(searched_lname)) 
+			throw new InvalidAttributeLengthException("The researched index identifying the lastname of a user must not be empty or blank !");
+		else if(GenericValidator.minLength(searched_lname,100)) 
+			throw new InvalidAttributeLengthException("The researched index identifying the lastname of a user must not contains more than 100 characters !");
+		else
+			this.searched_lastname = searched_lname;
+		return this;
+	}
+	
+	public SearchUser setSearchedNames(String searched_fname, String searched_lname) throws InvalidAttributeLengthException {
+		if(GenericValidator.isBlankOrNull(searched_fname) && GenericValidator.isBlankOrNull(searched_lname)) 
+			throw new InvalidAttributeLengthException("The researched indexes identifying the names of a user must not be both undefined !");
+
+		if(!GenericValidator.isBlankOrNull(searched_fname))
+			this.setSearchedFirstname(searched_fname);
+		
+		if(!GenericValidator.isBlankOrNull(searched_lname))
+			this.setSearchedLastname(searched_lname);
+		
 		return this;
 	}
 }

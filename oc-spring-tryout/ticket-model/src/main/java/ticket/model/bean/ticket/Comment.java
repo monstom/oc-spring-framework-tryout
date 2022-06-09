@@ -7,6 +7,8 @@ import ticket.model.exception.InvalidAttributeNumericValueException;
 
 public class Comment {
 
+	//private static final Logger logger = LoggerFactory.getLogger(Comment.class);
+	
 	private int id_comment;
 	
 	private String description;
@@ -21,7 +23,9 @@ public class Comment {
 			this.setCommentID(id);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
 		}
+		//logger.info("comment bean successfully created/retrieved with id :"+id+" !");
 	}
 	
 	public Comment(String desc, int user, int ticket) {
@@ -31,7 +35,19 @@ public class Comment {
 			this.setComment_ticketID(ticket);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
 		}
+		//logger.info("anonymous comment bean successfully created/retrieved !");
+	}
+	
+	public Comment(int id) {
+		try {
+			this.setCommentID(id);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
+		}
+		//logger.info("comment bean successfully created/retrieved by its id :"+id+" !");
 	}
 	
 	public int getCommentID() {

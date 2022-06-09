@@ -12,6 +12,8 @@ import ticket.model.exception.InvalidAttributeNumericValueException;
 
 public class Project {
 	
+	//private static final Logger logger = LoggerFactory.getLogger(Project.class);
+	
 	private int id_project;
 	
 	private String title;
@@ -30,7 +32,32 @@ public class Project {
 			this.setProject_managerID(managerID); 
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
 		}
+		//logger.info("project bean successfully created/retrieved with id : "+id+" !");		
+	}
+	
+	public Project(String pname, String cdate, boolean done, int managerID) {
+		try {
+			this.setProject_title(pname);
+			this.setProject_creationDate(cdate);
+			this.setProject_isClosed(done);
+			this.setProject_managerID(managerID); 
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
+		}
+		//logger.info("anonymous project bean successfully created/retrieved !");		
+	}
+	
+	public Project(int id) {
+		try {
+			this.setProjectID(id); 
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			//logger.error(e.getMessage());
+		}
+		//logger.info("project bean successfully created/retrieved by its id : "+id+" !");		
 	}
 	
 	public int getProjectID() {

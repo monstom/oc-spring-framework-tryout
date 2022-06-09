@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import ticket.model.bean.ticket.TicketTest;
-
 
 @Tag("EvolutionClass_UniteTesting")
-public class EvolutionTest extends TicketTest {
+public class EvolutionTest {
 
 	private Evolution first_evolution;
 	
@@ -40,6 +38,26 @@ public class EvolutionTest extends TicketTest {
 	@AfterAll 
 	public static void end_EvolutionTest() {
 		System.out.println("EvolutionTest - End of unite testing for class Evolution");
+	}
+	
+	
+	@ParameterizedTest(name = "The primary key of an evolution ({0}) must not be negative or equal 0")
+	@ValueSource(ints = { 10, -6, 0 })
+	@Tag("Evolution-primaryKey_invalidValue")
+	public void invalidValueOf_PrimaryKey_TicketID(int arg1) {
+		// Arrange
+		
+		// Act
+		try {
+			first_evolution.setEvolution_ticketID(arg1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			assertFalse(first_evolution.getEvolution_ticketID() > 0);
+			return;
+		}
+		
+		// Assert
+		assertTrue(first_evolution.getEvolution_ticketID() > 0);
 	}
 	
 

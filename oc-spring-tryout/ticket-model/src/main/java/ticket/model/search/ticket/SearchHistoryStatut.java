@@ -45,8 +45,8 @@ public class SearchHistoryStatut {
 	}
 
 	public SearchHistoryStatut setSearchedCreationDate(String searched_cdate) throws InvalidAttributeDateException {
-		if(!TimeValidator.getInstance().isValid(searched_cdate, "yyyy-mm-dd") &&
-			!TimeValidator.getInstance().isValid(searched_cdate, "yyyy-mm-dd HH:mm:ss")) 
+		if(!TimeValidator.getInstance().isValid(searched_cdate, "yyyy-mm-dd HH:mm:ss") &&
+			!TimeValidator.getInstance().isValid(searched_cdate, "yyyy-mm-dd")) 
 			throw new InvalidAttributeDateException("The researched index identifying the creation date of an history of status must be in the correct format !");
 		else this.searched_date = searched_cdate;
 		return this;
@@ -57,10 +57,7 @@ public class SearchHistoryStatut {
 	}
 
 	public SearchHistoryStatut setSearchedComment(int searched_comment) throws InvalidAttributeNumericValueException {
-		if(GenericValidator.maxValue(searched_comment,-1)) 
-			throw new InvalidAttributeNumericValueException("The researched key identifying the comment of an history of status must not be negative or equal 0 !");
-		else 
-			this.searched_comment = searched_comment;
+		this.searched_comment = searched_comment;
 		return this;
 	}
 

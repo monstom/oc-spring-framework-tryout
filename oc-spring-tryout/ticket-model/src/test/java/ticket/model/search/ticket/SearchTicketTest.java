@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+
+@Tag("SearchTicketClass_UniteTesting")
 public class SearchTicketTest {
 
 	private SearchTicket first_searchTicket;

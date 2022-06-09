@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+
+@Tag("SearchHistoryStatutClass_UniteTesting")
 public class SearchHistoryStatutTest {
 
 	private SearchHistoryStatut first_searchHistoryStatut;

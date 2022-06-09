@@ -12,6 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 
+@Tag("SearchCommentClass_UniteTesting")
 public class SearchCommentTest {
 
 	private SearchComment first_searchComment;

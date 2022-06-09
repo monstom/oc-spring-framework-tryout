@@ -12,6 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 
+@Tag("SearchTicketAssociationClass_UniteTesting")
 public class SearchTicketAssociationTest {
 
 	private SearchTicketAssociation first_searchTicketAssociation;
