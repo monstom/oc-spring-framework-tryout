@@ -62,7 +62,7 @@ public class Ticket {
 		//logger.info("anonymous ticket bean successfully created/retrieved !");
 	}
 	
-	protected Ticket(int id) {
+	public Ticket(int id) {
 		try {
 			this.setTicketID(id);
 		} catch(Exception e) {
@@ -99,9 +99,11 @@ public class Ticket {
 	}
 
 	public void setTicket_creationDate(String creation_time) throws InvalidAttributeDateException {
-		if(!TimeValidator.getInstance().isValid(creation_time, "yyyy-mm-dd HH:mm:ss")) 
-			throw new InvalidAttributeDateException("The creation date of a ticket must be in the correct format !");
-		else this.creation_date = Timestamp.valueOf(creation_time);
+		if(!GenericValidator.isBlankOrNull(creation_time))
+			if(!TimeValidator.getInstance().isValid(creation_time, "yyyy-mm-dd HH:mm:ss")) 
+				throw new InvalidAttributeDateException("The creation date of a ticket must be in the correct format !");
+			else this.creation_date = Timestamp.valueOf(creation_time);
+		else this.creation_date = null;
 	}
 
 	public String getTicket_description() {
@@ -109,9 +111,10 @@ public class Ticket {
 	}
 
 	public void setTicket_description(String desc) throws InvalidAttributeLengthException {
-		if(GenericValidator.minLength(desc,1000)) 
-			throw new InvalidAttributeLengthException("The description of a ticket must not contains more than 100 characters !");
-		else this.description = desc;
+		if(desc != null) 
+			if(GenericValidator.minLength(desc,1000)) 
+				throw new InvalidAttributeLengthException("The description of a ticket must not contains more than 100 characters !");
+			else this.description = desc;
 	}
 
 	public int getTicket_statutID() {
