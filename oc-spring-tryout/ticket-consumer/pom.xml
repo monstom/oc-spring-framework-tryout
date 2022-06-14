@@ -8,7 +8,7 @@
   <parent>
     <artifactId>oc-spring-tryout</artifactId>
     <groupId>com.github.monstom</groupId>
-    <version>1.2.2-DEV</version>
+    <version>1.2.3-DEV</version>
   </parent>
 
   <!-- ===== Maven project definition ===== -->
