@@ -85,6 +85,7 @@ CREATE TABLE IF NOT EXISTS Ticket (
 	statut_id		INT UNSIGNED NOT NULL,
 	author_id		INT UNSIGNED NOT NULL,
 	project_id		INT UNSIGNED NOT NULL,
+	UNIQUE (title),
 	CONSTRAINT TicketFK_statutID
 		FOREIGN KEY (statut_id) REFERENCES Statut(id)
 			ON DELETE RESTRICT,
@@ -152,7 +153,7 @@ CREATE TABLE IF NOT EXISTS HistoryStatut (
 	statut_id		INT UNSIGNED NOT NULL,
 	creationDate	TIMESTAMP NOT NULL DEFAULT NOW(),
 	comment_id		INT UNSIGNED DEFAULT NULL,
-	employee_id			INT UNSIGNED NOT NULL,
+	employee_id		INT UNSIGNED NOT NULL,
 	CONSTRAINT StatutHistFK_ticketID
 		FOREIGN KEY (ticket_id) REFERENCES Ticket(id)
 			ON DELETE CASCADE,

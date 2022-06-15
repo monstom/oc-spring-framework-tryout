@@ -85,6 +85,7 @@ CREATE TABLE dbo.Ticket (
 	statut_id		INT NOT NULL,
 	author_id		INT NOT NULL,
 	project_id		INT NOT NULL,
+	UNIQUE (title),
 	CONSTRAINT TicketFK_statutID
 		FOREIGN KEY (statut_id) REFERENCES Statut(id)
 			ON DELETE NO ACTION,
