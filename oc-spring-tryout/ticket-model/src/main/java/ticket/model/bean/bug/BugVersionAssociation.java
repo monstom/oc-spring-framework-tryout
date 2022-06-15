@@ -15,15 +15,11 @@ public class BugVersionAssociation {
 	
 	protected BugVersionAssociation() {}
 	
-	public BugVersionAssociation(int bugID, int versionID, String vlabel) {
-		try {
-			this.setBugVersionAssociation_bugID(bugID);
-			this.setBugVersionAssociation_versionID(versionID);
-			this.setBugVersionAssociation_versionLabel(vlabel);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public BugVersionAssociation(int bugID, int versionID, String vlabel) 
+			throws InvalidAttributeNumericValueException, InvalidAttributeLengthException {
+		this.setBugVersionAssociation_bugID(bugID);
+		this.setBugVersionAssociation_versionID(versionID);
+		this.setBugVersionAssociation_versionLabel(vlabel);
 		//logger.info("bug-version association bean successfully created/retrieved !");
 	}
 

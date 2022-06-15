@@ -17,36 +17,23 @@ public class Comment {
 	
 	protected Comment() {}
 	
-	public Comment(int id, String desc, int user, int ticket) {
+	public Comment(int id, String desc, int user, int ticket) 
+			throws InvalidAttributeNumericValueException, InvalidAttributeLengthException {
 		this(desc,user,ticket);
-		try {
-			this.setCommentID(id);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+		this.setCommentID(id);
 		//logger.info("comment bean successfully created/retrieved with id :"+id+" !");
 	}
 	
-	public Comment(String desc, int user, int ticket) {
-		try {
-			this.setComment_description(desc);
-			this.setComment_userID(user);
-			this.setComment_ticketID(ticket);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public Comment(String desc, int user, int ticket) 
+			throws InvalidAttributeNumericValueException, InvalidAttributeLengthException {
+		this.setComment_description(desc);
+		this.setComment_userID(user);
+		this.setComment_ticketID(ticket);
 		//logger.info("anonymous comment bean successfully created/retrieved !");
 	}
 	
-	public Comment(int id) {
-		try {
-			this.setCommentID(id);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public Comment(int id) throws InvalidAttributeNumericValueException {
+		this.setCommentID(id);
 		//logger.info("comment bean successfully created/retrieved by its id :"+id+" !");
 	}
 	
@@ -54,7 +41,7 @@ public class Comment {
 		return this.id_comment;
 	}
 	
-	public void setCommentID(int comment_id) throws InvalidAttributeNumericValueException{
+	public void setCommentID(int comment_id) throws InvalidAttributeNumericValueException {
 		if(GenericValidator.maxValue(comment_id,0)) 
 			throw new InvalidAttributeNumericValueException("The key identifying a comment must not be negative or equal 0 !");
 		else this.id_comment = comment_id;
@@ -76,7 +63,7 @@ public class Comment {
 		return this.id_user;
 	}
 
-	public void setComment_userID(int user_id) throws InvalidAttributeNumericValueException{
+	public void setComment_userID(int user_id) throws InvalidAttributeNumericValueException {
 		if(GenericValidator.maxValue(user_id,0)) 
 			throw new InvalidAttributeNumericValueException("The key identifying the author of a comment must not be negative or equal 0 !");
 		else this.id_user = user_id;

@@ -7,6 +7,7 @@ import org.apache.commons.validator.GenericValidator;
 import org.apache.commons.validator.routines.TimeValidator;
 
 import ticket.model.exception.InvalidAttributeDateException;
+import ticket.model.exception.InvalidAttributeLengthException;
 import ticket.model.exception.InvalidAttributeNumericValueException;
 
 public class HistoryStatut {
@@ -22,27 +23,18 @@ public class HistoryStatut {
 	
 	protected HistoryStatut() {}
 	
-	public HistoryStatut(int ticket, int statut, String cdate, int user, int comment) {
+	public HistoryStatut(int ticket, int statut, String cdate, int user, int comment) 
+			throws InvalidAttributeNumericValueException, InvalidAttributeLengthException, InvalidAttributeDateException {
 		this(ticket,statut);
-		try {
-			this.setHistory_creationDate(cdate);
-			this.setHistory_userID(user);
-			this.setHistory_commentID(comment);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+		this.setHistory_creationDate(cdate);
+		this.setHistory_userID(user);
+		this.setHistory_commentID(comment);
 		//logger.info("history of status bean successfully created/retrieved with ids : "+ticket+","+status+"  !");
 	}
 	
-	public HistoryStatut(int ticket, int statut) {
-		try {
-			this.setHistory_ticketID(ticket);
-			this.setHistory_statutID(statut);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public HistoryStatut(int ticket, int statut) throws InvalidAttributeNumericValueException {
+		this.setHistory_ticketID(ticket);
+		this.setHistory_statutID(statut);
 		//logger.info("history of status bean successfully created/retrieved by its ids : "+ticket+","+status+" !");
 	}
 	
@@ -71,9 +63,11 @@ public class HistoryStatut {
 	}
 
 	public void setHistory_creationDate(String cdate) throws InvalidAttributeDateException {
-		if(!TimeValidator.getInstance().isValid(cdate, "yyyy-mm-dd HH:mm:ss")) 
-			throw new InvalidAttributeDateException("The creation date of an history of status must be in the correct format !");
-		else this.creation_date = Timestamp.valueOf(cdate);
+		if(!GenericValidator.isBlankOrNull(cdate))
+			if(!TimeValidator.getInstance().isValid(cdate, "yyyy-mm-dd HH:mm:ss")) 
+				throw new InvalidAttributeDateException("The creation date of an history of status must be in the correct format !");
+			else this.creation_date = Timestamp.valueOf(cdate);
+		else this.creation_date = null;
 	}
 
 	public int getHistory_userID() {
@@ -92,7 +86,7 @@ public class HistoryStatut {
 
 	public void setHistory_commentID(int comment_id) throws InvalidAttributeNumericValueException {
 		if(GenericValidator.maxValue(comment_id,-1)) 
-			throw new InvalidAttributeNumericValueException("The key identifying the comment of an history of status must not be negative or equal 0 !");
+			throw new InvalidAttributeNumericValueException("The key identifying the comment of an history of status must not be negative !");
 		else this.id_comment = comment_id;
 	}
 	

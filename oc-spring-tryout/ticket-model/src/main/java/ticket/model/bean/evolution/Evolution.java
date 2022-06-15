@@ -12,24 +12,14 @@ public class Evolution {
 	
 	protected Evolution() {}
 	
-	public Evolution(int ticket, int epriority) {
-		try {
-			this.setEvolution_ticketID(ticket);
-			this.setEvolution_priority(epriority);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public Evolution(int ticket, int epriority) throws InvalidAttributeNumericValueException {
+		this.setEvolution_ticketID(ticket);
+		this.setEvolution_priority(epriority);
 		//logger.info("evolution bean successfully created/retrieved with id : "+ticket+" !");
 	}
 	
-	public Evolution(int ticket) {
-		try {
-			this.setEvolution_ticketID(ticket);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public Evolution(int ticket) throws InvalidAttributeNumericValueException {
+		this.setEvolution_ticketID(ticket);
 		//logger.info("evolution bean successfully created/retrieved by its id : "+ticket+" !");
 	}
 
@@ -56,6 +46,7 @@ public class Evolution {
 	}
 	
 	public String toString() {
-		return super.toString().replace("Ticket","Evolution") +"priority : "+ this.getEvolution_priority() +"\n";
+		return "--- Evolution Object ---\n id : "+ this.ticket_id
+				+"\n priority : "+ this.getEvolution_priority() +"\n";
 	}
 }

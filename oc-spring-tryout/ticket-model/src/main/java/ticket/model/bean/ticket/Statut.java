@@ -14,34 +14,20 @@ public class Statut {
 	
 	protected Statut() {}
 	
-	public Statut(int id, String slabel) {
-		try {
-			this.setStatutID(id);
-			this.setStatut_label(slabel);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public Statut(int id, String slabel) 
+			throws InvalidAttributeNumericValueException, InvalidAttributeLengthException {
+		this.setStatutID(id);
+		this.setStatut_label(slabel);
 		//logger.info("status bean successfully created/retrieved with id : "+id+" !");		
 	}
 	
-	public Statut(int id) {
-		try {
-			this.setStatutID(id);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public Statut(int id) throws InvalidAttributeNumericValueException {
+		this.setStatutID(id);
 		//logger.info("status bean successfully created/retrieved by its id : "+id+" !");		
 	}
 	
-	public Statut(String slabel) {
-		try {
-			this.setStatut_label(slabel);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public Statut(String slabel) throws InvalidAttributeLengthException {
+		this.setStatut_label(slabel);
 		//logger.info("anonymous status bean successfully created/retrieved !");		
 	}
 

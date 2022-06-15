@@ -16,35 +16,20 @@ public class User {
 	
 	protected User() {}
 	
-	public User(int id, String fname, String lname) {
+	public User(int id, String fname, String lname) throws InvalidAttributeNumericValueException, InvalidAttributeLengthException {
 		this(fname,lname);
-		try {
-			this.setUserID(id);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+		this.setUserID(id);
 		//logger.info("user bean successfully created/retrieved with id : "+id+" !");
 	}
 	
-	public User(String fname, String lname) {
-		try {
-			this.setUser_firstname(fname);
-			this.setUser_lastname(lname);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public User(String fname, String lname) throws InvalidAttributeLengthException {
+		this.setUser_firstname(fname);
+		this.setUser_lastname(lname);
 		//logger.info("anonymous user bean successfully created/retrieved !");
 	}
 	
-	public User(int id) {
-		try {
-			this.setUserID(id);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public User(int id) throws InvalidAttributeNumericValueException {
+		this.setUserID(id);
 		//logger.info("user bean successfully created/retrieved by its id : "+id+" !");
 	}
 

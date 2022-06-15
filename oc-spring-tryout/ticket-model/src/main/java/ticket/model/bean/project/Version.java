@@ -14,14 +14,10 @@ public class Version {
 	
 	protected Version() {}
 	
-	public Version(int project_id, String vlabel) {
-		try {
-			this.setVersion_projectID(project_id);
-			this.setVersion_label(vlabel);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public Version(int project_id, String vlabel) 
+			throws InvalidAttributeNumericValueException, InvalidAttributeLengthException {
+		this.setVersion_projectID(project_id);
+		this.setVersion_label(vlabel);
 		//logger.info("version bean successfully created/retrieved !");
 	}
 

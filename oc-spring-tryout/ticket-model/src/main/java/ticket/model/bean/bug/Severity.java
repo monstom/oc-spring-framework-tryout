@@ -16,36 +16,23 @@ public class Severity {
 	
 	protected Severity() {}
 	
-	public Severity(int id, int slevel, String slabel) {
-		try {
-			this.setSeverityID(id);
-			this.setSeverity_level(slevel);
-			this.setSeverity_label(slabel);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public Severity(int id, int slevel, String slabel) 
+			throws InvalidAttributeNumericValueException, InvalidAttributeLengthException {
+		this.setSeverityID(id);
+		this.setSeverity_level(slevel);
+		this.setSeverity_label(slabel);
 		//logger.info("severity bean successfully created/retrieved with id : "+id+" !");
 	}
 	
-	public Severity(int slevel, String slabel) {
-		try {
-			this.setSeverity_level(slevel);
-			this.setSeverity_label(slabel);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public Severity(int slevel, String slabel) 
+			throws InvalidAttributeNumericValueException, InvalidAttributeLengthException {
+		this.setSeverity_level(slevel);
+		this.setSeverity_label(slabel);
 		//logger.info("anonymous severity bean successfully created/retrieved !");
 	}
 	
-	public Severity(int id) {
-		try {
-			this.setSeverityID(id);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public Severity(int id) throws InvalidAttributeNumericValueException {
+		this.setSeverityID(id);
 		//logger.info("severity bean successfully created/retrieved only by id : "+id+" !");
 	}
 
@@ -77,9 +64,9 @@ public class Severity {
 
 	public void setSeverity_label(String slabel) throws InvalidAttributeLengthException {
 		if(GenericValidator.isBlankOrNull(slabel)) 
-			throw new InvalidAttributeLengthException("The title of a severity must not be empty or blank !");
+			throw new InvalidAttributeLengthException("The label of a severity must not be empty or blank !");
 		else if(GenericValidator.minLength(slabel,100)) 
-			throw new InvalidAttributeLengthException("The title of a severity must not contains more than 100 characters !");
+			throw new InvalidAttributeLengthException("The label of a severity must not contains more than 100 characters !");
 		else this.label = slabel;
 	}
 	

@@ -13,14 +13,9 @@ public class TicketAssociation {
 	
 	protected TicketAssociation() {}
 	
-	public TicketAssociation(int first_ticket, int second_ticket) {
-		try {
-			this.setAssociation_mainTicketID(first_ticket);
-			this.setAssociation_associatedTicketID(second_ticket);
-		} catch(InvalidAttributeNumericValueException e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public TicketAssociation(int first_ticket, int second_ticket) throws InvalidAttributeNumericValueException {
+		this.setAssociation_mainTicketID(first_ticket);
+		this.setAssociation_associatedTicketID(second_ticket);
 		//logger.info("ticket association bean successfully created/retrieved !");
 	}
 

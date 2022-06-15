@@ -25,50 +25,33 @@ public class Ticket {
 	
 	protected Ticket() {}
 	
-	public Ticket(int id, String tname, String cdate, String desc, int statut, int author, int project) {
+	public Ticket(int id, String tname, String cdate, String desc, int statut, int author, int project) 
+			throws InvalidAttributeNumericValueException, InvalidAttributeLengthException, InvalidAttributeDateException {
 		this(tname,cdate,desc,statut,author,project);
-		try {
-			this.setTicketID(id);	
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+		this.setTicketID(id);
 		//logger.info("ticket bean successfully created/retrieved with id : "+id+" !");
 	}
 	
-	public Ticket(int id, String tname, String cdate, int statut, int author, int project) {
+	public Ticket(int id, String tname, String cdate, int statut, int author, int project) 
+			throws InvalidAttributeNumericValueException, InvalidAttributeLengthException, InvalidAttributeDateException {
 		this(tname,cdate,null,statut,author,project);
-		try {
-			this.setTicketID(id);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+		this.setTicketID(id);
 		//logger.info("ticket bean successfully created/retrieved with no description and id : "+id+" !");
 	}
 	
-	public Ticket(String tname, String cdate, String desc, int statut, int author, int project) {
-		try {
-			this.setTicket_title(tname);
-			this.setTicket_creationDate(cdate);
-			this.setTicket_description(desc);
-			this.setTicket_statutID(statut);
-			this.setTicket_authorID(author);
-			this.setTicket_projectID(project);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public Ticket(String tname, String cdate, String desc, int statut, int author, int project) 
+			throws InvalidAttributeNumericValueException, InvalidAttributeLengthException, InvalidAttributeDateException {
+		this.setTicket_title(tname);
+		this.setTicket_creationDate(cdate);
+		this.setTicket_description(desc);
+		this.setTicket_statutID(statut);
+		this.setTicket_authorID(author);
+		this.setTicket_projectID(project);
 		//logger.info("anonymous ticket bean successfully created/retrieved !");
 	}
 	
-	public Ticket(int id) {
-		try {
-			this.setTicketID(id);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public Ticket(int id) throws InvalidAttributeNumericValueException {
+		this.setTicketID(id);
 		//logger.info("ticket bean successfully created/retrieved by its id : "+id+" !");
 	}
 

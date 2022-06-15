@@ -12,24 +12,14 @@ public class Bug {
 
 	protected Bug() {}
 	
-	public Bug(int ticket, int severity) {
-		try {
-			this.setBug_ticketID(ticket);
-			this.setBug_severity(severity);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public Bug(int ticket, int severity) throws InvalidAttributeNumericValueException {
+		this.setBug_ticketID(ticket);
+		this.setBug_severity(severity);
 		//logger.info("bug bean successfully created/retrieved with id : "+ticket+" !");
 	}
 	
-	public Bug(int ticket) {
-		try {
-			this.setBug_ticketID(ticket);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public Bug(int ticket) throws InvalidAttributeNumericValueException {
+		this.setBug_ticketID(ticket);
 		//logger.info("bug bean successfully created/retrieved by its id : "+ticket+" !");
 	}
 
@@ -54,6 +44,7 @@ public class Bug {
 	}
 	
 	public String toString() {
-		return super.toString().replace("Ticket","Bug") +"severity_id :  "+ this.getBug_severity() +"\n";
+		return "--- Bug Object ---\n id : "+ this.ticket_id
+				+"\n severity_id :  "+ this.getBug_severity() +"\n";
 	}
 }

@@ -23,40 +23,27 @@ public class Project {
 	
 	protected Project() {}
 	
-	public Project(int id, String pname, String cdate, boolean done, int managerID) {
-		try {
-			this.setProjectID(id);
-			this.setProject_title(pname);
-			this.setProject_creationDate(cdate);
-			this.setProject_isClosed(done);
-			this.setProject_managerID(managerID); 
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public Project(int id, String pname, String cdate, boolean done, int managerID) 
+			throws InvalidAttributeNumericValueException, InvalidAttributeLengthException, InvalidAttributeDateException {
+		this.setProjectID(id);
+		this.setProject_title(pname);
+		this.setProject_creationDate(cdate);
+		this.setProject_isClosed(done);
+		this.setProject_managerID(managerID); 
 		//logger.info("project bean successfully created/retrieved with id : "+id+" !");		
 	}
 	
-	public Project(String pname, String cdate, boolean done, int managerID) {
-		try {
-			this.setProject_title(pname);
-			this.setProject_creationDate(cdate);
-			this.setProject_isClosed(done);
-			this.setProject_managerID(managerID); 
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public Project(String pname, String cdate, boolean done, int managerID) 
+			throws InvalidAttributeNumericValueException, InvalidAttributeLengthException, InvalidAttributeDateException {
+		this.setProject_title(pname);
+		this.setProject_creationDate(cdate);
+		this.setProject_isClosed(done);
+		this.setProject_managerID(managerID); 
 		//logger.info("anonymous project bean successfully created/retrieved !");		
 	}
 	
-	public Project(int id) {
-		try {
-			this.setProjectID(id); 
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			//logger.error(e.getMessage());
-		}
+	public Project(int id) throws InvalidAttributeNumericValueException {
+		this.setProjectID(id); 
 		//logger.info("project bean successfully created/retrieved by its id : "+id+" !");		
 	}
 	
@@ -86,10 +73,12 @@ public class Project {
 		return this.date_creation;
 	}
 	
-	public void setProject_creationDate(String creation_time) throws InvalidAttributeDateException {		
-		if(!TimeValidator.getInstance().isValid(creation_time, "yyyy-mm-dd HH:mm:ss")) 
-			throw new InvalidAttributeDateException("The creation date of a project must be in the correct format !");
-		else this.date_creation = Timestamp.valueOf(creation_time);
+	public void setProject_creationDate(String creation_time) throws InvalidAttributeDateException {
+		if(!GenericValidator.isBlankOrNull(creation_time))
+			if(!TimeValidator.getInstance().isValid(creation_time, "yyyy-mm-dd HH:mm:ss")) 
+				throw new InvalidAttributeDateException("The creation date of a project must be in the correct format !");
+			else this.date_creation = Timestamp.valueOf(creation_time);
+		else this.date_creation = null;
 	}
 	
 	public boolean getProject_isClosed() {
