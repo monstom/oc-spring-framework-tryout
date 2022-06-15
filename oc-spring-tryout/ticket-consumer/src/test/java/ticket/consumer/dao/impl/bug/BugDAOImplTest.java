@@ -9,9 +9,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -25,9 +27,8 @@ import ticket.model.search.bug.SearchBug;
 
 
 @Tag("BugDAOImplClass_UniteTesting")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BugDAOImplTest {
-	
-	/* IMPLEMENT ALL TEST METHODS FOR CRUD OPERATIONS OF THE DAO */
 
 	private BugDAOImpl bugDAO;
 	private static int newBugid;
@@ -147,7 +148,7 @@ public class BugDAOImplTest {
 	
 	
 	@ParameterizedTest(name = "The sql query used to create a bug by its ticket id must successfully add a new record in the database !")
-	@CsvSource({ "1,4", "-2,10", "2,-6", "0,6", "0,0" })
+	@CsvSource({ "-2,10", "2,-6", "0,6", "0,0", "1,3" })
 	@Order(1)
 	@Tag("BugDAOImpl-createBug")
 	public void validBehaviorOf_createBug(int arg1, int arg2) {
@@ -177,7 +178,7 @@ public class BugDAOImplTest {
 	
 	
 	@ParameterizedTest(name = "The sql query used to update a bug by its ticket id must successfully match only one record in the database !")
-	@CsvSource({ "-2,10", "0,10", "0,4" })
+	@CsvSource({ "-2,10", "0,10", "0,5" })
 	@Order(2)
 	@Tag("BugDAOImpl-updateBug")
 	public void validBehaviorOf_updateBug(int arg1, int arg2) {
@@ -192,7 +193,7 @@ public class BugDAOImplTest {
 		// Act
 		try {
 			search_bug.setSearchedTicketID(arg1);
-			search_bug.setSearchedSeverity(arg2);
+			if(arg2 > 0) search_bug.setSearchedSeverity(arg2);
 			id = bugDAO.updateBug(search_bug);
 			
 		} catch(Exception e) {
@@ -207,7 +208,7 @@ public class BugDAOImplTest {
 	}
 	
 	
-	@ParameterizedTest(name = "The sql query used to delete a bug by its ticket id must successfully match only one record in the database !")
+	@Test
 	@Order(4)
 	@Tag("BugDAOImpl-deleteBug")
 	public void validBehaviorOf_deleteBug() {

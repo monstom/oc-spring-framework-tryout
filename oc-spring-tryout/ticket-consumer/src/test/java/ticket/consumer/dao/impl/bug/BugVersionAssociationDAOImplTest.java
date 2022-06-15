@@ -8,9 +8,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -24,6 +26,7 @@ import ticket.model.search.bug.SearchBugVersionAssociation;
 
 
 @Tag("BugVersionAssociationDAOImplClass_UniteTesting")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BugVersionAssociationDAOImplTest {
 
 	private BugVersionAssociationDAOImpl bugversionAssoDAO;	
@@ -171,7 +174,7 @@ public class BugVersionAssociationDAOImplTest {
 	
 	
 	@ParameterizedTest(name = "The sql query used to create an association of bug and version by their identifiers must successfully add a new record in the database !")
-	@CsvSource({ "2,5,'1.2.4'", "-6,5,'1.2.2'", "2,-2,''", "0,0, " })
+	@CsvSource({ "-6,5,'1.2.2'", "2,-2,''", "1,1, ", "2,5,'1.2.4'" })
 	@Order(1)
 	@Tag("BuvgVersionAssociationDAOImpl-createBugVersionAssociation")
 	public void validBehaviorOf_createBugVersionAssociation(int arg1, int arg2, String arg3) {
@@ -201,7 +204,7 @@ public class BugVersionAssociationDAOImplTest {
 	
 	
 	@ParameterizedTest(name = "The sql query used to delete an association of bug and version by their identifiers must successfully match only one record in the database !")
-	@CsvSource({ "2,5,'1.2.4'", "-6,5,'1.2.2'", "2,-2,''", "0,0, " })
+	@CsvSource({ "2,6,'1.0.4'", "-6,5,'1.2.2'", "2,-2,''", "1,1, ", "2,5,'1.2.4'" })
 	@Order(3)
 	@Tag("BuvgVersionAssociationDAOImpl-deleteBugVersionAssociation")
 	public void validBehaviorOf_deleteBugVersionAssociation(int arg1, int arg2, String arg3) {

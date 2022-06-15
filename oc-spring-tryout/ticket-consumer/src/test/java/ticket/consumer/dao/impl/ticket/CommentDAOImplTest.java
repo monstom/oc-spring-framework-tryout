@@ -9,9 +9,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -25,6 +27,7 @@ import ticket.model.search.ticket.SearchComment;
 
 
 @Tag("CommentDAOImplClass_UniteTesting")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CommentDAOImplTest {
 
 	private CommentDAOImpl commentDAO;
@@ -197,7 +200,7 @@ public class CommentDAOImplTest {
 	
 	
 	@ParameterizedTest(name = "The sql query used to create a comment by its id must successfully add a new record with the highest id in the database !")
-	@CsvSource({ "0,'',5,2", "0,PEER,-5,1", "0,PEER,5,-1", "0,'test1',5,1", "1,PEER,5,1" })
+	@CsvSource({ "0,'',5,2", "0,PEER,-5,1", "0,PEER,5,-1", "1,PEER,5,1", "0,'test1',2,2" })
 	@Order(1)
 	@Tag("CommentDAOImpl-createComment")
 	public void validBehaviorOf_createComment(int arg1, String arg2, int arg3, int arg4) {
@@ -263,7 +266,7 @@ public class CommentDAOImplTest {
 	}
 	
 	
-	@ParameterizedTest(name = "The sql query used to delete a comment by its id must successfully match only one record in the database !")
+	@Test
 	@Order(4)
 	@Tag("CommentDAOImpl-deleteComment")
 	public void validBehaviorOf_deleteComment() {

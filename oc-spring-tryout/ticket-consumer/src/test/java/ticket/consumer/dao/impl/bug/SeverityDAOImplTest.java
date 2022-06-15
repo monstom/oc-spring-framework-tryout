@@ -9,9 +9,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -25,6 +27,7 @@ import ticket.model.search.bug.SearchSeverity;
 
 
 @Tag("SeverityDAOImplClass_UniteTesting")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class SeverityDAOImplTest {
 
 	private SeverityDAOImpl severityDAO;
@@ -171,7 +174,7 @@ public class SeverityDAOImplTest {
 	
 	
 	@ParameterizedTest(name = "The sql query used to create a severity by its id must add a new record in the database !")
-	@CsvSource({ "0,6,'ABSOLUTE'", "0,0,'Open'", "0,5,''", "-2,0," })
+	@CsvSource({  "0,0,'Open'", "0,5,''", "-2,0,", "0,2,'ABSOLUTE'" })
 	@Order(1)
 	@Tag("SeverityDAOImpl-createSeverity")
 	public void validBehaviorOf_createSeverity(int arg1, int arg2, String arg3) {
@@ -203,7 +206,7 @@ public class SeverityDAOImplTest {
 	
 	
 	@ParameterizedTest(name = "The sql query used to update a severity by its id must successfully match only one record in the database !")
-	@CsvSource({  "0,0,", "0,6,'ABSOLUTE'" })
+	@CsvSource({  "0,0,", "0,5," })
 	@Order(2)
 	@Tag("SeverityDAOImpl-updateSeverity")
 	public void validBehaviorOf_updateSeverity(int arg1, int arg2, String arg3) {
@@ -219,8 +222,8 @@ public class SeverityDAOImplTest {
 		// Act
 		try {
 			search_severity.setSearchedSeverityID(arg1);
-			search_severity.setSearchedLevel(arg2);
-			search_severity.setSearchedLabel(arg3);
+			if(arg2 > 0) search_severity.setSearchedLevel(arg2);
+			if(arg3 != null) search_severity.setSearchedLabel(arg3);
 			id = severityDAO.updateSeverity(search_severity);
 			
 		} catch(Exception e) {
@@ -235,7 +238,7 @@ public class SeverityDAOImplTest {
 	}
 	
 	
-	@ParameterizedTest(name = "The sql query used to delete a severity by its id must successfully match only one record in the database !")
+	@Test
 	@Order(4)
 	@Tag("SeverityDAOImpl-deleteSeverity")
 	public void validBehaviorOf_deleteSeverity() {

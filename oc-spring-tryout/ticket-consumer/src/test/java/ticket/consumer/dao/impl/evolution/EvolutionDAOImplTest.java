@@ -9,9 +9,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -25,6 +27,7 @@ import ticket.model.search.evolution.SearchEvolution;
 
 
 @Tag("EvolutionDAOImplClass_UniteTesting")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class EvolutionDAOImplTest {
 
 	private EvolutionDAOImpl evolutionDAO;
@@ -145,7 +148,7 @@ public class EvolutionDAOImplTest {
 	
 	
 	@ParameterizedTest(name = "The sql query used to create a evolution by its ticket id must successfully add a new record in the database !")
-	@CsvSource({ "1,4", "-2,10", "2,-6", "0,6", "0,0" })
+	@CsvSource({ "-2,10", "2,-6", "0,6", "0,0", "2,4" })
 	@Order(1)
 	@Tag("EvolutionDAOImpl-createEvolution")
 	public void validBehaviorOf_createEvolution(int arg1, int arg2) {
@@ -175,7 +178,7 @@ public class EvolutionDAOImplTest {
 	
 	
 	@ParameterizedTest(name = "The sql query used to update a evolution by its ticket id must successfully match only one record in the database !")
-	@CsvSource({ "-2,10", "0,10", "0,4" })
+	@CsvSource({ "-2,10", "0,10", "0,8" })
 	@Order(2)
 	@Tag("EvolutionDAOImpl-updateEvolution")
 	public void validBehaviorOf_updateEvolution(int arg1, int arg2) {
@@ -190,7 +193,7 @@ public class EvolutionDAOImplTest {
 		// Act
 		try {
 			search_evolution.setSearchedTicketID(arg1);
-			search_evolution.setSearchedPriority(arg2);
+			if(arg2 > 0) search_evolution.setSearchedPriority(arg2);
 			id = evolutionDAO.updateEvolution(search_evolution);
 			
 		} catch(Exception e) {
@@ -205,7 +208,7 @@ public class EvolutionDAOImplTest {
 	}
 	
 	
-	@ParameterizedTest(name = "The sql query used to delete a evolution by its ticket id must successfully match only one record in the database !")
+	@Test
 	@Order(4)
 	@Tag("EvolutionDAOImpl-deleteEvolution")
 	public void validBehaviorOf_deleteEvolution() {

@@ -9,9 +9,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -25,6 +27,7 @@ import ticket.model.search.ticket.SearchTicket;
 
 
 @Tag("TicketDAOImplClass_UniteTesting")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TicketDAOImplTest {
 
 	private TicketDAOImpl ticketDAO;
@@ -277,7 +280,7 @@ public class TicketDAOImplTest {
 	
 	
 	@ParameterizedTest(name = "The sql query used to create a ticket by its id must successfully add a new record with the highest id in the database !")
-	@CsvSource({ "1,'test1',2022-03-25,,3,5,5", "0,,2022-03-25,,3,5,5", "0,'test1',,,3,5,5", "0,'test1',2022-03-25,,-3,5,5", "0,'test1',2022-03-25,,3,-5,5", "0,'test1',2022-03-25,,3,5,-5","0,'test1',2022-03-25,'test',3,5,5" })
+	@CsvSource({ "1,'test1',2022-03-25 14:36:58,,3,5,5", "0,,2022-03-25 14:36:58,,3,5,5", "0,'test1',2022-03-25,,3,5,5", "0,'test1',2022-03-25 14:36:58,,-3,5,5", "0,'test1',2022-03-25 14:36:58,,3,-5,5", "0,'test1',2022-03-25 14:36:58,,3,5,-5","0,'test1',,,3,5,5" })
 	@Order(1)
 	@Tag("TicketDAOImpl-createTicket")
 	public void validBehaviorOf_createTicket(int arg1, String arg2, String arg3, String arg4, int arg5, int arg6, int arg7) {
@@ -348,14 +351,13 @@ public class TicketDAOImplTest {
 			return;
 		}
 		System.out.println(id);
-		newTicketid = id;
 		
 		// Assert
 		assertSame(id,newTicketid);
 	}
 	
 	
-	@ParameterizedTest(name = "The sql query used to delete a ticket by its id must successfully match only one record in the database !")
+	@Test
 	@Order(4)
 	@Tag("TicketDAOImpl-deleteTicket")
 	public void validBehaviorOf_deleteTicket() {

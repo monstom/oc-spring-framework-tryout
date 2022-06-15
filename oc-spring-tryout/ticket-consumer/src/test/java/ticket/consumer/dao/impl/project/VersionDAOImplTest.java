@@ -2,15 +2,18 @@ package ticket.consumer.dao.impl.project;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -24,6 +27,7 @@ import ticket.model.search.project.SearchVersion;
 
 
 @Tag("VersionDAOImplClass_UniteTesting")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class VersionDAOImplTest {
 
 	private VersionDAOImpl versionDAO;	
@@ -66,6 +70,7 @@ public class VersionDAOImplTest {
 	
 	
 	@Test
+	@Order(2)
 	@Tag("VersionDAOImpl-find_allVersions")
 	public void validBehaviorOf_getAllVersions() {
 		// Arrange
@@ -168,7 +173,7 @@ public class VersionDAOImplTest {
 	
 	
 	@ParameterizedTest(name = "The sql query used to create a version by its identifiers must add a new record in the database !")
-	@CsvSource({ "5, '1.9.1'", "-6, 0", "2,''" })
+	@CsvSource({ "5, '1.2.1'", "-6, 0", "2,''", "5,'1.9.1'" })
 	@Order(1)
 	@Tag("VersionDAOImpl-createVersion")
 	public void validBehaviorOf_createVersion(int arg1, String arg2) {
@@ -184,6 +189,10 @@ public class VersionDAOImplTest {
 			version = new Version(arg1,arg2);
 			result = versionDAO.createVersion(version);
 			
+		} catch(SQLException sqle) {
+			System.out.println(sqle.toString());
+			assertTrue(result <= 0);
+			return;
 		} catch(Exception e) {
 			System.out.println(e.toString());
 			assertTrue(result <= 0);
@@ -197,7 +206,7 @@ public class VersionDAOImplTest {
 	
 	
 	@ParameterizedTest(name = "The sql query used to delete a version by its identifiers must match only one record in the database !")
-	@CsvSource({ "5, '1.9.1'", "-6, 0", "2,''" })
+	@CsvSource({ "6,'1.1.1'", "-6, 0", "2,''", "5, '1.9.1'" })
 	@Order(3)
 	@Tag("VersionDAOImpl-deleteVersion")
 	public void validBehaviorOf_deleteVersion(int arg1, String arg2) {

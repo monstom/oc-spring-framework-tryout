@@ -8,9 +8,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -24,6 +26,7 @@ import ticket.model.search.ticket.SearchHistoryStatut;
 
 
 @Tag("HistoryStatutDAOImplClass_UniteTesting")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class HistoryStatutDAOImplTest {
 
 	private HistoryStatutDAOImpl historyStatutDAO;	
@@ -199,7 +202,7 @@ public class HistoryStatutDAOImplTest {
 	
 	
 	@ParameterizedTest(name = "The sql query used to create an history of status by its identifiers must successfully add a new record in the database !")
-	@CsvSource({ "1,0,2022-03-25 14:53:38,5,1", "0,0,2022-03-25 14:53:38,5,1", "0,0,,5,1", "0,0,,0,1", "0,0,2022-03-25,0,0", "0,0,,0,-1", "1,2,,5,-6", "1,-2,,5,0", "-1,0,,5,1", "0,0,,-6,1", "0,0,-8,0,-1", "10,0,,10,10" })
+	@CsvSource({ "1,-1,2022-03-25 14:53:38,5,1", "-1,2,2022-03-25 14:53:38,5,1", "2,7,2022-03-25,5,1", "2,7,,-1,0", "2,7,,1,-1", "10,10,2022-03-25 14:36:58,1,0", "2,7,,5,0" })
 	@Order(1)
 	@Tag("HistoryStatutDAOImpl-createHistoryStatut")
 	public void validBehaviorOf_createHistoryStatut(int arg1, int arg2, String arg3, int arg4, int arg5) {
@@ -215,7 +218,8 @@ public class HistoryStatutDAOImplTest {
 		
 		// Act
 		try {
-			history = new HistoryStatut(arg1,arg2,arg3,arg4,arg5);
+			if(arg3 != null) history = new HistoryStatut(arg1,arg2,arg3,arg4,arg5);
+			else history = new HistoryStatut(arg1,arg2,null,arg4,arg5);
 			result = historyStatutDAO.createHistoryStatut(history);
 			
 		} catch(Exception e) {
@@ -231,7 +235,7 @@ public class HistoryStatutDAOImplTest {
 	
 	
 	@ParameterizedTest(name = "The sql query used to update an history of status by its identifiers must match only one record in the database !")
-	@CsvSource({ "1,2,'',-1,-1", "1,2,'',-1,1" })
+	@CsvSource({ "2,7,,-1,-1", "2,7,,1,0" })
 	@Order(2)
 	@Tag("HistoryStatutDAOImpl-updateHistoryStatut")
 	public void validBehaviorOf_updateHistoryStatut(int arg1, int arg2, String arg3, int arg4, int arg5) {
@@ -250,7 +254,7 @@ public class HistoryStatutDAOImplTest {
 			search_history.setSearchedTicket(arg1);
 			search_history.setSearchedStatut(arg2);
 			if(arg3 != null) search_history.setSearchedCreationDate(arg3);
-			if(arg4 >= 0) search_history.setSearchedComment(arg4);
+			search_history.setSearchedComment(arg4);
 			if(arg5 > 0) search_history.setSearchedAuthor(arg5);
 			result = historyStatutDAO.updateHistoryStatut(search_history);
 			
@@ -267,7 +271,7 @@ public class HistoryStatutDAOImplTest {
 	
 	
 	@ParameterizedTest(name = "The sql query used to delete an history of status by its identifiers must match only one record in the database !")
-	@CsvSource({ "1, 2", "2, 7", "-6, 0", "2, 0", "0,0" })
+	@CsvSource({ "1, 10", "-6, 0", "2, 0", "0,0", "2, 7"})
 	@Order(4)
 	@Tag("HistoryStatutDAOImpl-deleteHistoryStatut")
 	public void validBehaviorOf_deleteHistoryStatut(int arg1, int arg2) {

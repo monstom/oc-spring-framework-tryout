@@ -9,9 +9,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -25,6 +27,7 @@ import ticket.model.search.user.SearchUser;
 
 
 @Tag("UserDAOImplClass_UniteTesting")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserDAOImplTest {
 
 	private UserDAOImpl userDAO;
@@ -144,10 +147,9 @@ public class UserDAOImplTest {
 		assertTrue(users != null);
 	}
 	
-	
 
 	@ParameterizedTest(name = "The sql query used to create an user by its id must successfully add a new record with the highest id in the database !")
-	@CsvSource({ "1,'Bill','Gates'", "-2,'Bill','Gates'", "2,'Jesus', ", "0,'Bill','Gates'", "0, , " })
+	@CsvSource({ "1,'Bill','Gates'", "2,'Jesus',", "0,,", "0,'Bill','Gates'" })
 	@Order(1)
 	@Tag("UserDAOImpl-createUser")
 	public void validBehaviorOf_createUser(int arg1, String arg2, String arg3) {
@@ -211,7 +213,7 @@ public class UserDAOImplTest {
 	}
 	
 	
-	@ParameterizedTest(name = "The sql query used to delete an user by its id must succesfully match only one record in the database !")
+	@Test
 	@Order(4)
 	@Tag("UserDAOImpl-deleteUser")
 	public void validBehaviorOf_deleteUser() {

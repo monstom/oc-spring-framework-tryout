@@ -8,9 +8,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -24,6 +26,7 @@ import ticket.model.search.ticket.SearchTicketAssociation;
 
 
 @Tag("TicketAssociationDAOImplClass_UniteTesting")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TicketAssociationDAOImplTest {
 
 	private TicketAssociationDAOImpl ticketAssoDAO;	
@@ -66,6 +69,7 @@ public class TicketAssociationDAOImplTest {
 	
 	
 	@Test
+	@Order(2)
 	@Tag("TicketAssociationDAOImpl-find_allTicketAssociations")
 	public void validBehaviorOf_getAllTicketAssociations() {
 		// Arrange
@@ -142,7 +146,7 @@ public class TicketAssociationDAOImplTest {
 	
 	
 	@ParameterizedTest(name = "The sql query used to create an association of tickets by its identifiers must successfully add a new record in the database !")
-	@CsvSource({ "-1,2", "2,10", "1,-2", "2,1", "0,0" })
+	@CsvSource({ "-1,2", "2,10", "1,-2", "0,0", "2,1" })
 	@Order(1)
 	@Tag("TicketAssociationDAOImpl-createTicketAssociation")
 	public void validBehaviorOf_createTicketAssociation(int arg1, int arg2) {
@@ -171,7 +175,7 @@ public class TicketAssociationDAOImplTest {
 	
 	
 	@ParameterizedTest(name = "The sql query used to delete an association of ticket by its identifiers must successfully match only one record in the database !")
-	@CsvSource({ "-1,2", "2,10", "1,-2", "2,1", "0,0" })
+	@CsvSource({ "-1,2", "2,10", "1,-2", "0,0", "2,1" })
 	@Order(3)
 	@Tag("TicketAssociationDAOImpl-deleteTicketAssociation")
 	public void validBehaviorOf_deleteTicketAssociation(int arg1, int arg2) {

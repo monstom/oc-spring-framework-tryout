@@ -3,15 +3,18 @@ package ticket.consumer.dao.impl.project;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -25,6 +28,7 @@ import ticket.model.search.project.SearchProject;
 
 
 @Tag("ProjectDAOImplClass_UniteTesting")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ProjectDAOImplTest {
 
 	private ProjectDAOImpl projectDAO;
@@ -227,7 +231,7 @@ public class ProjectDAOImplTest {
 	
 	
 	@ParameterizedTest(name = "The sql query used to create a project by its id must successfully add a new record with the highest id in the database !")
-	@CsvSource({ "1,R&D,2022-03-25 14:53:37,1,5", "0,'',2022-03-25 14:53:37,1,5", "0,R&D,'',1,5", "0,R&D,2022-03-25 14:53:37,-1,5", "0,R&D,2022-03-25 14:53:37,1,-5", "0,'test1','2022-03-25 14:53:37',1,5" })
+	@CsvSource({ "1,R&D,2022-03-25 14:53:37,1,5", "0,'',2022-03-25 14:53:37,1,5", "0,R&D,2022-03-25,-1,5", "0,R&D,2022-03-25 14:53:37,1,-5", "0,'test1',,1,5" })
 	@Order(1)
 	@Tag("ProjectDAOImpl-createProject")
 	public void validBehaviorOf_createProject(int arg1, String arg2, String arg3, int arg4, int arg5) {
@@ -240,19 +244,26 @@ public class ProjectDAOImplTest {
 		System.out.println("manager : ["+arg5+"]");
 		Project project = null;
 		int newid = -1;
+		boolean state = false;
 		
 		// Act
 		try {
-			if(arg4 > 0 && arg1 > 0) project = new Project(arg1,arg2,arg3,true,arg5);
-			else if(arg1 > 0) project = new Project(arg1,arg2,arg3,false,arg5);
-			else if(arg4 > 0) project = new Project(arg2,arg3,true,arg5);
-			else project = new Project(arg2,arg3,false,arg5);
-			newid = projectDAO.createProject(project);
+			if(arg4 > 0) state = true;
+			if(arg1 > 0 && arg3 != null) project = new Project(arg1,arg2,arg3,state,arg5);
+			else if(arg1 > 0) project = new Project(arg1,arg2,null,state,arg5);
+			else if(arg3 != null) project = new Project(arg2,arg3,state,arg5);
+			else project = new Project(arg2,null,state,arg5);
+			newid = this.projectDAO.createProject(project);
+		} catch(SQLException sqle) {
+			System.out.println(sqle.toString());
+			assertTrue(newid <= 0);
+			return;
 		} catch(Exception e) {
 			System.out.println(e.toString());
 			assertTrue(newid <= 0);
 			return;
 		}
+		
 		System.out.println(newid);
 		newProjectid = newid;
 		
@@ -262,7 +273,7 @@ public class ProjectDAOImplTest {
 	
 	
 	@ParameterizedTest(name = "The sql query used to update a project by its id must successfully match only one record in the database !")
-	@CsvSource({ "0,'','',-1,-5", "0,'test2',,0,0" })
+	@CsvSource({ "0,'','',-1,-5", "0,'test2',,-1,0" })
 	@Order(2)
 	@Tag("ProjectDAOImpl-updateProject")
 	public void validBehaviorOf_updateProject(int arg1, String arg2, String arg3, int arg4, int arg5) {
@@ -282,7 +293,7 @@ public class ProjectDAOImplTest {
 			search_project.setSearchedProjectID(arg1);
 			if(arg2 != null) search_project.setSearchedTitle(arg2);
 			if(arg3 != null) search_project.setSearchedCreationDate(arg3);
-			if(arg4 >= 0) search_project.setSearchedState(arg4);
+			search_project.setSearchedState(arg4);
 			if(arg5 > 0) search_project.setSearchedManager(arg5);
 			id = projectDAO.updateProject(search_project);
 		} catch(Exception e) {
@@ -297,7 +308,7 @@ public class ProjectDAOImplTest {
 	}
 	
 	
-	@ParameterizedTest(name = "The sql query used to delete a project by its id must successfully match only one record in the database !")
+	@Test
 	@Order(4)
 	@Tag("ProjectDAOImpl-deleteProject")
 	public void validBehaviorOf_deleteProject() {

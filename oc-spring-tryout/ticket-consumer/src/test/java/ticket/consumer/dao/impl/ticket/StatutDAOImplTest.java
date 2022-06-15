@@ -9,9 +9,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -25,6 +27,7 @@ import ticket.model.search.ticket.SearchStatut;
 
 
 @Tag("StatutDAOImplClass_UniteTesting")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class StatutDAOImplTest {
 
 	private StatutDAOImpl statutDAO;
@@ -143,7 +146,7 @@ public class StatutDAOImplTest {
 	
 	
 	@ParameterizedTest(name = "The sql query used to create a status by its id must successfully add a new record with the highest id in the database !")
-	@CsvSource({ "1,'UPDATED'", "-2,'UPDATED'", "2, ", "0,'UPDATED'", "0,''" })
+	@CsvSource({ "1,'UPDATED'", "2, ", "0,''", "-2,'UPDATED'" })
 	@Order(1)
 	@Tag("StatutDAOImpl-createStatut")
 	public void validBehaviorOf_createStatut(int arg1, String arg2) {
@@ -189,7 +192,7 @@ public class StatutDAOImplTest {
 		// Act
 		try {
 			search_statut.setSearchedStatutID(arg1);
-			search_statut.setSearchedLabel(arg2);
+			if(arg2 != null) search_statut.setSearchedLabel(arg2);
 			id = statutDAO.updateStatut(search_statut);
 			
 		} catch(Exception e) {
@@ -204,7 +207,7 @@ public class StatutDAOImplTest {
 	}
 	
 	
-	@ParameterizedTest(name = "The sql query used to delete a status by its id must successfully match only one record in the database !")
+	@Test
 	@Order(4)
 	@Tag("StatutDAOImpl-deleteStatut")
 	public void validBehaviorOf_deleteStatut() {
