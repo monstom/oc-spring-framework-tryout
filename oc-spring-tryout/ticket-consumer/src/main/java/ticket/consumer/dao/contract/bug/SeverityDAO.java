@@ -8,15 +8,15 @@ import ticket.model.search.bug.SearchSeverity;
 
 public interface SeverityDAO {
 	
-	public List<Severity> getAllSeverities() throws SQLException;
+	public List<Severity> getAllSeverities() throws SQLException, Exception;
 	
-	public List<Severity> getSeveritiesFrom_level(SearchSeverity search_severity) throws SQLException;
+	public List<Severity> getSeveritiesFrom_level(SearchSeverity search_severity) throws SQLException, Exception;
 
-	public List<Severity> getSeveritiesLike_label(SearchSeverity search_severity) throws SQLException;
+	public List<Severity> getSeveritiesLike_label(SearchSeverity search_severity) throws SQLException, Exception;
 
-	public List<Severity> getSeverities_builder(SearchSeverity search_severity) throws SQLException;
+	public List<Severity> getSeverities_builder(SearchSeverity search_severity) throws SQLException, Exception;
 	
-	public Severity getSeverityByID(SearchSeverity search_severity) throws SQLException;
+	public Severity getSeverityByID(SearchSeverity search_severity) throws SQLException, Exception;
 	
 	public int createSeverity(Severity new_severity) throws SQLException;
 	

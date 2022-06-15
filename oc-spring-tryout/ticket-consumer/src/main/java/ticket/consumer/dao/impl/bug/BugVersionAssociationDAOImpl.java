@@ -20,7 +20,7 @@ public class BugVersionAssociationDAOImpl extends AbstractDAO implements BugVers
 	
 
 	@Override
-	public List<BugVersionAssociation> getAllBugVersionAssociations() throws SQLException {
+	public List<BugVersionAssociation> getAllBugVersionAssociations() throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -44,7 +44,7 @@ public class BugVersionAssociationDAOImpl extends AbstractDAO implements BugVers
 
 	
 	@Override
-	public BugVersionAssociation getBugVersionAssociationByID(SearchBugVersionAssociation search_asso) throws SQLException {
+	public BugVersionAssociation getBugVersionAssociationByID(SearchBugVersionAssociation search_asso) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -74,7 +74,7 @@ public class BugVersionAssociationDAOImpl extends AbstractDAO implements BugVers
 
 	
 	@Override
-	public List<BugVersionAssociation> getAssociatedVersionsFrom_bugID(SearchBugVersionAssociation search_asso)	throws SQLException {
+	public List<BugVersionAssociation> getAssociatedVersionsFrom_bugID(SearchBugVersionAssociation search_asso)	throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -102,7 +102,7 @@ public class BugVersionAssociationDAOImpl extends AbstractDAO implements BugVers
 
 	
 	@Override
-	public List<BugVersionAssociation> getAssociatedBugsFrom_versionID(SearchBugVersionAssociation search_asso) throws SQLException {
+	public List<BugVersionAssociation> getAssociatedBugsFrom_versionID(SearchBugVersionAssociation search_asso) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -170,8 +170,8 @@ public class BugVersionAssociationDAOImpl extends AbstractDAO implements BugVers
 		statement.setInt(2, version_id);
 		statement.setString(3, version_label);
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
-		result = 1;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = rows;
 		return result;
 	}
 	
@@ -188,15 +188,18 @@ public class BugVersionAssociationDAOImpl extends AbstractDAO implements BugVers
 		int bvasso_bug = search_asso.getSearchedBugID();
 		int bvasso_vid = search_asso.getSearchedVersionID();
 		String bvasso_vlbl = search_asso.getSearchedVersionLabel();
-		String query = "DELETE BugVersionAssociation WHERE bug_id=? AND version_id=? AND version_label=?";
+		String query = "DELETE FROM BugVersionAssociation WHERE bug_id=? AND version_id=? AND version_label=?";
+		
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		statement.setInt(1, bvasso_bug);
 		statement.setInt(2, bvasso_vid);
 		statement.setString(3, bvasso_vlbl);
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
 		
-		result = 1;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = rows;
+		else 
+			throw new SQLException("The researched association of bug and version could not be deleted as it doesn't exist in the database !");
 		return result;
 	}
 	

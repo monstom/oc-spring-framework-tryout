@@ -20,7 +20,7 @@ public class TicketAssociationDAOImpl extends AbstractDAO implements TicketAssoc
 
 	
 	@Override
-	public List<TicketAssociation> getAllTicketAssos() throws SQLException {
+	public List<TicketAssociation> getAllTicketAssos() throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -44,7 +44,7 @@ public class TicketAssociationDAOImpl extends AbstractDAO implements TicketAssoc
 	
 	
 	@Override
-	public TicketAssociation getTicketAssociationByID(SearchTicketAssociation search_ticketAsso) throws SQLException {
+	public TicketAssociation getTicketAssociationByID(SearchTicketAssociation search_ticketAsso) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -74,7 +74,7 @@ public class TicketAssociationDAOImpl extends AbstractDAO implements TicketAssoc
 	
 	
 	@Override
-	public List<TicketAssociation> getAssociatedTicketOf_ticketID(SearchTicketAssociation search_ticketAsso) throws SQLException {
+	public List<TicketAssociation> getAssociatedTicketOf_ticketID(SearchTicketAssociation search_ticketAsso) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -119,8 +119,9 @@ public class TicketAssociationDAOImpl extends AbstractDAO implements TicketAssoc
 		statement.setInt(1, main);
 		statement.setInt(2, associated);
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
-		result = 1;
+		
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = rows;
 		return result;
 	}
 	
@@ -136,14 +137,17 @@ public class TicketAssociationDAOImpl extends AbstractDAO implements TicketAssoc
 	
 		int main = search_ticketAsso.getSearchedTicket1AssoID();
 		int associated = search_ticketAsso.getSearchedTicket2AssoID();
-		String query = "DELETE TicketAssociation WHERE ticket1_id=? AND ticket2_id=?";
+		String query = "DELETE FROM TicketAssociation WHERE ticket1_id=? AND ticket2_id=?";
+		
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		statement.setInt(1, main);
 		statement.setInt(2, associated);
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
 		
-		result = 1;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = rows;
+		else 
+			throw new SQLException("The researched association of tickets could not be deleted as it doesn't exist in the database !");
 		return result;
 	}
 

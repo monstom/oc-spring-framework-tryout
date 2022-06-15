@@ -8,11 +8,11 @@ import ticket.model.search.bug.SearchBug;
 
 public interface BugDAO {
 	
-	public List<Bug> getAllBugs() throws SQLException;
+	public List<Bug> getAllBugs() throws SQLException, Exception;
 	
-	public List<Bug> getBugsFrom_severity(SearchBug search_bug) throws SQLException;
+	public List<Bug> getBugsFrom_severity(SearchBug search_bug) throws SQLException, Exception;
 	
-	public Bug getBugByID(SearchBug search_bug) throws SQLException;
+	public Bug getBugByID(SearchBug search_bug) throws SQLException, Exception;
 	
 	public int createBug(Bug new_bug) throws SQLException;
 	

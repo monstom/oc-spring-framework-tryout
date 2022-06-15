@@ -20,7 +20,7 @@ public class HistoryStatutDAOImpl extends AbstractDAO implements HistoryStatutDA
 	
 	
 	@Override
-	public List<HistoryStatut> getAllStatutsInHistory() throws SQLException {
+	public List<HistoryStatut> getAllStatutsInHistory() throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -39,7 +39,7 @@ public class HistoryStatutDAOImpl extends AbstractDAO implements HistoryStatutDA
 			historyStatuts.add(new HistoryStatut(results.getInt("ticket_id"),
 									 			 results.getInt("statut_id"),
 									 			 results.getString("creationDate"),
-									 			 results.getInt("user_id"),
+									 			 results.getInt("employee_id"),
 									 			 results.getInt("comment_id"))
 			);
 			results.next();
@@ -49,7 +49,7 @@ public class HistoryStatutDAOImpl extends AbstractDAO implements HistoryStatutDA
 	
 
 	@Override
-	public HistoryStatut getStatutInHistoryByID(SearchHistoryStatut search_history) throws SQLException {
+	public HistoryStatut getStatutInHistoryByID(SearchHistoryStatut search_history) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -75,7 +75,7 @@ public class HistoryStatutDAOImpl extends AbstractDAO implements HistoryStatutDA
 		else historybyID = new HistoryStatut(hticket,
 											 hstatut,
 											 results.getString("creationDate"),
-											 results.getInt("user_id"),
+											 results.getInt("employee_id"),
 											 results.getInt("comment_id"));
 		
 		return historybyID;
@@ -83,7 +83,7 @@ public class HistoryStatutDAOImpl extends AbstractDAO implements HistoryStatutDA
 
 	
 	@Override
-	public List<HistoryStatut> getStatutsInHistoryFrom_creationDate(SearchHistoryStatut search_history, boolean over) throws SQLException {
+	public List<HistoryStatut> getStatutsInHistoryFrom_creationDate(SearchHistoryStatut search_history, boolean over) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -109,7 +109,7 @@ public class HistoryStatutDAOImpl extends AbstractDAO implements HistoryStatutDA
 			historyStatuts.add(new HistoryStatut(results.getInt("ticket_id"),
 									 			 results.getInt("statut_id"),
 									 			 results.getString("creationDate"),
-									 			 results.getInt("user_id"),
+									 			 results.getInt("employee_id"),
 									 			 results.getInt("comment_id"))
 			);
 			results.next();
@@ -119,7 +119,7 @@ public class HistoryStatutDAOImpl extends AbstractDAO implements HistoryStatutDA
 
 	
 	@Override
-	public List<HistoryStatut> getStatutsInHistoryFrom_creationDate(SearchHistoryStatut search_history)	throws SQLException {
+	public List<HistoryStatut> getStatutsInHistoryFrom_creationDate(SearchHistoryStatut search_history)	throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -142,7 +142,7 @@ public class HistoryStatutDAOImpl extends AbstractDAO implements HistoryStatutDA
 			historyStatuts.add(new HistoryStatut(results.getInt("ticket_id"),
 									 			 results.getInt("statut_id"),
 									 			 results.getString("creationDate"),
-									 			 results.getInt("user_id"),
+									 			 results.getInt("employee_id"),
 									 			 results.getInt("comment_id"))
 			);
 			results.next();
@@ -152,7 +152,7 @@ public class HistoryStatutDAOImpl extends AbstractDAO implements HistoryStatutDA
 	
 
 	@Override
-	public List<HistoryStatut> getStatutsInHistoryFrom_comment(SearchHistoryStatut search_history) throws SQLException {
+	public List<HistoryStatut> getStatutsInHistoryFrom_comment(SearchHistoryStatut search_history) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -179,7 +179,7 @@ public class HistoryStatutDAOImpl extends AbstractDAO implements HistoryStatutDA
 			histories.add(new HistoryStatut(results.getInt("ticket_id"),
 										   results.getInt("statut_id"),
 										   results.getString("creationDate"),
-										   results.getInt("user_id"),
+										   results.getInt("employee_id"),
 										   hcomment)
 			);
 			results.next();
@@ -189,7 +189,7 @@ public class HistoryStatutDAOImpl extends AbstractDAO implements HistoryStatutDA
 
 	
 	@Override
-	public List<HistoryStatut> getStatutsInHistoryFrom_author(SearchHistoryStatut search_history) throws SQLException {
+	public List<HistoryStatut> getStatutsInHistoryFrom_author(SearchHistoryStatut search_history) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -198,7 +198,7 @@ public class HistoryStatutDAOImpl extends AbstractDAO implements HistoryStatutDA
 			throw new SQLException("The research object or its author must not be undefined");
 		
 		int hauthor = search_history.getSearchedAuthor();
-		String query = "SELECT * FROM HistoryStatut WHERE user_id=?";
+		String query = "SELECT * FROM HistoryStatut WHERE employee_id=?";
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		statement.setInt(1, hauthor);
 		statement.setQueryTimeout(1);
@@ -222,7 +222,7 @@ public class HistoryStatutDAOImpl extends AbstractDAO implements HistoryStatutDA
 	
 
 	@Override
-	public List<HistoryStatut> getStatutsInHistory_builder(SearchHistoryStatut search_history) throws SQLException {
+	public List<HistoryStatut> getStatutsInHistory_builder(SearchHistoryStatut search_history) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -260,7 +260,7 @@ public class HistoryStatutDAOImpl extends AbstractDAO implements HistoryStatutDA
 		if(search_history.getSearchedAuthor() > 0) {
 			author = search_history.getSearchedAuthor();
 			if(nbParam > 0) query += " AND ";
-			query += "user_id=?";
+			query += "employee_id=?";
 			nbParam++;
 		}
 		
@@ -322,7 +322,7 @@ public class HistoryStatutDAOImpl extends AbstractDAO implements HistoryStatutDA
 			histories.add(new HistoryStatut(results.getInt("ticket_id"),
 										   results.getInt("statut_id"),
 										   results.getString("creationDate"),
-										   results.getInt("user_id"),
+										   results.getInt("employee_id"),
 										   results.getInt("comment_id"))
 			);
 			results.next();
@@ -342,24 +342,36 @@ public class HistoryStatutDAOImpl extends AbstractDAO implements HistoryStatutDA
 		
 		int ticket = new_history.getHistory_ticketID();
 		int status = new_history.getHistory_statutID();
-		String cdate = new_history.getHistory_creationDate().toString();
 		int author = new_history.getHistory_userID();
 		int comment = new_history.getHistory_commentID();
+		String cdate = null;
+		if(new_history.getHistory_creationDate() != null) cdate = new_history.getHistory_creationDate().toString();
 		
-		String query = "INSERT INTO HistoryStatut VALUES ";
-		if(comment > 0) query += "(?,?,?,?,?)";
-		else query += "(?,?,?,?)";
+		String query = "INSERT INTO HistoryStatut";
+		if(comment > 0 && cdate != null) query += " VALUES (?,?,?,?,?)";
+		else if(cdate != null) query += "(ticket_id,statut_id,creationDate,employee_id) VALUES (?,?,?,?)";
+		else if(comment > 0) query += "(ticket_id,statut_id,comment_id,employee_id) VALUES (?,?,?,?)";
+		else query += "(ticket_id,statut_id,employee_id) VALUES (?,?,?)";
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		
 		statement.setInt(1, ticket);
 		statement.setInt(2, status);
-		statement.setString(3, cdate);
-		statement.setInt(4, author);
-		if(comment > 0) statement.setInt(5, comment);
+		if(cdate != null) {
+			statement.setString(3, cdate);
+			if(comment > 0) { 
+				statement.setInt(4, comment);
+				statement.setInt(5, author);
+			} else statement.setInt(4, author);
+		} else {
+			if(comment > 0) { 
+				statement.setInt(3, comment);
+				statement.setInt(4, author);
+			} else statement.setInt(3, author);
+		}
 		
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
-		result = 1;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = rows;
 		return result;
 	}
 	
@@ -384,14 +396,14 @@ public class HistoryStatutDAOImpl extends AbstractDAO implements HistoryStatutDA
 		if(search_history.getSearchedCreationDate() != null) {
 			cdate = search_history.getSearchedCreationDate();
 			if(nbParam > 0) query += " AND ";
-			query += "creationDate LIKE ?";
+			query += "creationDate=?";
 			nbParam++;
 		}
 		
 		if(search_history.getSearchedAuthor() > 0) {
 			author = search_history.getSearchedAuthor();
 			if(nbParam > 0) query += " AND ";
-			query += "user_id=?";
+			query += "employee_id=?";
 			nbParam++;
 		}
 		
@@ -410,14 +422,14 @@ public class HistoryStatutDAOImpl extends AbstractDAO implements HistoryStatutDA
 		if(nbParam == 0 && !query.contains("comment_id")) 
 			throw new SQLException("The fields of the history of status to be updated must not be all undefined");
 		
-		query += " WHERE ticket=? AND status=?";
+		query += " WHERE ticket_id=? AND statut_id=?";
 		PreparedStatement statement = this.getConnection().prepareStatement(query);	
 		
 		if(cdate != null)
 			if(ticket > 0 || status > 0)
-				statement.setString(2, "%"+cdate+"%");
+				statement.setString(2, cdate);
 			else 
-				statement.setString(1, "%"+cdate+"%");
+				statement.setString(1, cdate);
 		
 		if(author > 0)
 			if((ticket > 0 || status > 0) && cdate != null)
@@ -449,9 +461,8 @@ public class HistoryStatutDAOImpl extends AbstractDAO implements HistoryStatutDA
 		}
 		
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
-		
-		result = 1;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = rows;
 		return result;
 	}
 	
@@ -467,14 +478,17 @@ public class HistoryStatutDAOImpl extends AbstractDAO implements HistoryStatutDA
 	
 		int hticket = search_history.getSearchedTicket();
 		int hstatut = search_history.getSearchedStatut();
-		String query = "DELETE HistoryStatut WHERE ticket_id=? AND statut_id=?";
+		String query = "DELETE FROM HistoryStatut WHERE ticket_id=? AND statut_id=?";
+		
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		statement.setInt(1, hticket);
 		statement.setInt(2, hstatut);
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
 		
-		result = 1;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = rows;
+		else 
+			throw new SQLException("The researched history of status could not be deleted as it doesn't exist in the database !");
 		return result;
 	}
 

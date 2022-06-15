@@ -8,11 +8,11 @@ import ticket.model.search.user.SearchUser;
 
 public interface UserDAO {
 
-	public List<User> getAllUsers() throws SQLException;
+	public List<User> getAllUsers() throws SQLException, Exception;
 		
-	public List<User> getUsersFromNames(SearchUser search_user) throws SQLException;
+	public List<User> getUsersFromNames(SearchUser search_user) throws SQLException, Exception;
 	
-	public User getUserByID(SearchUser search_user) throws SQLException;
+	public User getUserByID(SearchUser search_user) throws SQLException, Exception;
 
 	public int createUser(User new_user) throws SQLException;
 	

@@ -20,7 +20,7 @@ public class TicketDAOImpl extends AbstractDAO implements TicketDAO {
 	
 	
 	@Override
-	public List<Ticket> getAllTickets() throws SQLException {
+	public List<Ticket> getAllTickets() throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -50,7 +50,7 @@ public class TicketDAOImpl extends AbstractDAO implements TicketDAO {
 
 	
 	@Override
-	public Ticket getTicketByID(SearchTicket search_ticket) throws SQLException {
+	public Ticket getTicketByID(SearchTicket search_ticket) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -82,7 +82,7 @@ public class TicketDAOImpl extends AbstractDAO implements TicketDAO {
 
 	
 	@Override
-	public List<Ticket> getTicketsLike_title(SearchTicket search_ticket) throws SQLException {
+	public List<Ticket> getTicketsLike_title(SearchTicket search_ticket) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -117,7 +117,7 @@ public class TicketDAOImpl extends AbstractDAO implements TicketDAO {
 
 	
 	@Override
-	public List<Ticket> getTicketsFrom_creationDate(SearchTicket search_ticket, boolean over) throws SQLException {
+	public List<Ticket> getTicketsFrom_creationDate(SearchTicket search_ticket, boolean over) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -155,7 +155,7 @@ public class TicketDAOImpl extends AbstractDAO implements TicketDAO {
 
 
 	@Override
-	public List<Ticket> getTicketsFrom_creationDate(SearchTicket search_ticket) throws SQLException {
+	public List<Ticket> getTicketsFrom_creationDate(SearchTicket search_ticket) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -190,7 +190,7 @@ public class TicketDAOImpl extends AbstractDAO implements TicketDAO {
 	
 	
 	@Override
-	public List<Ticket> getTicketsLike_description(SearchTicket search_ticket) throws SQLException {
+	public List<Ticket> getTicketsLike_description(SearchTicket search_ticket) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -229,7 +229,7 @@ public class TicketDAOImpl extends AbstractDAO implements TicketDAO {
 
 	
 	@Override
-	public List<Ticket> getTicketsFrom_statut(SearchTicket search_ticket) throws SQLException {
+	public List<Ticket> getTicketsFrom_statut(SearchTicket search_ticket) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -264,7 +264,7 @@ public class TicketDAOImpl extends AbstractDAO implements TicketDAO {
 
 	
 	@Override
-	public List<Ticket> getTicketsFrom_author(SearchTicket search_ticket) throws SQLException {
+	public List<Ticket> getTicketsFrom_author(SearchTicket search_ticket) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -299,7 +299,7 @@ public class TicketDAOImpl extends AbstractDAO implements TicketDAO {
 
 	
 	@Override
-	public List<Ticket> getTicketsFrom_project(SearchTicket search_ticket) throws SQLException {
+	public List<Ticket> getTicketsFrom_project(SearchTicket search_ticket) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -334,7 +334,7 @@ public class TicketDAOImpl extends AbstractDAO implements TicketDAO {
 
 	
 	@Override
-	public List<Ticket> getTickets_builder(SearchTicket search_ticket) throws SQLException {
+	public List<Ticket> getTickets_builder(SearchTicket search_ticket) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -488,32 +488,33 @@ public class TicketDAOImpl extends AbstractDAO implements TicketDAO {
 			throw new SQLException("The new ticket object to be created must be undefined !");
 		
 		String title = new_ticket.getTicket_title();
-		String cdate = new_ticket.getTicket_creationDate().toString();
 		String desc = new_ticket.getTicket_description();
 		int status = new_ticket.getTicket_statutID();
 		int project = new_ticket.getTicket_projectID();
 		int author = new_ticket.getTicket_authorID();
 		int tid = 0;		
 		if(new_ticket.getTicketID() > 0) tid = new_ticket.getTicketID();
+		String cdate = null;
+		if(new_ticket.getTicket_creationDate() != null) cdate = new_ticket.getTicket_creationDate().toString();
 		
 		String query = "INSERT INTO Ticket";
-		if(tid > 0) query += " VALUES (?,?,?,?,?,?,?)";
-		else {
-			if(desc == null) query += "(title,creationDate,statut_id,author_id,project_id) VALUES (?,?,?,?,?)";
-			else query += "(title,creationDate,description,statut_id,author_id,project_id) VALUES (?,?,?,?,?,?)";
-		}
+		if(tid > 0 && cdate != null) query += " VALUES (?,?,?,?,?,?,?)";
+		else if(tid > 0) query += "(id,title,description,statut_id,author_id,project_id) VALUES (?,?,?,?,?,?)";
+		else if(cdate != null) query += "(title,creationDate,description,statut_id,author_id,project_id) VALUES (?,?,?,?,?,?)";
+		else query += "(title,description,statut_id,author_id,project_id) VALUES (?,?,?,?,?)";
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		
 		if(tid > 0) {
 			statement.setInt(1, tid);
 			statement.setString(2, title);
-			statement.setString(3, cdate);
-			if(desc != null) {
+			if(cdate != null) {
+				statement.setString(3, cdate);
 				statement.setString(4, desc);
 				statement.setInt(5, status);
 				statement.setInt(6, project);
 				statement.setInt(7, author);
 			} else {
+				statement.setString(3, desc);
 				statement.setInt(4, status);
 				statement.setInt(5, project);
 				statement.setInt(6, author);				
@@ -521,13 +522,14 @@ public class TicketDAOImpl extends AbstractDAO implements TicketDAO {
 			
 		} else {
 			statement.setString(1, title);
-			statement.setString(2, cdate);
-			if(desc != null) {
+			if(cdate != null) {
+				statement.setString(2, cdate);
 				statement.setString(3, desc);
 				statement.setInt(4, status);
 				statement.setInt(5, project);
 				statement.setInt(6, author);
 			} else {
+				statement.setString(2, desc);
 				statement.setInt(3, status);
 				statement.setInt(4, project);
 				statement.setInt(5, author);
@@ -535,9 +537,11 @@ public class TicketDAOImpl extends AbstractDAO implements TicketDAO {
 		}
 		
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
-		if(tid > 0) result = tid;
-		else result = this.getLastInsertID();
+		int rows = statement.executeUpdate();
+		if(rows == 1) {
+			if(tid > 0) result = tid;
+			else result = this.getLastInsertID();
+		}
 		return result;
 	}
 	
@@ -563,14 +567,14 @@ public class TicketDAOImpl extends AbstractDAO implements TicketDAO {
 		
 		if(search_ticket.getSearchedTitle() != null) {
 			title = search_ticket.getSearchedTitle();
-			query += "title LIKE ?";
+			query += "title=?";
 			nbParam++;
 		}
 		
 		if(search_ticket.getSearchedCreationDate() != null) {
 			cdate = search_ticket.getSearchedCreationDate();
 			if(nbParam > 0) query += " AND ";
-			query += "creationDate LIKE ?";
+			query += "creationDate=?";
 			nbParam++;
 		}
 		
@@ -581,7 +585,7 @@ public class TicketDAOImpl extends AbstractDAO implements TicketDAO {
 			} else {
 				desc = search_ticket.getSearchedDescription();
 				if(nbParam > 0) query += " AND ";
-				query += "description LIKE ?";
+				query += "description=?";
 				nbParam++;
 			}			
 		}
@@ -614,21 +618,21 @@ public class TicketDAOImpl extends AbstractDAO implements TicketDAO {
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		
 		if(title != null)
-			statement.setString(1, "%"+title+"%");
+			statement.setString(1, title);
 		
 		if(cdate != null)
 			if(title != null)
-				statement.setString(2, "%"+cdate+"%");
+				statement.setString(2, cdate);
 			else 
-				statement.setString(1, "%"+cdate+"%");
+				statement.setString(1, cdate);
 		
 		if(desc != null)
 			if(title != null && cdate != null)
-				statement.setString(3, "%"+desc+"%");
+				statement.setString(3, desc);
 			else if(title != null || cdate != null)
-				statement.setString(2, "%"+desc+"%");
+				statement.setString(2, desc);
 			else
-				statement.setString(1, "%"+desc+"%");
+				statement.setString(1, desc);
 		
 		if(status > 0) 
 			if(title != null && cdate != null && desc != null)
@@ -681,9 +685,8 @@ public class TicketDAOImpl extends AbstractDAO implements TicketDAO {
 			statement.setInt(7, tid);
 		
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
-		
-		result = tid;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = tid;
 		return result;
 	}
 
@@ -698,13 +701,16 @@ public class TicketDAOImpl extends AbstractDAO implements TicketDAO {
 			throw new SQLException("The research object or its identifiers must not be undefined");
 	
 		int tid = search_ticket.getSearchedTicketID();
-		String query = "DELETE Ticket WHERE id=?";
+		String query = "DELETE FROM Ticket WHERE id=?";
+		
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		statement.setInt(1, tid);
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
 		
-		result = tid;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = tid;
+		else 
+			throw new SQLException("The researched ticket could not be deleted as it doesn't exist in the database !");
 		return result;
 	}
 
@@ -719,7 +725,7 @@ public class TicketDAOImpl extends AbstractDAO implements TicketDAO {
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		statement.setQueryTimeout(1);
 		ResultSet results = statement.executeQuery();
-		lastid = results.getInt("id");
+		if(results.next()) lastid = results.getInt("id");
 		return lastid;
 	}
 

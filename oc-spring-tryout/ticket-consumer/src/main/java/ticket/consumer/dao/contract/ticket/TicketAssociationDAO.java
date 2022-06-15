@@ -8,11 +8,11 @@ import ticket.model.search.ticket.SearchTicketAssociation;
 
 public interface TicketAssociationDAO {
 
-	public List<TicketAssociation> getAllTicketAssos() throws SQLException;
+	public List<TicketAssociation> getAllTicketAssos() throws SQLException, Exception;
 	
-	public List<TicketAssociation> getAssociatedTicketOf_ticketID(SearchTicketAssociation search_ticketAsso) throws SQLException;
+	public List<TicketAssociation> getAssociatedTicketOf_ticketID(SearchTicketAssociation search_ticketAsso) throws SQLException, Exception;
 	
-	public TicketAssociation getTicketAssociationByID(SearchTicketAssociation search_ticketAsso) throws SQLException;
+	public TicketAssociation getTicketAssociationByID(SearchTicketAssociation search_ticketAsso) throws SQLException, Exception;
 
 	public int createTicketAssociation(TicketAssociation new_ticketAsso) throws SQLException;
 		

@@ -20,7 +20,7 @@ public class EvolutionDAOImpl extends AbstractDAO implements EvolutionDAO {
 
 	
 	@Override
-	public List<Evolution> getAllEvolutions() throws SQLException {
+	public List<Evolution> getAllEvolutions() throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -43,7 +43,7 @@ public class EvolutionDAOImpl extends AbstractDAO implements EvolutionDAO {
 	
 
 	@Override
-	public Evolution getEvolutionByID(SearchEvolution search_evolution) throws SQLException {
+	public Evolution getEvolutionByID(SearchEvolution search_evolution) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -68,7 +68,7 @@ public class EvolutionDAOImpl extends AbstractDAO implements EvolutionDAO {
 
 	
 	@Override
-	public List<Evolution> getEvolutionsFrom_priority(SearchEvolution search_evolution) throws SQLException {
+	public List<Evolution> getEvolutionsFrom_priority(SearchEvolution search_evolution) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -112,8 +112,8 @@ public class EvolutionDAOImpl extends AbstractDAO implements EvolutionDAO {
 		statement.setInt(1, ticket_id);
 		statement.setInt(2, priority);
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
-		result = 1;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = rows;
 		return result;
 	}
 	
@@ -139,9 +139,9 @@ public class EvolutionDAOImpl extends AbstractDAO implements EvolutionDAO {
 		statement.setInt(1, epriority);
 		statement.setInt(2, eticket);
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
 		
-		result = eticket;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = eticket;
 		return result;
 	}
 
@@ -156,13 +156,15 @@ public class EvolutionDAOImpl extends AbstractDAO implements EvolutionDAO {
 			throw new SQLException("The research object or its identifiers must not be undefined");
 	
 		int eticket = search_evolution.getSearchedTicketID();
-		String query = "DELETE Evolution WHERE ticket_id=?";
+		String query = "DELETE FROM Evolution WHERE ticket_id=?";
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		statement.setInt(1, eticket);
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
 		
-		result = eticket;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = eticket;
+		else 
+			throw new SQLException("The researched evolution could not be deleted as it doesn't exist in the database !");
 		return result;
 	}
 

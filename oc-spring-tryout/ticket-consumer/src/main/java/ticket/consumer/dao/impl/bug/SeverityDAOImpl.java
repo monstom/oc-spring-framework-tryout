@@ -20,7 +20,7 @@ public class SeverityDAOImpl extends AbstractDAO implements SeverityDAO {
 
 	
 	@Override
-	public List<Severity> getAllSeverities() throws SQLException {
+	public List<Severity> getAllSeverities() throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -44,7 +44,7 @@ public class SeverityDAOImpl extends AbstractDAO implements SeverityDAO {
 	
 
 	@Override
-	public Severity getSeverityByID(SearchSeverity search_severity) throws SQLException {
+	public Severity getSeverityByID(SearchSeverity search_severity) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -70,7 +70,7 @@ public class SeverityDAOImpl extends AbstractDAO implements SeverityDAO {
 	
 
 	@Override
-	public List<Severity> getSeveritiesFrom_level(SearchSeverity search_severity) throws SQLException {
+	public List<Severity> getSeveritiesFrom_level(SearchSeverity search_severity) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -98,7 +98,7 @@ public class SeverityDAOImpl extends AbstractDAO implements SeverityDAO {
 	
 
 	@Override
-	public List<Severity> getSeveritiesLike_label(SearchSeverity search_severity) throws SQLException {
+	public List<Severity> getSeveritiesLike_label(SearchSeverity search_severity) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -126,7 +126,7 @@ public class SeverityDAOImpl extends AbstractDAO implements SeverityDAO {
 
 	
 	@Override
-	public List<Severity> getSeverities_builder(SearchSeverity search_severity) throws SQLException {
+	public List<Severity> getSeverities_builder(SearchSeverity search_severity) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -213,9 +213,11 @@ public class SeverityDAOImpl extends AbstractDAO implements SeverityDAO {
 		}
 		
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
-		if(sid > 0) result = sid;
-		else result = this.getLastInsertID();
+		int rows = statement.executeUpdate();
+		if(rows == 1) {
+			if(sid > 0) result = sid;
+			else result = this.getLastInsertID();
+		}
 		return result;
 	}
 	
@@ -268,9 +270,8 @@ public class SeverityDAOImpl extends AbstractDAO implements SeverityDAO {
 			statement.setInt(2, sid);
 		
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
-		
-		result = sid;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = sid;
 		return result;
 	}
 	
@@ -285,13 +286,16 @@ public class SeverityDAOImpl extends AbstractDAO implements SeverityDAO {
 			throw new SQLException("The research object or its identifiers must not be undefined");
 		
 		int sid = search_severity.getSearchedSeverityID();
-		String query = "DELETE Severity WHERE id=?";
+		String query = "DELETE FROM Severity WHERE id=?";
+		
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		statement.setInt(1, sid);
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
 		
-		result = sid;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = sid;
+		else 
+			throw new SQLException("The researched severity could not be deleted as it doesn't exist in the database !");
 		return result;
 	}
 
@@ -306,7 +310,7 @@ public class SeverityDAOImpl extends AbstractDAO implements SeverityDAO {
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		statement.setQueryTimeout(1);
 		ResultSet results = statement.executeQuery();
-		lastid = results.getInt("id");
+		if(results.next()) lastid = results.getInt("id");
 		return lastid;
 	}
 

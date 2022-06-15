@@ -20,7 +20,7 @@ public class CommentDAOImpl extends AbstractDAO implements CommentDAO {
 	
 	
 	@Override
-	public List<Comment> getAllComments() throws SQLException {
+	public List<Comment> getAllComments() throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -47,7 +47,7 @@ public class CommentDAOImpl extends AbstractDAO implements CommentDAO {
 
 	
 	@Override
-	public Comment getCommentByID(SearchComment search_comment) throws SQLException {
+	public Comment getCommentByID(SearchComment search_comment) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -73,7 +73,7 @@ public class CommentDAOImpl extends AbstractDAO implements CommentDAO {
 
 	
 	@Override
-	public List<Comment> getCommentsLike_description(SearchComment search_comment) throws SQLException {
+	public List<Comment> getCommentsLike_description(SearchComment search_comment) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -104,7 +104,7 @@ public class CommentDAOImpl extends AbstractDAO implements CommentDAO {
 
 	
 	@Override
-	public List<Comment> getCommentsFrom_ticket(SearchComment search_comment) throws SQLException {
+	public List<Comment> getCommentsFrom_ticket(SearchComment search_comment) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -135,7 +135,7 @@ public class CommentDAOImpl extends AbstractDAO implements CommentDAO {
 
 	
 	@Override
-	public List<Comment> getCommentsFrom_author(SearchComment search_comment) throws SQLException {
+	public List<Comment> getCommentsFrom_author(SearchComment search_comment) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -166,7 +166,7 @@ public class CommentDAOImpl extends AbstractDAO implements CommentDAO {
 	
 	
 	@Override
-	public List<Comment> getComments_builder(SearchComment search_comment) throws SQLException {
+	public List<Comment> getComments_builder(SearchComment search_comment) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -275,9 +275,11 @@ public class CommentDAOImpl extends AbstractDAO implements CommentDAO {
 		}
 		
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
-		if(cid > 0) result = cid;
-		else result = this.getLastInsertID();
+		int rows = statement.executeUpdate();
+		if(rows == 1) {
+			if(cid > 0) result = cid;
+			else result = this.getLastInsertID();
+		}
 		return result;
 	}
 	
@@ -300,7 +302,7 @@ public class CommentDAOImpl extends AbstractDAO implements CommentDAO {
 		
 		if(search_comment.getSearchedDescription() != null) {
 			desc = search_comment.getSearchedDescription();
-			query += "description LIKE ?";
+			query += "description=?";
 			nbParam++;
 		}
 		
@@ -325,7 +327,7 @@ public class CommentDAOImpl extends AbstractDAO implements CommentDAO {
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		
 		if(desc != null)
-			statement.setString(1, "%"+desc+"%");
+			statement.setString(1, desc);
 		
 		if(author > 0)
 			if(nbParam == 1) 
@@ -353,9 +355,8 @@ public class CommentDAOImpl extends AbstractDAO implements CommentDAO {
 			statement.setInt(4, cid);
 		
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
-		
-		result = cid;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = cid;
 		return result;
 	}
 	
@@ -370,13 +371,14 @@ public class CommentDAOImpl extends AbstractDAO implements CommentDAO {
 			throw new SQLException("The research object or its identifiers must not be undefined");
 	
 		int cid = search_comment.getSearchedCommentID();
-		String query = "DELETE Comment WHERE id=?";
+		String query = "DELETE FROM Comment WHERE id=?";
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		statement.setInt(1, cid);
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
-		
-		result = cid;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = cid;
+		else 
+			throw new SQLException("The researched comment could not be deleted as it doesn't exist in the database !");
 		return result;
 	}
 
@@ -387,11 +389,11 @@ public class CommentDAOImpl extends AbstractDAO implements CommentDAO {
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
 		int lastid = -1;
-		String query = "SELECT id FROM Comment ORDER BY DESC id LIMIT 1";
+		String query = "SELECT id FROM Comment ORDER BY id DESC LIMIT 1";
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		statement.setQueryTimeout(1);
 		ResultSet results = statement.executeQuery();
-		lastid = results.getInt("id");
+		if(results.next()) lastid = results.getInt("id");
 		return lastid;
 	}
 

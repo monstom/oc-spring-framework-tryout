@@ -8,11 +8,11 @@ import ticket.model.search.evolution.SearchEvolution;
 
 public interface EvolutionDAO {
 	
-	public List<Evolution> getAllEvolutions() throws SQLException;
+	public List<Evolution> getAllEvolutions() throws SQLException, Exception;
 	
-	public List<Evolution> getEvolutionsFrom_priority(SearchEvolution search_evolution) throws SQLException;
+	public List<Evolution> getEvolutionsFrom_priority(SearchEvolution search_evolution) throws SQLException, Exception;
 	
-	public Evolution getEvolutionByID(SearchEvolution search_evolution) throws SQLException;
+	public Evolution getEvolutionByID(SearchEvolution search_evolution) throws SQLException, Exception;
 	
 	public int createEvolution(Evolution new_evolution) throws SQLException;
 	

@@ -8,11 +8,11 @@ import ticket.model.search.ticket.SearchStatut;
 
 public interface StatutDAO {
 	
-	public List<Statut> getAllStatuts() throws SQLException;
+	public List<Statut> getAllStatuts() throws SQLException, Exception;
 	
-	public List<Statut> getStatutsLike_label(SearchStatut search_statut) throws SQLException;
+	public List<Statut> getStatutsLike_label(SearchStatut search_statut) throws SQLException, Exception;
 	
-	public Statut getStatutByID(SearchStatut search_statut) throws SQLException;
+	public Statut getStatutByID(SearchStatut search_statut) throws SQLException, Exception;
 	
 	public int createStatut(Statut new_statut) throws SQLException;
 	

@@ -20,7 +20,7 @@ public class StatutDAOImpl extends AbstractDAO implements StatutDAO {
 	
 	
 	@Override
-	public List<Statut> getAllStatuts() throws SQLException {
+	public List<Statut> getAllStatuts() throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -44,7 +44,7 @@ public class StatutDAOImpl extends AbstractDAO implements StatutDAO {
 	
 
 	@Override
-	public Statut getStatutByID(SearchStatut searched_statut) throws SQLException {
+	public Statut getStatutByID(SearchStatut searched_statut) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -70,7 +70,7 @@ public class StatutDAOImpl extends AbstractDAO implements StatutDAO {
 
 	
 	@Override
-	public List<Statut> getStatutsLike_label(SearchStatut searched_statut) throws SQLException {
+	public List<Statut> getStatutsLike_label(SearchStatut searched_statut) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -121,9 +121,11 @@ public class StatutDAOImpl extends AbstractDAO implements StatutDAO {
 		} else statement.setString(1, label);
 		
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
-		if(sid > 0) result = sid;
-		else result = this.getLastInsertID();
+		int rows = statement.executeUpdate();
+		if(rows == 1) {
+			if(sid > 0) result = sid;
+			else result = this.getLastInsertID();
+		}
 		return result;
 	}
 	
@@ -149,9 +151,9 @@ public class StatutDAOImpl extends AbstractDAO implements StatutDAO {
 		statement.setString(1, slabel);
 		statement.setInt(2, sid);
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
 		
-		result = sid;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = sid;
 		return result;
 	}
 
@@ -166,13 +168,15 @@ public class StatutDAOImpl extends AbstractDAO implements StatutDAO {
 			throw new SQLException("The research object or its identifiers must not be undefined");
 	
 		int sid = search_statut.getSearchedStatutID();
-		String query = "DELETE Statut WHERE id=?";
+		String query = "DELETE FROM Statut WHERE id=?";
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		statement.setInt(1, sid);
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
 		
-		result = sid;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = sid;
+		else 
+			throw new SQLException("The researched status could not be deleted as it doesn't exist in the database !");
 		return result;
 	}
 
@@ -183,11 +187,11 @@ public class StatutDAOImpl extends AbstractDAO implements StatutDAO {
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
 		int lastid = -1;
-		String query = "SELECT id FROM Statut ORDER BY DESC id LIMIT 1";
+		String query = "SELECT id FROM Statut ORDER BY id DESC LIMIT 1";
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		statement.setQueryTimeout(1);
 		ResultSet results = statement.executeQuery();
-		lastid = results.getInt("id");
+		if(results.next()) lastid = results.getInt("id");
 		return lastid;
 	}
 

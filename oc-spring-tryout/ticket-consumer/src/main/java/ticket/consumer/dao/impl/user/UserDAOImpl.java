@@ -20,7 +20,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 	
 	
 	@Override
-	public List<User> getAllUsers() throws SQLException {
+	public List<User> getAllUsers() throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -44,7 +44,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 
 	
 	@Override
-	public User getUserByID(SearchUser searched_user) throws SQLException {
+	public User getUserByID(SearchUser searched_user) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -70,7 +70,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 	
 	
 	@Override
-	public List<User> getUsersFromNames(SearchUser searched_user) throws SQLException {
+	public List<User> getUsersFromNames(SearchUser searched_user) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -151,9 +151,11 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 		}
 		
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
-		if(uid > 0) result = uid;
-		else result = this.getLastInsertID();
+		int rows = statement.executeUpdate();
+		if(rows == 1) {
+			if(uid > 0) result = uid;
+			else result = this.getLastInsertID();
+		}
 		return result;
 	}
 	
@@ -193,9 +195,9 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 		
 		if(nbParam == 1)			
 			if(query.contains("firstname")) 
-				statement.setString(1, "%"+firstname+"%");
+				statement.setString(1, firstname);
 			else
-				statement.setString(1, "%"+lastname+"%");
+				statement.setString(1, lastname);
 			statement.setInt(2, uid);
 		
 		if(nbParam == 2) {
@@ -204,9 +206,9 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 			statement.setInt(3, uid);
 		}
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
 		
-		result = uid;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = uid;
 		return result;
 	}
 
@@ -220,13 +222,15 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 			throw new SQLException("The research object or its identifiers must not be undefined");
 	
 		int uid = search_user.getSearchedUserID();
-		String query = "DELETE Employee WHERE id=?";
+		String query = "DELETE FROM Employee WHERE id=?";
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		statement.setInt(1, uid);
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
 		
-		result = uid;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = uid;
+		else 
+			throw new SQLException("The researched user could not be deleted as it doesn't exist in the database !");
 		return result;
 	}
 
@@ -237,11 +241,11 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
 		int lastid = -1;
-		String query = "SELECT id FROM Employee ORDER BY DESC id LIMIT 1";
+		String query = "SELECT id FROM Employee ORDER BY id DESC LIMIT 1";
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		statement.setQueryTimeout(1);
 		ResultSet results = statement.executeQuery();
-		lastid = results.getInt("id");
+		if(results.next()) lastid = results.getInt("id");
 		return lastid;
 	}
 

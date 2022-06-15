@@ -8,21 +8,21 @@ import ticket.model.search.project.SearchProject;
 
 public interface ProjectDAO {
 	
-	public List<Project> getAllProjects() throws SQLException;
+	public List<Project> getAllProjects() throws SQLException, Exception;
 	
-	public List<Project> getProjectsLike_title(SearchProject search_project) throws SQLException;
+	public List<Project> getProjectsLike_title(SearchProject search_project) throws SQLException, Exception;
 	
-	public List<Project> getProjectsFrom_creationDate(SearchProject search_project, boolean over) throws SQLException;
+	public List<Project> getProjectsFrom_creationDate(SearchProject search_project, boolean over) throws SQLException, Exception;
 	
-	public List<Project> getProjectsFrom_creationDate(SearchProject search_project) throws SQLException;
+	public List<Project> getProjectsFrom_creationDate(SearchProject search_project) throws SQLException, Exception;
 	
-	public List<Project> getProjectsFrom_state(SearchProject search_project) throws SQLException;
+	public List<Project> getProjectsFrom_state(SearchProject search_project) throws SQLException, Exception;
 	
-	public List<Project> getProjectsFrom_manager(SearchProject search_project) throws SQLException;
+	public List<Project> getProjectsFrom_manager(SearchProject search_project) throws SQLException, Exception;
 	
-	public List<Project> getProjects_builder(SearchProject search_project) throws SQLException;	
+	public List<Project> getProjects_builder(SearchProject search_project) throws SQLException, Exception;	
 	
-	public Project getProjectByID(SearchProject search_project) throws SQLException;
+	public Project getProjectByID(SearchProject search_project) throws SQLException, Exception;
 	
 	public int createProject(Project new_project) throws SQLException;
 

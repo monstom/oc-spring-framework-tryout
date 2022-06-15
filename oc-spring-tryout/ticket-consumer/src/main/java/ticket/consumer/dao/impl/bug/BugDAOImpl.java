@@ -20,7 +20,7 @@ public class BugDAOImpl extends AbstractDAO implements BugDAO {
 	
 
 	@Override
-	public List<Bug> getAllBugs() throws SQLException {
+	public List<Bug> getAllBugs() throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -44,7 +44,7 @@ public class BugDAOImpl extends AbstractDAO implements BugDAO {
 
 	
 	@Override
-	public Bug getBugByID(SearchBug search_bug) throws SQLException {
+	public Bug getBugByID(SearchBug search_bug) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -69,7 +69,7 @@ public class BugDAOImpl extends AbstractDAO implements BugDAO {
 	
 
 	@Override
-	public List<Bug> getBugsFrom_severity(SearchBug search_bug) throws SQLException {
+	public List<Bug> getBugsFrom_severity(SearchBug search_bug) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -113,8 +113,8 @@ public class BugDAOImpl extends AbstractDAO implements BugDAO {
 		statement.setInt(1, ticket_id);
 		statement.setInt(2, severity);
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
-		result = 1;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = rows;
 		return result;
 	}
 	
@@ -140,9 +140,9 @@ public class BugDAOImpl extends AbstractDAO implements BugDAO {
 		statement.setInt(1, bseverity);
 		statement.setInt(2, bticket);
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
 		
-		result = bticket;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = bticket;
 		return result;
 	}
 
@@ -157,13 +157,15 @@ public class BugDAOImpl extends AbstractDAO implements BugDAO {
 			throw new SQLException("The research object or its identifiers must not be undefined");
 	
 		int bticket = search_bug.getSearchedTicketID();
-		String query = "DELETE Bug WHERE ticket_id=?";
+		String query = "DELETE FROM Bug WHERE ticket_id=?";
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		statement.setInt(1, bticket);
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
 		
-		result = bticket;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = bticket;
+		else 
+			throw new SQLException("The researched bug could not be deleted as it doesn't exist in the database !");
 		return result;
 	}
 

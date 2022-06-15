@@ -21,7 +21,7 @@ public class VersionDAOImpl extends AbstractDAO implements VersionDAO {
 
 	
 	@Override
-	public List<Version> getAllVersions() throws SQLException {
+	public List<Version> getAllVersions() throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -45,7 +45,7 @@ public class VersionDAOImpl extends AbstractDAO implements VersionDAO {
 
 	
 	@Override
-	public Version getVersionByID(SearchVersion search_version) throws SQLException {
+	public Version getVersionByID(SearchVersion search_version) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -75,7 +75,7 @@ public class VersionDAOImpl extends AbstractDAO implements VersionDAO {
 
 	
 	@Override
-	public List<Version> getVersionsFrom_projectID(SearchVersion search_version) throws SQLException {
+	public List<Version> getVersionsFrom_projectID(SearchVersion search_version) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -103,7 +103,7 @@ public class VersionDAOImpl extends AbstractDAO implements VersionDAO {
 
 	
 	@Override
-	public List<Version> getVersionsFrom_label(SearchVersion search_version) throws SQLException {
+	public List<Version> getVersionsFrom_label(SearchVersion search_version) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -147,8 +147,8 @@ public class VersionDAOImpl extends AbstractDAO implements VersionDAO {
 		statement.setInt(1, project);
 		statement.setString(2, label);
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
-		result = 1;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = rows;
 		return result;
 	}
 
@@ -164,14 +164,17 @@ public class VersionDAOImpl extends AbstractDAO implements VersionDAO {
 	
 		int vid = search_version.getSearchedVersionID();
 		String vlabel = search_version.getSearchedLabel();
-		String query = "DELETE Version WHERE project_id=? AND version_label=?";
+		String query = "DELETE FROM Version WHERE project_id=? AND label=?";
+		
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		statement.setInt(1, vid);
 		statement.setString(2, vlabel);
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
 		
-		result = 1;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = rows;
+		else 
+			throw new SQLException("The researched version could not be deleted as it doesn't exist in the database !");
 		return result;
 	}
 

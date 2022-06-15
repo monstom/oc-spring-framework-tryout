@@ -20,7 +20,7 @@ public class ProjectDAOImpl extends AbstractDAO implements ProjectDAO {
 	
 
 	@Override
-	public List<Project> getAllProjects() throws SQLException {
+	public List<Project> getAllProjects() throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -49,7 +49,7 @@ public class ProjectDAOImpl extends AbstractDAO implements ProjectDAO {
 
 	
 	@Override
-	public Project getProjectByID(SearchProject search_project) throws SQLException {
+	public Project getProjectByID(SearchProject search_project) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -78,7 +78,7 @@ public class ProjectDAOImpl extends AbstractDAO implements ProjectDAO {
 	
 	
 	@Override
-	public List<Project> getProjectsLike_title(SearchProject search_project) throws SQLException {
+	public List<Project> getProjectsLike_title(SearchProject search_project) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -111,7 +111,7 @@ public class ProjectDAOImpl extends AbstractDAO implements ProjectDAO {
 
 
 	@Override
-	public List<Project> getProjectsFrom_creationDate(SearchProject search_project, boolean over) throws SQLException {
+	public List<Project> getProjectsFrom_creationDate(SearchProject search_project, boolean over) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -147,7 +147,7 @@ public class ProjectDAOImpl extends AbstractDAO implements ProjectDAO {
 	
 
 	@Override
-	public List<Project> getProjectsFrom_creationDate(SearchProject search_project) throws SQLException {
+	public List<Project> getProjectsFrom_creationDate(SearchProject search_project) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -180,7 +180,7 @@ public class ProjectDAOImpl extends AbstractDAO implements ProjectDAO {
 
 
 	@Override
-	public List<Project> getProjectsFrom_state(SearchProject search_project) throws SQLException {
+	public List<Project> getProjectsFrom_state(SearchProject search_project) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -216,7 +216,7 @@ public class ProjectDAOImpl extends AbstractDAO implements ProjectDAO {
 
 	
 	@Override
-	public List<Project> getProjectsFrom_manager(SearchProject search_project)  throws SQLException {
+	public List<Project> getProjectsFrom_manager(SearchProject search_project) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -249,7 +249,7 @@ public class ProjectDAOImpl extends AbstractDAO implements ProjectDAO {
 	
 
 	@Override
-	public List<Project> getProjects_builder(SearchProject search_project) throws SQLException {
+	public List<Project> getProjects_builder(SearchProject search_project) throws SQLException, Exception {
 		if(this.getConnection().isClosed())
 			throw new SQLException("This DAO Object is not yet connected to the database");
 		
@@ -354,34 +354,49 @@ public class ProjectDAOImpl extends AbstractDAO implements ProjectDAO {
 			throw new SQLException("The new project object to be created must be undefined !");
 		
 		String title = new_project.getProject_title();
-		String cdate = new_project.getProject_creationDate().toString();
 		boolean state = new_project.getProject_isClosed();
 		int manager = new_project.getProject_managerID();
 		int pid = 0;		
 		if(new_project.getProjectID() > 0) pid = new_project.getProjectID();
+		String cdate = null;
+		if(new_project.getProject_creationDate() != null) cdate = new_project.getProject_creationDate().toString();
 		
 		String query = "INSERT INTO Project";
-		if(pid > 0) query += " VALUES (?,?,?,?,?)";
-		else query += "(title,creationDate,closed,manager) VALUES (?,?,?,?)";
+		if(pid > 0 && cdate != null) query += " VALUES (?,?,?,?,?)";
+		else if(pid > 0) query += "(id,title,closed,manager) VALUES (?,?,?,?)";
+		else if(cdate != null) query += "(title,creationDate,closed,manager) VALUES (?,?,?,?)";
+		else query += "(title,closed,manager) VALUES (?,?,?)";
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		
 		if(pid > 0) {
 			statement.setInt(1, pid);
 			statement.setString(2, title);
-			statement.setString(3, cdate);
-			statement.setBoolean(4, state);
-			statement.setInt(5, manager);
+			if(cdate != null) {
+				statement.setString(3, cdate);
+				statement.setBoolean(4, state);
+				statement.setInt(5, manager);				
+			} else {
+				statement.setBoolean(3, state);
+				statement.setInt(4, manager);
+			}
 		} else {
 			statement.setString(1, title);
-			statement.setString(2, cdate);
-			statement.setBoolean(3, state);
-			statement.setInt(4, manager);
+			if(cdate != null) {
+				statement.setString(2, cdate);
+				statement.setBoolean(3, state);
+				statement.setInt(4, manager);				
+			} else {
+				statement.setBoolean(2, state);
+				statement.setInt(3, manager);
+			}
 		}
 		
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
-		if(pid > 0) result = pid;
-		else result = this.getLastInsertID();
+		int row = statement.executeUpdate();
+		if(row == 1) {
+			if(pid > 0) result = pid;
+			else result = this.getLastInsertID();
+		}
 		return result;
 	}
 	
@@ -405,14 +420,14 @@ public class ProjectDAOImpl extends AbstractDAO implements ProjectDAO {
 		
 		if(search_project.getSearchedTitle() != null) {
 			title = search_project.getSearchedTitle();
-			query += "title LIKE ?";
+			query += "title=?";
 			nbParam++;
 		}
 		
 		if(search_project.getSearchedCreationDate() != null) {
 			cdate = search_project.getSearchedCreationDate();
 			if(nbParam > 0) query += " AND ";
-			query += "creationDate LIKE ?";
+			query += "creationDate=?";
 			nbParam++;
 		}
 				
@@ -437,13 +452,13 @@ public class ProjectDAOImpl extends AbstractDAO implements ProjectDAO {
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		
 		if(title != null)
-			statement.setString(1, "%"+title+"%");
+			statement.setString(1, title);
 		
 		if(cdate != null)
 			if(title != null)
-				statement.setString(2, "%"+cdate+"%");
+				statement.setString(2, cdate);
 			else
-				statement.setString(1, "%"+cdate+"%");
+				statement.setString(1, cdate);
 		
 		boolean bstate = false;
 		if(state >= 0)
@@ -475,9 +490,8 @@ public class ProjectDAOImpl extends AbstractDAO implements ProjectDAO {
 			statement.setInt(5, pid);
 		
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
-		
-		result = pid;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = pid;
 		return result;
 	}
 
@@ -492,13 +506,14 @@ public class ProjectDAOImpl extends AbstractDAO implements ProjectDAO {
 			throw new SQLException("The research object or its ticket id must not be undefined");
 	
 		int pid = search_project.getSearchedProjectID();
-		String query = "DELETE Project WHERE id=?";
+		String query = "DELETE FROM Project WHERE id=?";
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		statement.setInt(1, pid);
 		statement.setQueryTimeout(1);
-		statement.executeQuery();
-		
-		result = pid;
+		int rows = statement.executeUpdate();
+		if(rows == 1) result = pid;
+		else 
+			throw new SQLException("The researched project could not be deleted as it doesn't exist in the database !");
 		return result;
 	}
 
@@ -513,7 +528,7 @@ public class ProjectDAOImpl extends AbstractDAO implements ProjectDAO {
 		PreparedStatement statement = this.getConnection().prepareStatement(query);
 		statement.setQueryTimeout(1);
 		ResultSet results = statement.executeQuery();
-		lastid = results.getInt("id");
+		if(results.next()) lastid = results.getInt("id");
 		return lastid;
 	}
 	
